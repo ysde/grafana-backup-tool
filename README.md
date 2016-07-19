@@ -15,9 +15,12 @@ Python code to call Grafana API to:
 * Garafana 3.0 API
 
 ## Setting
-1. Edit grafana_settings.py
-	2. Fill in your Grafana web site url (grafana_url)
-	3. Add the token you get from [Grafana Web page](http://docs.grafana.org/http_api/auth/)
+
+1. Export the environment variables bellow
+	2. GRAFANA_URL (the default url is http://localhost:3000)
+	3. GRAFANA_TOKEN 
+        
+Remember, you can the token from [Grafana Web page](http://docs.grafana.org/http_api/auth/)
 
 ## How to Use
 * Use saveDashboards.py to save all dashboards to a file.
