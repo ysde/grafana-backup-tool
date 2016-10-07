@@ -16,7 +16,6 @@ def get_dashboard(board_uri):
 def update_or_create_dashboard(payload):
     r = send_grafana_post(grafana_url + '/api/dashboards/db', payload)
     status_code = r.status_code
-    print "create dashboard:"
     print "status: {0}".format(status_code)
     print "msg: {0}".format(r.content)
     return int(status_code)
@@ -29,7 +28,6 @@ def search_datasource():
 def create_datasource(payload):
     r = send_grafana_post(grafana_url + '/api/datasources', payload)
     status_code = r.status_code
-    print "create datasources:"
     print "status: {0}".format(status_code)
     print "msg: {0}".format(r.content)
     return int(status_code)
