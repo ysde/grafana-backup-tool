@@ -1,4 +1,4 @@
-#!/nin/bash
+#!/bin/bash
 
 current_path=`pwd`
 current_time=`date +"%Y-%m-%d_%T"`
