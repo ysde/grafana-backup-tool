@@ -16,7 +16,15 @@ def get_dashboard(board_uri):
     return (status_code, content)
 
 
-def update_or_create_dashboard(payload):
+def delete_dashboard(board_uri):
+    r = requests.delete(grafana_url + "/api/dashboards/db/{0}".format(board_uri), headers=http_post_headers)
+    status_code = r.status_code
+    print "status: {0}".format(status_code)
+    print "msg: {0}".format(r.content)
+    return int(status_code)
+
+
+def create_dashboard(payload):
     r = send_grafana_post(grafana_url + '/api/dashboards/db', payload)
     status_code = r.status_code
     print "status: {0}".format(status_code)

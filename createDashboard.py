@@ -14,5 +14,5 @@ dashboard = json.loads(data)
 dashboard['dashboard']['id'] = None
 
 db = {'dashboard': dashboard['dashboard']}
-update_or_create_dashboard(json.dumps(db))
-
+delete_dashboard(dashboard['meta']['slug'])
+create_dashboard(json.dumps(db))
