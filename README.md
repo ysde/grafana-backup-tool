@@ -36,10 +36,10 @@ you can use them to
 ## Setting
 
 1. Export the environment variables bellow
-	2. GRAFANA_URL (the default url is http://localhost:3000)
-	3. GRAFANA_TOKEN 
+2. GRAFANA_URL (the default url is http://localhost:3000)
+3. GRAFANA_TOKEN 
         
-Remember, you can the token from [Grafana Web page](http://docs.grafana.org/http_api/auth/)
+You can see how to get token from here: [Grafana Web page](http://docs.grafana.org/http_api/auth/)
 
 ## How to Use
 * First edit **grafana_settings.py** as above.
