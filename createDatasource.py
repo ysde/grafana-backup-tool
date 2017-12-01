@@ -13,4 +13,3 @@ with open(file_path, 'r') as f:
 datasource = json.loads(data)
 print("create datasource: {0}".format(datasource['name']))
 create_datasource(json.dumps(datasource))
-    
