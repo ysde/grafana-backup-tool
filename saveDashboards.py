@@ -14,6 +14,8 @@ def get_all_dashboards_in_grafana():
     dashboards = json.loads(content_of_all_dashboards)
     print "There are {0} dashboards:".format(len(dashboards))
     for board in dashboards:
+        board['title']=board['title'].replace("/","_")
+        board['title']="".join([c for c in board['title'] if re.match(r'\w', c)])        
         print board['title']
     return dashboards
 
