@@ -10,9 +10,13 @@ file_path = args.path
 with open(file_path, 'r') as f:
     data = f.read()
 
-dashboard = json.loads(data)
-dashboard['dashboard']['id'] = None
+content = json.loads(data)
+content['dashboard']['id'] = None
 
-db = {'dashboard': dashboard['dashboard']}
-delete_dashboard(dashboard['meta']['slug'])
-create_dashboard(json.dumps(db))
+payload = {
+    'dashboard': content['dashboard'],
+    'folderId': get_folder_id_from_old_folder_url(content['meta']['folderUrl']),
+    'overwrite': True
+}
+
+create_dashboard(json.dumps(payload))

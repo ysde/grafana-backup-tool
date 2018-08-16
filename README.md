@@ -4,27 +4,34 @@ Some python programs to call Grafana API to:
 
 * Save every datasource to each datasource file.
 	* **saveDatasources.py**
+* Save every folder to each datasource file.
+	* **saveFolders.py**
 * Save every dashboard to each dashboard file.
 	* **saveDashboards.py**
 * Create datasource from a backup file.
 	* **createDatasource.py**
+* Create folder from a backup file.
+	* **createFolder.py**
 * Create dashboard from a backup file.
 	* **createDashboard.py**
 
-There a three convenient script files: 
+There a three convenient script files:
 
 1. **backup_grafana.sh**
 2. **restore_dashboards.sh**
-3. **restore_datasources.sh** 
+3. **restore_datasources.sh**
+3. **restore_folders.sh**
 
-you can use them to 
+you can use them to
 
-1. **backup all datasources and dashboards.**
+1. **backup all datasources, dashboards and folders.**
 	2. ex: sh backup_grafana.sh
 2. **restore dashboards from your dashboard backup folder.**
 	3. ex: sh restore_dashboards.sh /tmp/dashboards/2016-10-10_12:00:00
 3. **restore datasources from your datasource backup folder.**
 	4. ex: sh restore_dashboards.sh /tmp/datasources/2016-10-10_12:00:00
+3. **restore folders from your folder backup folder.**
+	4. ex: sh restore_folders.sh /tmp/folders/2016-10-10_12:00:00
 
 [Grafana API document](http://docs.grafana.org/http_api/overview/)
 
@@ -37,8 +44,8 @@ you can use them to
 
 1. Export the environment variables bellow
 2. GRAFANA_URL (the default url is http://localhost:3000)
-3. GRAFANA_TOKEN 
-        
+3. GRAFANA_TOKEN
+
 You can see how to get token from here: [Grafana Web page](http://docs.grafana.org/http_api/auth/)
 
 ## How to Use
@@ -49,16 +56,22 @@ You can see how to get token from here: [Grafana Web page](http://docs.grafana.o
 * Use **saveDatasources.py** to save each datasources to each file under specific folder.
 	*  ex: python saveDatasources.py **folder_path**
 
+* Use **saveFolders.py** to save each folders to each file under specific folder.
+	*  ex: python saveFolders.py **folder_path**
+
 * Use **createDashboard.py** to read the dashboard  file and create or update them on Grafana.
  	*  ex: python createDashboard.py **file_path**
 
 * Use **createDatasource.py** to read the datasource  file and create or update them on Grafana.
  	*  ex: python createDatasource.py **file_path**
 
- 
-* Use **backup_grafana.sh** to backup all your dashboards and datasources to **/tmp** folder.
-	* It will create 
-		* two files: **/tmp/dashboards.tar.gz**, **/tmp/datasources.tar.gz** 
-		* two folders contain dashboard files and datasource files: **/tmp/dashboards/$current_time**, **/tmp/datasources/$current_time**
+* Use **createFolder.py** to read the folder file and create or update them on Grafana.
+ 	*  ex: python createFolder.py **file_path**
+
+* Use **backup_grafana.sh** to backup all your dashboards, datasources and folders to **/tmp** folder.
+	* It will create
+		* three files: **/tmp/dashboards.tar.gz**, **/tmp/datasources.tar.gz**
+		  and **/tmp/folders.tar.gz**
+		* three folders contain dashboard files, datasource files and folders file: **/tmp/dashboards/$current_time**, **/tmp/datasources/$current_time** and **/tmp/folders/$current_time**
 	* ex：**sh backup_grafana.sh**
-	* result：**/tmp/dashboads.tar.gz**, **/tmp/datasourcess.tar.gz**, **/tmp/dashboards/2016-10-10_12:00:00**, **/tmp/datasources/2016-10-10_12:00:00**
+	* result：**/tmp/dashboads.tar.gz**, **/tmp/datasourcess.tar.gz**, **/tmp/folders.tar.gz**, **/tmp/dashboards/2016-10-10_12:00:00**, **/tmp/datasources/2016-10-10_12:00:00**, **/tmp/folders/2016-10-10_12:00:00**
