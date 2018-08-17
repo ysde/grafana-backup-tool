@@ -26,7 +26,7 @@ def save_folder_setting(file_name, folder_settings):
 
 def get_indivisual_folder_setting_and_save(folders):
     for board in folders:
-        status_code_and_content = get_folder(board['uri'])
+        status_code_and_content = get_folder(board['uid'])
         if status_code_and_content[0] == 200:
             save_folder_setting(board['title'], status_code_and_content[1])
 
