@@ -11,4 +11,4 @@ with open(file_path, 'r') as f:
     data = f.read()
 
 folder = json.loads(data)
-create_folder(json.dumps(folder['dashboard']))
+create_folder(json.dumps(folder))

@@ -58,7 +58,7 @@ def get_folder_id_from_old_folder_url(folder_url):
         uid = matches.group(1)
 
         response = get_folder(uid)
-        folder_data = json.loads(folder[1])
+        folder_data = json.loads(response[1])
 
         return folder_data['id']
 
