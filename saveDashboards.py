@@ -8,7 +8,6 @@ args = parser.parse_args()
 
 folder_path = args.path
 
-
 def get_all_dashboards_in_grafana():
     content_of_all_dashboards = search_dashboard()
     dashboards = json.loads(content_of_all_dashboards)
@@ -33,7 +32,6 @@ def get_indivisual_dashboard_setting_and_save(dashboards):
             save_dashboard_setting(board['title'], status_code_and_content[1])
             # save_dashboard_setting(board['title'], json.dumps(status_code_and_content[1]))
 
-    
 dashboards = get_all_dashboards_in_grafana()
 print_horizontal_line()
 dashboard_settings = get_indivisual_dashboard_setting_and_save(dashboards)
