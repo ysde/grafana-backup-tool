@@ -10,10 +10,10 @@ Some python programs to call Grafana API to:
 	* **saveDashboards.py**
 * Create datasource from a backup file.
 	* **createDatasource.py**
-* Create folder from a backup file.
-	* **createFolder.py**
 * Create dashboard from a backup file.
 	* **createDashboard.py**
+* Create folder from a backup file. (supported from Grafana v.5.0.*)
+	* **createFolder.py**
 
 There a three convenient script files:
 
