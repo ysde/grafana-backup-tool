@@ -25,13 +25,13 @@ There a three convenient script files:
 you can use them to
 
 1. **backup all datasources, dashboards and folders.**
-	2. ex: sh backup_grafana.sh
+* ex: sh backup_grafana.sh
 2. **restore dashboards from your dashboard backup folder.**
-	3. ex: sh restore_dashboards.sh /tmp/dashboards/2016-10-10_12:00:00
+* ex: sh restore_dashboards.sh /tmp/dashboards/2016-10-10_12:00:00
 3. **restore datasources from your datasource backup folder.**
-	4. ex: sh restore_dashboards.sh /tmp/datasources/2016-10-10_12:00:00
+* ex: sh restore_dashboards.sh /tmp/datasources/2016-10-10_12:00:00
 3. **restore folders from your folder backup folder.**
-	4. ex: sh restore_folders.sh /tmp/folders/2016-10-10_12:00:00
+* ex: sh restore_folders.sh /tmp/folders/2016-10-10_12:00:00
 
 [Grafana API document](http://docs.grafana.org/http_api/overview/)
 
