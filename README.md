@@ -25,18 +25,18 @@ There a three convenient script files:
 you can use them to
 
 1. **backup all datasources, dashboards and folders.**
-* ex: sh backup_grafana.sh
+    * e.g.: sh backup_grafana.sh
 2. **restore dashboards from your dashboard backup folder.**
-* ex: sh restore_dashboards.sh /tmp/dashboards/2016-10-10_12:00:00
+    * e.g: sh restore_dashboards.sh /tmp/dashboards/2016-10-10_12:00:00
 3. **restore datasources from your datasource backup folder.**
-* ex: sh restore_dashboards.sh /tmp/datasources/2016-10-10_12:00:00
+    * e.g.: sh restore_dashboards.sh /tmp/datasources/2016-10-10_12:00:00
 3. **restore folders from your folder backup folder.**
-* ex: sh restore_folders.sh /tmp/folders/2016-10-10_12:00:00
+    * e.g.: sh restore_folders.sh /tmp/folders/2016-10-10_12:00:00
 
 [Grafana API document](http://docs.grafana.org/http_api/overview/)
 
 ## ENV:
-* python 2.7
+* python 2.7, python 3
 	* Need to **pip install requests** library
 * Garafana 3.0 API
 
@@ -49,7 +49,7 @@ you can use them to
 You can see how to get token from here: [Grafana Web page](http://docs.grafana.org/http_api/auth/)
 
 ## How to Use
-* First edit **grafana_settings.py** as above.
+* First edit **grafanaSettings.py** as above.
 * Use **saveDashboards.py** to save each dashboard to each file.
 	* ex: python saveDashboards.py **folder_path**
 
@@ -70,8 +70,20 @@ You can see how to get token from here: [Grafana Web page](http://docs.grafana.o
 
 * Use **backup_grafana.sh** to backup all your dashboards, datasources and folders to **/tmp** folder.
 	* It will create
-		* three files: **/tmp/dashboards.tar.gz**, **/tmp/datasources.tar.gz**
-		  and **/tmp/folders.tar.gz**
-		* three folders contain dashboard files, datasource files and folders file: **/tmp/dashboards/$current_time**, **/tmp/datasources/$current_time** and **/tmp/folders/$current_time**
-	* ex：**sh backup_grafana.sh**
-	* result：**/tmp/dashboads.tar.gz**, **/tmp/datasourcess.tar.gz**, **/tmp/folders.tar.gz**, **/tmp/dashboards/2016-10-10_12:00:00**, **/tmp/datasources/2016-10-10_12:00:00**, **/tmp/folders/2016-10-10_12:00:00**
+		* three files: 
+		    1. **/tmp/dashboards.tar.gz**
+		    2. **/tmp/datasources.tar.gz**
+		    3. **/tmp/folders.tar.gz**
+		* three folders contain dashboard files, datasource files and folders file:         
+		    1. **/tmp/dashboards/$current_time**
+		    2. **/tmp/datasources/$current_time** 
+		    3. **/tmp/folders/$current_time**
+	* e.g.：**sh backup_grafana.sh**
+	* result：
+	    * **/tmp/dashboads.tar.gz**
+	    * **/tmp/datasourcess.tar.gz**
+	    * **/tmp/folders.tar.gz**
+	    ------
+	    * **/tmp/dashboards/2016-10-10_12:00:00**
+	    * **/tmp/datasources/2016-10-10_12:00:00**
+	    * **/tmp/folders/2016-10-10_12:00:00**
