@@ -11,12 +11,18 @@ folder_path = args.path
 log_file = 'folders_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
 
 def get_all_folders_in_grafana():
-    content_of_all_folders = search_folders()
-    folders = json.loads(content_of_all_folders)
-    print("There are {0} folders:".format(len(folders)))
-    for folder in folders:
-        print(folder['title'])
-    return folders
+    status_and_content_of_all_folders = search_folders()
+    status = status_and_content_of_all_folders[0]
+    content = status_and_content_of_all_folders[1]
+    if status == 200:
+        folders = json.loads(content)
+        print("There are {0} folders:".format(len(content)))
+        for folder in folders:
+            print("name: {0}".format(folder['title']))
+        return folders
+    else:
+        print("get folders failed, status: {0}, msg: {1}".format(status, content))
+        return []
 
 
 def save_folder_setting(folder_name, file_name, folder_settings):

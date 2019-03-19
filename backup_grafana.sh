@@ -24,9 +24,9 @@ if [ ! -d "$folders_backup_path" ]; then
   mkdir -p "$folders_backup_path"
 fi
 
-python "${current_path}/saveDashboards.py" $dashboard_backup_path
-python "${current_path}/saveDatasources.py" $datasource_backup_path
-python "${current_path}/saveFolders.py" $folders_backup_path
+python "${current_path}/saveDashboards.py" $dashboard_backup_path || exit 0
+python "${current_path}/saveDatasources.py" $datasource_backup_path || exit 0
+python "${current_path}/saveFolders.py" $folders_backup_path || exit 0
 
 tar -zcvf "/tmp/$compressed_dashboards_name" $dashboard_backup_path
 tar -zcvf "/tmp/$compressed_datasources_name" $datasource_backup_path

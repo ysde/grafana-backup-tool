@@ -12,12 +12,18 @@ folder_path = args.path
 log_file = 'dashboards_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
 
 def get_all_dashboards_in_grafana():
-    content_of_all_dashboards = search_dashboard()
-    dashboards = json.loads(content_of_all_dashboards)
-    print("There are {0} dashboards:".format(len(dashboards)))
-    for board in dashboards:
-        print('name: {}'.format(board['title']))
-    return dashboards
+    status_and_content_of_all_dashboards = search_dashboard()
+    status = status_and_content_of_all_dashboards[0]
+    content = status_and_content_of_all_dashboards[1]
+    if status == 200:
+        dashboards = json.loads(content)
+        print("There are {0} dashboards:".format(len(dashboards)))
+        for board in dashboards:
+            print('name: {}'.format(board['title']))
+        return dashboards
+    else:
+        print("get dashboards failed, status: {0}, msg: {1}".format(status, content))
+        return []
 
 
 def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):

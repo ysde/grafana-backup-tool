@@ -5,7 +5,7 @@ from commons import *
 def search_dashboard():
     print("search dashboard in grafana:")
     r = send_grafana_get(grafana_url + '/api/search/?type=dash-db')
-    return r.content.decode('utf8')
+    return (r.status_code, r.content.decode('utf8'))
 
 def get_dashboard(board_uri):
     r = send_grafana_get(grafana_url + "/api/dashboards/{0}".format(board_uri))
@@ -34,7 +34,7 @@ def create_datasource(payload):
 def search_folders():
     print("search folder in grafana:")
     r = send_grafana_get(grafana_url + '/api/search/?type=dash-folder')
-    return r.content.decode('utf8')
+    return (r.status_code, r.content.decode('utf8'))
 
 def get_folder(uid):
     r = send_grafana_get(grafana_url + "/api/folders/{0}".format(uid))
