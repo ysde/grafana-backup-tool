@@ -6,10 +6,9 @@ parser.add_argument('path',  help='file path to save datasource setting')
 args = parser.parse_args()
 
 file_path = args.path
-print(file_path)
 with open(file_path, 'r') as f:
     data = f.read()
 
 datasource = json.loads(data)
-print("create datasource: {0}".format(datasource['name']))
-create_datasource(json.dumps(datasource))
+result = create_datasource(json.dumps(datasource))
+print("create datasource: {0}, status: {1}, msg: {2}".format(datasource['name'], result[0], result[1]))

@@ -19,4 +19,6 @@ payload = {
     'overwrite': True
 }
 
-create_dashboard(json.dumps(payload))
+result = create_dashboard(json.dumps(payload))
+
+print("create response status: {0}, msg: {1}".format(result[0], result[1]))
