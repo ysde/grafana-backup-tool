@@ -4,7 +4,7 @@ from commons import *
 
 def search_dashboard():
     print("search dashboard in grafana:")
-    r = send_grafana_get(grafana_url + '/api/search/?type=dash-db&limit=' + search_api_limit)
+    r = send_grafana_get(grafana_url + '/api/search/?type=dash-db&limit={0}'.format(search_api_limit))
     return (r.status_code, r.content.decode('utf8'))
 
 def get_dashboard(board_uri):
