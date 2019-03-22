@@ -62,7 +62,7 @@ def create_folder(payload):
     return (r.status_code, r.content.decode('utf8'))
 
 def send_grafana_get(url):
-    r = requests.get(url, headers=http_get_headers)
+    r = requests.get(url, headers=http_get_headers, verify=verifySSL)
     if debug:
         log_response(r)
     return r
