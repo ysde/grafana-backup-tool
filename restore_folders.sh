@@ -8,7 +8,7 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-find "$folders_path" -name "*.folder" -mindepth 1 | while read f ; do
+find "$folders_path"  -mindepth 1 -name "*.folder" | while read f ; do
   echo "$f"
   python $current_path/createFolder.py "$f"
 done
