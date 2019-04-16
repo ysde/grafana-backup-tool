@@ -68,7 +68,7 @@ def send_grafana_get(url):
     return r
 
 def send_grafana_post(url, json_payload):
-    r = requests.post(url, headers=http_post_headers, data=json_payload)
+    r = requests.post(url, headers=http_post_headers, data=json_payload, verify=verifySSL)
     if debug:
         log_response(r)
     return r
