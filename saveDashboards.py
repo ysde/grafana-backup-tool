@@ -29,7 +29,7 @@ def get_all_dashboards_in_grafana():
 def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):
     file_path = folder_path + '/' + file_name + '.dashboard'
     with open(u"{0}".format(file_path) , 'w') as f:
-        f.write(dashboard_settings)
+        f.write(dashboard_settings.encode('utf-8'))
     print("dashboard: {0} -> saved to: {1}".format(dashboard_name, file_path))
 
 

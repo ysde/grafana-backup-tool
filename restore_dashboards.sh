@@ -8,7 +8,7 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-find "$dashboard_folder" -name "*.dashboard" -mindepth 1 | while read f ; do
+find "$dashboard_folder" -mindepth 1 -name "*.dashboard" | while read f ; do
   echo "$f"
   python $current_path/createDashboard.py "$f"
 done
