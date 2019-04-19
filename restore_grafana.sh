@@ -9,7 +9,8 @@ if [ $# -ne 1 ]; then
 fi
 
 
-tmp_dir=$(mktemp -d --suffix=_grafana_restore)
+tmp_dir="/tmp/grafana_restore"
+mkdir "$tmp_dir"
 tar -xzf $1 -C $tmp_dir
 
 if [ -d $tmp_dir/datasources ]

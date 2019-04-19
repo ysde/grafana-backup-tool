@@ -21,7 +21,7 @@ def save_datasource(file_name, datasource_setting):
 def get_all_datasources_and_save():
     status_code_and_content = search_datasource()
     if status_code_and_content[0] == 200:
-        datasources = json.loads(status_code_and_content[1])
+        datasources = status_code_and_content[1]
         print("There are {0} datasources:".format(len(datasources)))
         for datasource in datasources:
             print(datasource)

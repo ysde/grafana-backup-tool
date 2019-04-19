@@ -16,10 +16,10 @@ def get_all_dashboards_in_grafana():
     status = status_and_content_of_all_dashboards[0]
     content = status_and_content_of_all_dashboards[1]
     if status == 200:
-        dashboards = json.loads(content)
+        dashboards = content
         print("There are {0} dashboards:".format(len(dashboards)))
         for board in dashboards:
-            print('name: {}'.format(board['title']))
+            print('name: {}'.format(toPython2And3CompatibleString(board['title'])))
         return dashboards
     else:
         print("get dashboards failed, status: {0}, msg: {1}".format(status, content))
@@ -28,8 +28,9 @@ def get_all_dashboards_in_grafana():
 
 def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):
     file_path = folder_path + '/' + file_name + '.dashboard'
-    with open(u"{0}".format(file_path) , 'w') as f:
-        f.write(dashboard_settings.encode('utf-8'))
+    print(dashboard_settings)
+    with open(u"{0}".format(file_path), 'w') as f:
+        f.write(json.dumps(dashboard_settings))
     print("dashboard: {0} -> saved to: {1}".format(dashboard_name, file_path))
 
 
@@ -37,10 +38,14 @@ def get_indivisual_dashboard_setting_and_save(dashboards):
     for board in dashboards:
         status_code_and_content = get_dashboard(board['uri'])
         if status_code_and_content[0] == 200:
-            save_dashboard_setting(board['title'], board['uid'], status_code_and_content[1])
+            save_dashboard_setting(
+                toPython2And3CompatibleString(board['title']), 
+                board['uid'], 
+                status_code_and_content[1]
+            )
             file_path = folder_path + '/' + log_file
             with open(u"{0}".format(file_path) , 'w+') as f:
-                f.write('{}\t{}'.format(board['uid'], board['title']))
+                f.write('{}\t{}'.format(board['uid'], toPython2And3CompatibleString(board['title'])))
 
 dashboards = get_all_dashboards_in_grafana()
 print_horizontal_line()
