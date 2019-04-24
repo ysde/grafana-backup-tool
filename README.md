@@ -29,7 +29,7 @@ you can use them to
 2. **restore dashboards from your dashboard backup folder.**
     * e.g: sh restore_dashboards.sh /tmp/dashboards/2016-10-10_12:00:00
 3. **restore datasources from your datasource backup folder.**
-    * e.g.: sh restore_dashboards.sh /tmp/datasources/2016-10-10_12:00:00
+    * e.g.: sh restore_datasources.sh /tmp/datasources/2016-10-10_12:00:00
 3. **restore folders from your folder backup folder.**
     * e.g.: sh restore_folders.sh /tmp/folders/2016-10-10_12:00:00
 
