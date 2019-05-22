@@ -1,34 +1,18 @@
 #!/bin/bash
-set -e
+trap 'echo -ne "\n:::\n:::\tCaught signal, exiting at line $LINENO, while running :${BASH_COMMAND}:\n:::\n"; exit' SIGINT SIGQUIT
 
-current_path=`pwd`
-current_time=`date +"%Y-%m-%d-%H%M%S"`
-backup_dir=/tmp/grafana_backup_$current_time
-backup_dir_compressed=$backup_dir.tar.gz
-echo $current_time
+current_path=$(pwd)
+backup_dir="_OUTPUT_"
+timestamp=$(date +"%Y-%m-%dT%H:%M:%S")
 
-dashboard_backup_path="$backup_dir/dashboards"
-datasource_backup_path="$backup_dir/datasources"
-folders_backup_path="$backup_dir/folders"
+[ -d "${backup_dir}" ] || mkdir -p "${backup_dir}"
 
-if [ ! -d "$dashboard_backup_path" ]; then
-  mkdir -p "$dashboard_backup_path"
-fi
+for i in dashboards datasources folders
+do
+	F="${backup_dir}/${i}/${timestamp}"
+	[ -d "${F}" ] || mkdir -p "${F}"
+	python "${current_path}/src/save_${i}.py" "${F}"
+done
 
-if [ ! -d "$datasource_backup_path" ]; then
-  mkdir -p "$datasource_backup_path"
-fi
-
-if [ ! -d "$folders_backup_path" ]; then
-  mkdir -p "$folders_backup_path"
-fi
-
-python "${current_path}/saveDashboards.py" $dashboard_backup_path || exit 0
-python "${current_path}/saveDatasources.py" $datasource_backup_path || exit 0
-python "${current_path}/saveFolders.py" $folders_backup_path || exit 0
-
-
-tar -zcvf $backup_dir_compressed -C $backup_dir .
-rm -rf $backup_dir
-
-echo "create backup $backup_dir_compressed"
+tar -czvf "${backup_dir}/${timestamp}.tar.gz" ${backup_dir}/{dashboards,datasources,folders}/${timestamp}
+rm -rf ${backup_dir}/{dashboards,datasources,folders}/${timestamp}
