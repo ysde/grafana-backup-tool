@@ -42,7 +42,10 @@ def get_folder_id_from_old_folder_url(folder_url):
         uid = matches.group(1)
 
         response = get_folder(uid)
-        folder_data = json.loads(response[1])
+        if isinstance(response[1],dict):
+            folder_data = response[1] 
+        else:
+            folder_data = json.loads(response[1])
 
         return folder_data['id']
 
