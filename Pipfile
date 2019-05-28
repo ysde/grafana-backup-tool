@@ -1,0 +1,12 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = {extras = ["security"], version = "~=2.21"}
+
+[dev-packages]
+
+[requires]
+# runs with python2.7 or python3.x

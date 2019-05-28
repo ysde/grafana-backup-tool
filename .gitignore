@@ -1,4 +1,5 @@
-*.pyc
 .idea
+*.pyc
 __pycache__
+Pipfile.lock
 _OUTPUT_
