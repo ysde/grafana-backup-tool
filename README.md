@@ -31,5 +31,19 @@ _OUTPUT_/
 ```
 * Use `restore_grafana.sh` with a path to a previous backup to restore everything. **NOTE** this *may* result in data loss, by overwriting data on the server.
 
+## Docker
+Replace variables below to use docker version of this tool
+* `{YOUR_GRAFANA_TOKEN}`: Your grafana site token. 
+* `{YOUR_GRAFANA_URL}`: Your grafana site url.
+* `{YOUR_BACKUP_FOLDER_ON_THE_HOST}`: The backup folder on the host machine.
+
+```
+docker run -it --name grafana-backup-tool \
+   -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \
+   -e GRAFANA_URL={YOUR_GRAFANA_URL} \
+   -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana_backup_tool/_OUTPUT_  \
+   ysde/docker-grafana-backup-tool
+```
+
 ## Notes
 * Please have a look at the two scripts in the root directory if you need to customize something.
