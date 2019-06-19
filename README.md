@@ -41,7 +41,7 @@ Replace variables below to use docker version of this tool
 docker run -it --name grafana-backup-tool \
    -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \
    -e GRAFANA_URL={YOUR_GRAFANA_URL} \
-   -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana_backup_tool/_OUTPUT_  \
+   -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana-backup-tool/_OUTPUT_  \
    ysde/docker-grafana-backup-tool
 ```
 
