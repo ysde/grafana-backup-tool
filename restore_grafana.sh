@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 trap 'echo -ne "\n:::\n:::\tCaught signal, exiting at line $LINENO, while running :${BASH_COMMAND}:\n:::\n"; exit' SIGINT SIGQUIT
 
 current_path=$(pwd)

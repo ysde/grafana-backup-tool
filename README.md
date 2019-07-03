@@ -13,7 +13,8 @@ A Python-based application to backup Grafana settings via [Grafana API](http://d
 `grafana-backup-tool` uses environment variables to define the connection to a Grafana server, or alternatively hard-coded settings in `src/grafanaSettings.py`.
 You need to add the following to your `.bashrc` or execute once before using the tool:
 ```bash
-export GRAFANA_URL=http://some.host.org:3000/
+# do not use a trailing slash!
+export GRAFANA_URL=http://some.host.org:3000
 export GRAFANA_TOKEN=eyJrIjoidUhaU2ZQQndrWFN3RRVkUnVfrT56a1JoaG9KWFFObEgiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
 ```
 
