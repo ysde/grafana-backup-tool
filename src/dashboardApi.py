@@ -2,36 +2,42 @@ import requests, json, re
 from grafanaSettings import *
 from commons import *
 
-def search_dashboard():
-    print("search dashboard in grafana:")
-    return send_grafana_get(grafana_url + '/api/search/?type=dash-db&limit={0}'.format(search_api_limit))
-    
+def health_check():
+    url = GRAFANA_URL + '/api/health'
+    print("grafana health: {0}".format(url))
+    return send_grafana_get(url)
+
+def search_dashboard(page, limit):
+    url = GRAFANA_URL + '/api/search/?type=dash-db&limit={0}&page={1}'.format(limit, page)
+    print("search dashboard in grafana: {0}".format(url))
+    return send_grafana_get(url)
 
 def get_dashboard(board_uri):
-    (status_code, content) = send_grafana_get(grafana_url + "/api/dashboards/{0}".format(board_uri))
-    print("query dashboard uri: {0}, status: {1}".format(board_uri, status_code))
+    url = GRAFANA_URL + "/api/dashboards/{0}".format(board_uri)
+    print("query dashboard uri: {0}".format(url))
+    (status_code, content) = send_grafana_get(url)
     return (status_code, content)
 
 def delete_dashboard(board_uri):
-    r = requests.delete(grafana_url + "/api/dashboards/db/{0}".format(board_uri), headers=http_post_headers)
+    r = requests.delete(GRAFANA_URL + "/api/dashboards/db/{0}".format(board_uri), headers=HTTP_POST_HEADERS)
     return int(status_code)
 
 def create_dashboard(payload):
-    return send_grafana_post(grafana_url + '/api/dashboards/db', payload)
+    return send_grafana_post(GRAFANA_URL + '/api/dashboards/db', payload)
 
 def search_datasource():
     print("search datasources in grafana:")
-    return send_grafana_get(grafana_url + '/api/datasources')
+    return send_grafana_get(GRAFANA_URL + '/api/datasources')
 
 def create_datasource(payload):
-    return send_grafana_post(grafana_url + '/api/datasources', payload)
+    return send_grafana_post(GRAFANA_URL + '/api/datasources', payload)
 
 def search_folders():
     print("search folder in grafana:")
-    return send_grafana_get(grafana_url + '/api/search/?type=dash-folder')
+    return send_grafana_get(GRAFANA_URL + '/api/search/?type=dash-folder')
 
 def get_folder(uid):
-    (status_code, content) = send_grafana_get(grafana_url + "/api/folders/{0}".format(uid))
+    (status_code, content) = send_grafana_get(GRAFANA_URL + "/api/folders/{0}".format(uid))
     print("query folder:{0}, status:{1}".format(uid, status_code))
     return (status_code, content)
 
@@ -46,22 +52,20 @@ def get_folder_id_from_old_folder_url(folder_url):
             folder_data = response[1] 
         else:
             folder_data = json.loads(response[1])
-
         return folder_data['id']
-
     return 0
 
 def create_folder(payload):
-    return send_grafana_post(grafana_url + '/api/folders', payload)
+    return send_grafana_post(GRAFANA_URL + '/api/folders', payload)
 
 def send_grafana_get(url):
-    r = requests.get(url, headers=http_get_headers, verify=verifySSL)
-    if debug:
+    r = requests.get(url, headers=HTTP_GET_HEADERS, verify=VERIFY_SSL)
+    if DEBUG:
         log_response(r)
     return (r.status_code, r.json())
 
 def send_grafana_post(url, json_payload):
-    r = requests.post(url, headers=http_post_headers, data=json_payload, verify=verifySSL)
-    if debug:
+    r = requests.post(url, headers=HTTP_POST_HEADERS, data=json_payload, verify=VERIFY_SSL)
+    if DEBUG:
         log_response(r)
     return (r.status_code, r.json())

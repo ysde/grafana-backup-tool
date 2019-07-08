@@ -18,7 +18,7 @@ def get_all_folders_in_grafana():
         folders = content
         print("There are {0} folders:".format(len(content)))
         for folder in folders:
-            print("name: {0}".format(toPython2And3CompatibleString(folder['title'])))
+            print("name: {0}".format(to_python2_and_3_compatible_string(folder['title'])))
         return folders
     else:
         print("get folders failed, status: {0}, msg: {1}".format(status, content))
@@ -37,13 +37,13 @@ def get_indivisual_folder_setting_and_save(folders):
         status_code_and_content = get_folder(folder['uid'])
         if status_code_and_content[0] == 200:
             save_folder_setting(
-                toPython2And3CompatibleString(folder['title']), 
+                to_python2_and_3_compatible_string(folder['title']), 
                 folder['uid'], 
                 status_code_and_content[1]
             )
             file_path = folder_path + '/' + log_file
             with open(u"{0}".format(file_path) , 'w+') as f:
-                f.write('{}\t{}'.format(folder['uid'], toPython2And3CompatibleString(folder['title'])))
+                f.write('{}\t{}'.format(folder['uid'], to_python2_and_3_compatible_string(folder['title'])))
 
 folders = get_all_folders_in_grafana()
 print_horizontal_line()

@@ -1,9 +1,9 @@
 import os
 
-grafana_url = os.getenv('GRAFANA_URL', 'http://localhost:3000')
-token = os.getenv('GRAFANA_TOKEN', 'eyJrIjoidUhaU2ZQQndrWFN3RTVkUnVOQkRka1JoaG9KWFFObEgiLCJuIjoiYWRtaW4iLCJpZCI6MX0=')
-http_get_headers = {'Authorization': 'Bearer ' + token}
-http_post_headers = {'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'}
-search_api_limit = 100000
-debug = True
-verifySSL = False
+GRAFANA_URL = os.getenv('GRAFANA_URL', 'http://localhost:3000')
+TOKEN = os.getenv('GRAFANA_TOKEN', 'eyJrIjoiSkQ5NkdvWllHdnVNdlVhWUV3Tm5LSGc4NG53UFdSTjQiLCJuIjoiYWRtaW4iLCJpZCI6MX0=')
+HTTP_GET_HEADERS = {'Authorization': 'Bearer ' + TOKEN}
+HTTP_POST_HEADERS = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
+SEARCH_API_LIMIT = 10000
+DEBUG = True
+VERIFY_SSL = False
