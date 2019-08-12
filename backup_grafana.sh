@@ -10,12 +10,12 @@ timestamp=$(date +"%Y-%m-%dT%H:%M:%S")
 
 [ -d "${backup_dir}" ] || mkdir -p "${backup_dir}"
 
-for i in dashboards datasources folders
+for i in dashboards datasources folders alert_channels
 do
 	F="${backup_dir}/${i}/${timestamp}"
 	[ -d "${F}" ] || mkdir -p "${F}"
 	python "${current_path}/src/save_${i}.py" "${F}"
 done
 
-tar -czvf "${backup_dir}/${timestamp}.tar.gz" ${backup_dir}/{dashboards,datasources,folders}/${timestamp}
-rm -rf ${backup_dir}/{dashboards,datasources,folders}/${timestamp}
+tar -czvf "${backup_dir}/${timestamp}.tar.gz" ${backup_dir}/{dashboards,datasources,folders,alert_channels}/${timestamp}
+rm -rf ${backup_dir}/{dashboards,datasources,folders,alert_channels}/${timestamp}

@@ -18,6 +18,15 @@ def get_dashboard(board_uri):
     (status_code, content) = send_grafana_get(url)
     return (status_code, content)
 
+def search_alert_channels():
+    url = GRAFANA_URL + '/api/alert-notifications'
+    print("search alert channels in grafana: {0}".format(url))
+    return send_grafana_get(url)
+
+def create_alert_channel(payload):
+    return send_grafana_post(GRAFANA_URL + '/api/alert-notifications', payload)
+    
+
 def delete_dashboard(board_uri):
     r = requests.delete(GRAFANA_URL + "/api/dashboards/db/{0}".format(board_uri), headers=HTTP_POST_HEADERS)
     return int(status_code)

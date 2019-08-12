@@ -18,7 +18,7 @@ tmp_dir="/tmp/restore_grafana.$$"
 mkdir -p "$tmp_dir"
 tar -xzf ${archive_file} -C $tmp_dir
 
-for j in folder datasource dashboard
+for j in folder datasource dashboard alert_channel
 do
 	find ${tmp_dir} -type f -name "*.${j}" | while read f
 	do
