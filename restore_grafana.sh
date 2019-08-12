@@ -10,7 +10,7 @@ archive_file="$1"
 if [ ! -f ${archive_file} ]; then
 	echo -e "Usage:"
 	echo -e "\t$0 <archive_file>"
-	echo -e " e.g. $0 '_OUTPUT_/2019-05-13T11:04:33.tar.gz'"
+	echo -e " e.g. $0 '_OUTPUT_/2019-05-13T11-04-33.tar.gz'"
 	exit 1
 fi
 

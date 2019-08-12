@@ -6,7 +6,7 @@ trap 'echo -ne "\n:::\n:::\tCaught signal, exiting at line $LINENO, while runnin
 
 current_path=$(pwd)
 backup_dir="_OUTPUT_"
-timestamp=$(date +"%Y-%m-%dT%H:%M:%S")
+timestamp=$(date +"%Y-%m-%dT%H-%M-%S")
 
 [ -d "${backup_dir}" ] || mkdir -p "${backup_dir}"
 
