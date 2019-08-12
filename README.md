@@ -28,7 +28,7 @@ There is [official documentation](http://docs.grafana.org/http_api/auth/) how to
 $ ./backup_grafana.sh
 $ tree _OUTPUT_
 _OUTPUT_/
-└── 2019-05-13T08:48:03.tar.gz
+└── 2019-05-13T08-48-03.tar.gz
 ```
 * Use `restore_grafana.sh` with a path to a previous backup to restore everything. **NOTE** this *may* result in data loss, by overwriting data on the server.
 
