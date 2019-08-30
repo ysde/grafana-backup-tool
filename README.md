@@ -2,6 +2,10 @@
 
 A Python-based application to backup Grafana settings via [Grafana API](http://docs.grafana.org/http_api/overview/).
 
+## Current support components
+* Dashboard
+* Datasource
+* AlertChannel
 
 ## Requirements
 * bash
