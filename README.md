@@ -9,7 +9,7 @@ A Python-based application to backup Grafana settings via [Grafana API](http://d
 
 ## Requirements
 * bash
-* python 2.7, python 3.x with `requests` library installed (`pip install requests` ?)
+* python 2.7, python 3.x with `requests` (https://2.python-requests.org/en/master/) library installed (`pip install requests`)
 * access to a Grafana 3.0 API server
 
 ## Configuration
