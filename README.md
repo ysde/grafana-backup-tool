@@ -80,7 +80,7 @@ docker run --rm --name grafana-backup-tool \
    -e GRAFANA_TOKEN=eyJrIjoiU2Y4eTByUGExOEZhajNYaTVyZTBuNlJOc3NaYkJiY3oiLCJuIjoiYWRtaW4iLCJpZCI6MX0= \
    -e GRAFANA_URL=http://localhost:3000 \
    -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_  \
-   ysde/docker-grafana-backup-tool restore _OUTPUT_/{THE_ARCHIVED_FILE}
+   ysde/docker-grafana-backup-tool restore _OUTPUT_/2019-09-09T10-00-00.tar.gz
 ```
 
 
