@@ -3,4 +3,4 @@ LABEL maintainer="ysde108@gmail.com"
 WORKDIR /opt/grafana-backup-tool
 ADD . /opt/grafana-backup-tool
 RUN pip install -r requirements.txt
-ENTRYPOINT ./backup_grafana.sh
+ENTRYPOINT ["./docker_entry.sh"]

@@ -42,6 +42,8 @@ Replace variables below to use docker version of this tool
 * `{YOUR_GRAFANA_URL}`: Your grafana site url.
 * `{YOUR_BACKUP_FOLDER_ON_THE_HOST}`: The backup folder on the host machine.
 
+### Backup
+
 ```
 docker run --rm --name grafana-backup-tool \
    -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \
@@ -49,6 +51,38 @@ docker run --rm --name grafana-backup-tool \
    -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana-backup-tool/_OUTPUT_  \
    ysde/docker-grafana-backup-tool
 ```
+
+***example:***
+
+```
+docker run --rm --name grafana-backup-tool \
+   -e GRAFANA_TOKEN=eyJrIjoiU2Y4eTByUGExOEZhajNYaTVyZTBuNlJOc3NaYkJiY3oiLCJuIjoiYWRtaW4iLCJpZCI6MX0= \
+   -e GRAFANA_URL=http://localhost:3000 \
+   -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_  \
+   ysde/docker-grafana-backup-tool
+```
+
+
+### Restore
+
+```
+docker run --rm --name grafana-backup-tool \
+   -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \
+   -e GRAFANA_URL={YOUR_GRAFANA_URL} \
+   -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana-backup-tool/_OUTPUT_  \
+   ysde/docker-grafana-backup-tool restore _OUTPUT_/{THE_ARCHIVED_FILE}
+```
+
+***example:***
+
+```
+docker run --rm --name grafana-backup-tool \
+   -e GRAFANA_TOKEN=eyJrIjoiU2Y4eTByUGExOEZhajNYaTVyZTBuNlJOc3NaYkJiY3oiLCJuIjoiYWRtaW4iLCJpZCI6MX0= \
+   -e GRAFANA_URL=http://localhost:3000 \
+   -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_  \
+   ysde/docker-grafana-backup-tool restore _OUTPUT_/{THE_ARCHIVED_FILE}
+```
+
 
 ## Notes
 * Please have a look at the two scripts in the root directory if you need to customize something.
