@@ -20,6 +20,7 @@ You need to add the following to your `.bashrc` or execute once before using the
 # do not use a trailing slash!
 export GRAFANA_URL=http://some.host.org:3000
 export GRAFANA_TOKEN=eyJrIjoidUhaU2ZQQndrWFN3RRVkUnVfrT56a1JoaG9KWFFObEgiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
+export GRAFANA_HEADERS=Host:some.host.org
 ```
 
 There is [official documentation](http://docs.grafana.org/http_api/auth/) how to obtain the `TOKEN` for your installation.
@@ -38,7 +39,7 @@ _OUTPUT_/
 
 ## Docker
 Replace variables below to use docker version of this tool
-* `{YOUR_GRAFANA_TOKEN}`: Your grafana site token. 
+* `{YOUR_GRAFANA_TOKEN}`: Your grafana site token.
 * `{YOUR_GRAFANA_URL}`: Your grafana site url.
 * `{YOUR_BACKUP_FOLDER_ON_THE_HOST}`: The backup folder on the host machine.
 
