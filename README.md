@@ -18,7 +18,7 @@ A Python-based application to backup Grafana settings via [Grafana API](http://d
 
 If you use `environment variables`, you need to add the following to your `.bashrc` or execute once before using the tool:
 
-(`GRAFANA_HEADERS` is optional, use it if necessary. please see Reference [#45](https://github.com/ysde/grafana-backup-tool/issues/45))
+(`GRAFANA_HEADERS` is optional, use it if necessary. please see [#45](https://github.com/ysde/grafana-backup-tool/issues/45))
 ```bash
 # Do not use a trailing slash on GRAFANA_URL
 export GRAFANA_URL=http://some.host.org:3000
