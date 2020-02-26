@@ -7,10 +7,10 @@ trap 'echo -ne "\n:::\n:::\tCaught signal, exiting at line $LINENO, while runnin
 current_path=$(pwd)
 archive_file="$1"
 
-if [ ! -f ${archive_file} ]; then
-	echo -e "Usage:"
-	echo -e "\t$0 <archive_file>"
-	echo -e " e.g. $0 '_OUTPUT_/2019-05-13T11-04-33.tar.gz'"
+if [ ! -f "${archive_file}" ]; then
+	echo "Usage:"
+	echo "\t$0 <archive_file>"
+	echo "\te.g. $0 '_OUTPUT_/2019-05-13T11-04-33.tar.gz'"
 	exit 1
 fi
 
