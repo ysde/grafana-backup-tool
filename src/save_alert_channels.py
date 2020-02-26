@@ -29,20 +29,21 @@ def save_alert_channel(channel_name, file_name, alert_channel_setting):
     print("alert_channel:{0} is saved to {1}".format(channel_name, file_path))
 
 def get_indivisual_alert_channel_and_save(channels):
-    for channel in channels:
-        if 'uid' in channel:
-            channel_identifier = channel['uid']
-        else:
-            channel_identifier = channel['id']
-            
-        save_alert_channel(
-            to_python2_and_3_compatible_string(channel['name']),
-            to_python2_and_3_compatible_string(str(channel_identifier)),
-            channel
-        )
-        file_path = folder_path + '/' + log_file
+    file_path = folder_path + '/' + log_file
+    if channels:
         with open(u"{0}".format(file_path) , 'w+') as f:
-            f.write('{}\t{}'.format(to_python2_and_3_compatible_string(str(channel_identifier)), to_python2_and_3_compatible_string(channel['name'])))
+            for channel in channels:
+                if 'uid' in channel:
+                    channel_identifier = channel['uid']
+                else:
+                    channel_identifier = channel['id']
+                    
+                save_alert_channel(
+                    to_python2_and_3_compatible_string(channel['name']),
+                    to_python2_and_3_compatible_string(str(channel_identifier)),
+                    channel
+                )
+                f.write('{}\t{}'.format(to_python2_and_3_compatible_string(str(channel_identifier)), to_python2_and_3_compatible_string(channel['name'])))
 
 
 alert_channels = get_all_alert_channels_in_grafana()

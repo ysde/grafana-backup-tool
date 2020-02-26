@@ -33,17 +33,18 @@ def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):
 
 
 def get_indivisual_dashboard_setting_and_save(dashboards):
-    for board in dashboards:
-        (status, content) = get_dashboard(board['uri'])
-        if status == 200:
-            save_dashboard_setting(
-                to_python2_and_3_compatible_string(board['title']), 
-                board['uid'], 
-                content
-            )
-            file_path = folder_path + '/' + log_file
-            with open(u"{0}".format(file_path) , 'w+') as f:
-                f.write('{}\t{}'.format(board['uid'], to_python2_and_3_compatible_string(board['title'])))
+    file_path = folder_path + '/' + log_file
+    with open(u"{0}".format(file_path) , 'w+') as f:
+        if dashboards:
+            for board in dashboards:
+                (status, content) = get_dashboard(board['uri'])
+                if status == 200:
+                    save_dashboard_setting(
+                        to_python2_and_3_compatible_string(board['title']), 
+                        board['uid'], 
+                        content
+                    )
+                    f.write('{}\t{}\n'.format(board['uid'], to_python2_and_3_compatible_string(board['title'])))
 
 def save_dashboards_above_Ver6_2():
     limit = 5000 # limit is 5000 above V6.2+
