@@ -34,8 +34,8 @@ def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):
 
 def get_indivisual_dashboard_setting_and_save(dashboards):
     file_path = folder_path + '/' + log_file
-    with open(u"{0}".format(file_path) , 'w+') as f:
-        if dashboards:
+    if dashboards:
+        with open(u"{0}".format(file_path) , 'w') as f:
             for board in dashboards:
                 (status, content) = get_dashboard(board['uri'])
                 if status == 200:
