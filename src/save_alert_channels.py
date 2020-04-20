@@ -16,10 +16,10 @@ def get_all_alert_channels_in_grafana():
         channels = content
         print("There are {0} channels:".format(len(channels)))
         for channel in channels:
-            print("name: {}".format(to_python2_and_3_compatible_string(channel['name'])))
+            print("name: {0}".format(to_python2_and_3_compatible_string(channel['name'])))
         return channels
     else:
-        print("query alert channels failed, status: {}, msg: {}".format(status, content))
+        print("query alert channels failed, status: {0}, msg: {1}".format(status, content))
         return []
     
 def save_alert_channel(channel_name, file_name, alert_channel_setting):
@@ -43,7 +43,7 @@ def get_indivisual_alert_channel_and_save(channels):
                     to_python2_and_3_compatible_string(str(channel_identifier)),
                     channel
                 )
-                f.write('{}\t{}\n'.format(to_python2_and_3_compatible_string(str(channel_identifier)), to_python2_and_3_compatible_string(channel['name'])))
+                f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(channel_identifier)), to_python2_and_3_compatible_string(channel['name'])))
 
 
 alert_channels = get_all_alert_channels_in_grafana()

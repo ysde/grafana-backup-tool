@@ -27,7 +27,7 @@ def get_all_datasources_and_save():
             print(datasource)
             save_datasource(datasource['name'], datasource)
     else:
-        print("query datasource failed, status: {}, msg: {}".format(status_code_and_content[0], status_code_and_content[1]))
+        print("query datasource failed, status: {0}, msg: {1}".format(status_code_and_content[0], status_code_and_content[1]))
 
 
 datasources = get_all_datasources_and_save()

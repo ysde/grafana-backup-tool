@@ -17,7 +17,7 @@ def get_all_dashboards_in_grafana(page, limit=SEARCH_API_LIMIT):
         dashboards = content
         print("There are {0} dashboards:".format(len(dashboards)))
         for board in dashboards:
-            print('name: {}'.format(to_python2_and_3_compatible_string(board['title'])))
+            print('name: {0}'.format(to_python2_and_3_compatible_string(board['title'])))
         return dashboards
     else:
         print("get dashboards failed, status: {0}, msg: {1}".format(status, content))
@@ -44,7 +44,7 @@ def get_indivisual_dashboard_setting_and_save(dashboards):
                         board['uid'], 
                         content
                     )
-                    f.write('{}\t{}\n'.format(board['uid'], to_python2_and_3_compatible_string(board['title'])))
+                    f.write('{0}\t{1}\n'.format(board['uid'], to_python2_and_3_compatible_string(board['title'])))
 
 def save_dashboards_above_Ver6_2():
     limit = 5000 # limit is 5000 above V6.2+
