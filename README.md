@@ -2,6 +2,9 @@
 
 A Python-based application to backup Grafana settings via [Grafana API](http://docs.grafana.org/http_api/overview/).
 
+1. The aim is to easily backup and restore grafana.
+2. And have versioned backups`(date and time in file name)` for restoring and saving to storages like `S3` or `Cloud Storage`.
+
 ## Current support components
 * Dashboard (contains Alert)
 * Datasource
