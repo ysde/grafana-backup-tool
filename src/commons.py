@@ -2,7 +2,7 @@ import sys
 
 def left_ver_newer_than_right_ver(current_version, specefic_version):
     def convertVersion(ver):
-        return int(''.join(ver.split(".")))
+        return int(''.join(ver.split("-")[0].split(".")))
     return convertVersion(current_version) > convertVersion(specefic_version)
 
 def print_horizontal_line():
