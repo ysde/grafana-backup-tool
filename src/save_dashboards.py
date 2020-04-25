@@ -34,7 +34,7 @@ def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):
     print("dashboard: {0} -> saved to: {1}".format(dashboard_name, file_path))
 
 
-def get_indivisual_dashboard_setting_and_save(dashboards):
+def get_individual_dashboard_setting_and_save(dashboards):
     file_path = folder_path + '/' + log_file
     if dashboards:
         with open(u"{0}".format(file_path), 'w') as f:
@@ -58,13 +58,13 @@ def save_dashboards_above_Ver6_2():
             break
         else:
             current_page += 1
-        get_indivisual_dashboard_setting_and_save(dashboards)
+        get_individual_dashboard_setting_and_save(dashboards)
         print_horizontal_line()
     
 def save_dashboards():
     dashboards = get_all_dashboards_in_grafana(1)
     print_horizontal_line()
-    get_indivisual_dashboard_setting_and_save(dashboards)
+    get_individual_dashboard_setting_and_save(dashboards)
     print_horizontal_line()
 
 

@@ -31,7 +31,7 @@ def save_alert_channel(channel_name, file_name, alert_channel_setting):
         f.write(json.dumps(alert_channel_setting))
     print("alert_channel:{0} is saved to {1}".format(channel_name, file_path))
 
-def get_indivisual_alert_channel_and_save(channels):
+def get_individual_alert_channel_and_save(channels):
     file_path = folder_path + '/' + log_file
     if channels:
         with open(u"{0}".format(file_path) , 'w') as f:
@@ -51,5 +51,5 @@ def get_indivisual_alert_channel_and_save(channels):
 
 
 alert_channels = get_all_alert_channels_in_grafana()
-get_indivisual_alert_channel_and_save(alert_channels)
+get_individual_alert_channel_and_save(alert_channels)
 print_horizontal_line()
