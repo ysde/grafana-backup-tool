@@ -1,13 +1,16 @@
-import argparse
-from dashboardApi import *
-from commons import *
+import json, argparse
+from dashboardApi import import_grafana_settings, search_datasource
+from commons import print_horizontal_line
 from datetime import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('path',  help='folder path to save datasources')
+parser.add_argument('conf_filename', default="grafanaSettings", help='The settings file name in the conf directory'
+                                                                     ' (for example: the server name we want to backup/restore)')
 args = parser.parse_args()
 
 folder_path = args.path
+import_grafana_settings(args.conf_filename)
 log_file = 'datasources_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
 
 
@@ -27,9 +30,9 @@ def get_all_datasources_and_save():
             print(datasource)
             save_datasource(datasource['name'], datasource)
     else:
-        print("query datasource failed, status: {0}, msg: {1}".format(status_code_and_content[0], status_code_and_content[1]))
+        print("query datasource failed, status: {0}, msg: {1}".format(status_code_and_content[0],
+                                                                      status_code_and_content[1]))
 
 
 datasources = get_all_datasources_and_save()
 print_horizontal_line()
-

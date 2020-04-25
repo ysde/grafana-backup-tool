@@ -1,14 +1,17 @@
-import argparse
-from dashboardApi import *
-from commons import *
+import json, argparse
+from dashboardApi import import_grafana_settings, search_dashboard, get_dashboard, health_check
+from commons import to_python2_and_3_compatible_string, print_horizontal_line, left_ver_newer_than_right_ver
 from datetime import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('path',  help='folder path to save dashboards')
+parser.add_argument('conf_filename', default="grafanaSettings", help='The settings file name in the conf directory'
+                                                                     ' (for example: the server name we want to backup/restore)')
 args = parser.parse_args()
 
 folder_path = args.path
-
+settings_dict = import_grafana_settings(args.conf_filename)
+globals().update(settings_dict)  # To be able to use the settings here, we need to update the globals of this module
 log_file = 'dashboards_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
 
 def get_all_dashboards_in_grafana(page, limit=SEARCH_API_LIMIT):
@@ -23,7 +26,6 @@ def get_all_dashboards_in_grafana(page, limit=SEARCH_API_LIMIT):
         print("get dashboards failed, status: {0}, msg: {1}".format(status, content))
         return []
 
-
 def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):
     file_path = folder_path + '/' + file_name + '.dashboard'
     print(dashboard_settings)
@@ -35,7 +37,7 @@ def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):
 def get_indivisual_dashboard_setting_and_save(dashboards):
     file_path = folder_path + '/' + log_file
     if dashboards:
-        with open(u"{0}".format(file_path) , 'w') as f:
+        with open(u"{0}".format(file_path), 'w') as f:
             for board in dashboards:
                 (status, content) = get_dashboard(board['uri'])
                 if status == 200:
@@ -64,6 +66,7 @@ def save_dashboards():
     print_horizontal_line()
     get_indivisual_dashboard_setting_and_save(dashboards)
     print_horizontal_line()
+
 
 (status, resp) = health_check()
 if status == 200:

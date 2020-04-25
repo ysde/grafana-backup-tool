@@ -17,7 +17,7 @@ A Python-based application to backup Grafana settings via [Grafana API](http://d
 
 ## Configuration
 * Uses `environment variables` to define the connection to a Grafana server.
-* Or alternatively hard-coded settings in `src/grafanaSettings.py`.
+* Or alternatively hard-coded settings in `src/conf/grafanaSettings.py` (the default settings file if not specified otherwise).
 
 If you use `environment variables`, you need to add the following to your `.bashrc` or execute once before using the tool:
 
@@ -31,6 +31,9 @@ export GRAFANA_HEADERS=Host:some.host.org
 ```
 
 There is [official documentation](http://docs.grafana.org/http_api/auth/) how to obtain the `TOKEN` for your installation.
+
+If you use the hard-coded settings in `src/conf/` directory, but you want to have multiple configurations (for example, for multiple instances of grafana),
+you can create multiple settings files in the `src/conf/` directory and use them when running `backup_grafana.sh` and `restore_grafana.sh`. 
 
 ## How to Use
 * First perform **Configuration** as described above.

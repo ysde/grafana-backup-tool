@@ -1,6 +1,25 @@
 import requests, json, re
-from grafanaSettings import *
-from commons import *
+import importlib
+from commons import log_response
+
+
+def import_grafana_settings(settings_file_name):
+    # On import, load the correct grafana settings from the 'conf' module/directory
+    conf_module_name = "conf"
+    mdl = importlib.import_module(f"{conf_module_name}.{settings_file_name}")
+
+    # is there an __all__?  if so respect it
+    if "__all__" in mdl.__dict__:
+        names = mdl.__dict__["__all__"]
+    else:
+        # otherwise we import all names that don't begin with _
+        names = [x for x in mdl.__dict__ if not x.startswith("_")]
+
+    # now update the globals of this module
+    settings_dict = {k: getattr(mdl, k) for k in names}
+    globals().update(settings_dict)
+
+    return settings_dict
 
 def health_check():
     url = GRAFANA_URL + '/api/health'

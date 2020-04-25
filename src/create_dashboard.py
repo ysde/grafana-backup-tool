@@ -1,11 +1,14 @@
-import json, sys, re, argparse
-from dashboardApi import *
+import json, argparse
+from dashboardApi import import_grafana_settings, get_folder_id_from_old_folder_url, create_dashboard
 
 parser = argparse.ArgumentParser()
 parser.add_argument('path',  help='file path saved of datasources\' setting')
+parser.add_argument('conf_filename', default="grafanaSettings", help='The settings file name in the conf directory'
+                                                                     ' (for example: the server name we want to backup/restore)')
 args = parser.parse_args()
 
 file_path = args.path
+import_grafana_settings(args.conf_filename)
 
 with open(file_path, 'r') as f:
     data = f.read()

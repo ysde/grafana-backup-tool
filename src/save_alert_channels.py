@@ -1,13 +1,16 @@
-import argparse
-from dashboardApi import *
-from commons import *
+import json, argparse
+from dashboardApi import import_grafana_settings, search_alert_channels
+from commons import to_python2_and_3_compatible_string, print_horizontal_line
 from datetime import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('path',  help='folder path to save alert channels')
+parser.add_argument('conf_filename', default="grafanaSettings", help='The settings file name in the conf directory'
+                                                                     ' (for example: the server name we want to backup/restore)')
 args = parser.parse_args()
 
 folder_path = args.path
+import_grafana_settings(args.conf_filename)
 log_file = 'alert_channels_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
 
 def get_all_alert_channels_in_grafana():
@@ -43,7 +46,8 @@ def get_indivisual_alert_channel_and_save(channels):
                     to_python2_and_3_compatible_string(str(channel_identifier)),
                     channel
                 )
-                f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(channel_identifier)), to_python2_and_3_compatible_string(channel['name'])))
+                f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(channel_identifier)),
+                                            to_python2_and_3_compatible_string(channel['name'])))
 
 
 alert_channels = get_all_alert_channels_in_grafana()
