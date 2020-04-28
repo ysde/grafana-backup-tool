@@ -1,5 +1,5 @@
 import json, argparse
-from dashboardApi import import_grafana_settings, search_folders
+from dashboardApi import import_grafana_settings, search_folders, get_folder
 from commons import to_python2_and_3_compatible_string, print_horizontal_line
 from datetime import datetime
 
