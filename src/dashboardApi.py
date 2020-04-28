@@ -1,12 +1,13 @@
 import requests, json, re
 import importlib
-from commons import log_response
+from commons import log_response, to_python2_and_3_compatible_string
 
 
 def import_grafana_settings(settings_file_name):
     # On import, load the correct grafana settings from the 'conf' module/directory
     conf_module_name = "conf"
-    mdl = importlib.import_module(f"{conf_module_name}.{settings_file_name}")
+    mdl = importlib.import_module('{0}.{1}'.format(to_python2_and_3_compatible_string(str(conf_module_name)),
+                                                   to_python2_and_3_compatible_string(str(settings_file_name))))
 
     # is there an __all__?  if so respect it
     if "__all__" in mdl.__dict__:
