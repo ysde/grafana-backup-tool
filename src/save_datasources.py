@@ -20,7 +20,6 @@ def save_datasource(file_name, datasource_setting):
         f.write(json.dumps(datasource_setting))
         print("datasource:{0} is saved to {1}".format(file_name, file_path))
 
-
 def get_all_datasources_and_save():
     status_code_and_content = search_datasource()
     if status_code_and_content[0] == 200:

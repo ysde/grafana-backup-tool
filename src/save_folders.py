@@ -13,6 +13,7 @@ folder_path = args.path
 import_grafana_settings(args.conf_filename)
 log_file = 'folders_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
 
+
 def get_all_folders_in_grafana():
     status_and_content_of_all_folders = search_folders()
     status = status_and_content_of_all_folders[0]

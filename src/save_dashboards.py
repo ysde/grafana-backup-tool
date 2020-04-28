@@ -14,6 +14,7 @@ settings_dict = import_grafana_settings(args.conf_filename)
 globals().update(settings_dict)  # To be able to use the settings here, we need to update the globals of this module
 log_file = 'dashboards_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
 
+
 def get_all_dashboards_in_grafana(page, limit=SEARCH_API_LIMIT):
     (status, content) = search_dashboard(page, limit)
     if status == 200:
@@ -25,6 +26,7 @@ def get_all_dashboards_in_grafana(page, limit=SEARCH_API_LIMIT):
     else:
         print("get dashboards failed, status: {0}, msg: {1}".format(status, content))
         return []
+
 
 def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):
     file_path = folder_path + '/' + file_name + '.dashboard'
@@ -48,6 +50,7 @@ def get_individual_dashboard_setting_and_save(dashboards):
                     )
                     f.write('{0}\t{1}\n'.format(board['uid'], to_python2_and_3_compatible_string(board['title'])))
 
+
 def save_dashboards_above_Ver6_2():
     limit = 5000 # limit is 5000 above V6.2+
     current_page = 1
@@ -60,7 +63,8 @@ def save_dashboards_above_Ver6_2():
             current_page += 1
         get_individual_dashboard_setting_and_save(dashboards)
         print_horizontal_line()
-    
+
+
 def save_dashboards():
     dashboards = get_all_dashboards_in_grafana(1)
     print_horizontal_line()
