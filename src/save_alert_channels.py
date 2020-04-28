@@ -37,7 +37,7 @@ def save_alert_channel(channel_name, file_name, alert_channel_setting):
 def get_individual_alert_channel_and_save(channels):
     file_path = folder_path + '/' + log_file
     if channels:
-        with open(u"{0}".format(file_path) , 'w') as f:
+        with open(u"{0}".format(file_path), 'w') as f:
             for channel in channels:
                 if 'uid' in channel:
                     channel_identifier = channel['uid']

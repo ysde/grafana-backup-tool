@@ -31,7 +31,7 @@ def get_all_folders_in_grafana():
 
 def save_folder_setting(folder_name, file_name, folder_settings):
     file_path = folder_path + '/' + file_name + '.folder'
-    with open(file_path , 'w') as f:
+    with open(file_path, 'w') as f:
         f.write(json.dumps(folder_settings))
     print("folder:{0} are saved to {1}".format(folder_name, file_path))
 
@@ -46,7 +46,7 @@ def get_individual_folder_setting_and_save(folders):
                 status_code_and_content[1]
             )
             file_path = folder_path + '/' + log_file
-            with open(u"{0}".format(file_path) , 'w+') as f:
+            with open(u"{0}".format(file_path), 'w+') as f:
                 f.write('{}\t{}'.format(folder['uid'], to_python2_and_3_compatible_string(folder['title'])))
 
 
