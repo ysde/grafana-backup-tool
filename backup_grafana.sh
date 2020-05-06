@@ -4,12 +4,12 @@ set -e
 
 trap 'echo -ne "\n:::\n:::\tCaught signal, exiting at line $LINENO, while running :${BASH_COMMAND}:\n:::\n"; exit' SIGINT SIGQUIT
 
-current_path=$(pwd)
+current_path=$(dirname "$0")
 settings_file="${1:-grafanaSettings}"
 backup_dir="_OUTPUT_"
 timestamp=$(date +"%Y-%m-%dT%H-%M-%S")
 
-if [[ ! -f "conf/${settings_file}" ]]; then
+if [[ ! -f "${current_path}/src/conf/${settings_file}.py" ]]; then
 	echo "Usage:"
 	echo "\t$0 <settings_file>"
 	echo "\te.g. $1 'grafanaSettings'"
