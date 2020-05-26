@@ -1,26 +1,28 @@
-# Grafana Dashboard Backup Tool
+# Grafana Backup Tool
 
-A Python-based application to backup Grafana settings via [Grafana API](http://docs.grafana.org/http_api/overview/).
+A Python-based application to backup Grafana settings using the [Grafana API](https://grafana.com/docs/grafana/latest/http_api/).
 
 The aim of this tool is to:
 1. Easily backup and restore Grafana.
-2. Have versioned backups`(date and time in file name)` for restoring and saving to storages like `S3` or `Cloud Storage`.
+2. Have versioned backups`(date and time in file name)` for restoring and saving to cloud storage providers like `Amazon S3` or `Azure Storage`.
 
-## Current support components
+## Supported components
+* Folder
 * Dashboard (contains Alert)
 * Datasource
-* AlertChannel
+* Alert Channel
 
 ## Requirements
-* bash
-* python 2.7, python 3.x with `requests` (https://2.python-requests.org/en/master/) library installed (`pip install requests`)
-* access to a Grafana 3.0 API server
+* Bash
+* Python 2.7 or Python 3.x with `requests` (https://requests.readthedocs.io/en/master/) library installed (`pip install requests`)
+* Access to a Grafana API server.
 
 ## Configuration
-* Uses `environment variables` to define the connection to a Grafana server.
-* Or alternatively hard-coded settings in `src/conf/grafanaSettings.py` (the default settings file if not specified otherwise).
+There are two ways to setup the configuration for the script:
+* Use `environment variables` to define the variables for connecting to a Grafana server.
+* Use `hard-coded settings` in `src/conf/grafanaSettings.py` (this is the default settings file if not specified otherwise).
 
-If you use `environment variables`, you need to add the following to your `.bashrc` or execute once before using the tool:
+- If you use `environment variables`, you need to add the following to your `.bashrc` or execute once before using the tool:
 
 (`GRAFANA_HEADERS` is optional, use it if necessary. please see [#45](https://github.com/ysde/grafana-backup-tool/issues/45))
 ```bash
@@ -31,14 +33,13 @@ export GRAFANA_TOKEN=eyJrIjoidUhaU2ZQQndrWFN3RRVkUnVfrT56a1JoaG9KWFFObEgiLCJuIjo
 export GRAFANA_HEADERS=Host:some.host.org 
 ```
 
-There is [official documentation](http://docs.grafana.org/http_api/auth/) how to obtain the `TOKEN` for your installation.
+There is an [official documentation](https://grafana.com/docs/grafana/latest/http_api/auth/) on how to create and obtain the `TOKEN` for your Grafana server.
 
-If you use the hard-coded settings in `src/conf/` directory, but you want to have multiple configurations (for example, for multiple instances of grafana),
-you can create multiple settings files in the `src/conf/` directory and use them when running `backup_grafana.sh` and `restore_grafana.sh`. 
+- If you use the hard-coded settings in `src/conf/` directory, but you have multiple instances of Grafana servers in your network that you would like to backup,, you can create multiple settings files in the `src/conf/` directory (with the name of the server for example) and use them when running `backup_grafana.sh` and `restore_grafana.sh`. 
 
 ## How to Use
 * First perform **Configuration** as described above.
-* Use `backup_grafana.sh` to backup all your dashboards, datasources and folders to the `_OUTPUT_` subdirectory of the current directory.
+* Use `backup_grafana.sh` to backup all your folders, dashboards, datasources and alert channels to the `_OUTPUT_` subdirectory of the current directory.
  For example:
 ```bash
 $ ./backup_grafana.sh
@@ -97,4 +98,4 @@ docker run --rm --name grafana-backup-tool \
 
 
 ## Notes
-* Please have a look at the two scripts in the root directory if you need to customize something.
+* Please have a look at the two bash scripts in the root directory if you need to customize something.
