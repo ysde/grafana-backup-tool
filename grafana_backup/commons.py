@@ -1,3 +1,4 @@
+import yaml
 import sys
 
 def left_ver_newer_than_right_ver(current_version, specefic_version):
@@ -24,3 +25,13 @@ def to_python2_and_3_compatible_string(some_string):
         return some_string
     else:
         return some_string.encode('utf8')
+
+
+def load_config(path=None):
+    config = None
+    if path:
+        with open(path, 'r') as f:
+            config = yaml.load(f, Loader=yaml.FullLoader)
+        f.closed
+
+    return config

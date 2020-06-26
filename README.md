@@ -58,6 +58,12 @@ Replace variables below to use the Docker version of this tool
 
 ### Backup
 
+If you decide to use a volume (-v) then you'll need to create the volume first with 1337 uid/gid ownership first, example:
+```
+mkdir /tmp/backup
+sudo chown 1337:1337 /tmp/backup
+```
+
 ```
 docker run --rm --name grafana-backup-tool \
    -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \

@@ -1,18 +1,29 @@
-import json, argparse
-from dashboardApi import import_grafana_settings, search_dashboard, get_dashboard, health_check
-from commons import to_python2_and_3_compatible_string, print_horizontal_line, left_ver_newer_than_right_ver
-from datetime import datetime
+import os
+import json
+from grafana_backup.dashboardApi import import_grafana_settings, search_dashboard, get_dashboard, health_check
+from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, left_ver_newer_than_right_ver
 
-parser = argparse.ArgumentParser()
-parser.add_argument('path',  help='folder path to save dashboards')
-parser.add_argument('conf_filename', default="grafanaSettings", help='The settings file name in the conf directory'
-                                                                     ' (for example: the server name we want to backup/restore)')
-args = parser.parse_args()
 
-folder_path = args.path
-settings_dict = import_grafana_settings(args.conf_filename)
+settings_dict = import_grafana_settings("grafanaSettings")
 globals().update(settings_dict)  # To be able to use the settings here, we need to update the globals of this module
-log_file = 'dashboards_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
+
+module_name = "dashboards"
+folder_path = '{0}/{1}/{2}'.format(BACKUP_DIR, module_name, timestamp)
+log_file = '{0}_{1}.txt'.format(module_name, timestamp)
+
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
+
+def main():
+    (status, resp) = health_check()
+    if status == 200:
+        is_api_support_page_param = left_ver_newer_than_right_ver(resp['version'], "6.2.0")
+        if is_api_support_page_param:
+            save_dashboards_above_Ver6_2()
+        else:
+            save_dashboards()
+    else:
+        print("server status is not ok: {0}".format(resp))
 
 
 def get_all_dashboards_in_grafana(page, limit=SEARCH_API_LIMIT):
@@ -70,14 +81,3 @@ def save_dashboards():
     print_horizontal_line()
     get_individual_dashboard_setting_and_save(dashboards)
     print_horizontal_line()
-
-
-(status, resp) = health_check()
-if status == 200:
-    is_api_support_page_param = left_ver_newer_than_right_ver(resp['version'], "6.2.0")
-    if is_api_support_page_param:
-        save_dashboards_above_Ver6_2()
-    else:
-        save_dashboards()
-else:
-    print("server status is not ok: {0}".format(resp))

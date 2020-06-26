@@ -1,17 +1,24 @@
-import json, argparse
-from dashboardApi import import_grafana_settings, search_folders, get_folder
-from commons import to_python2_and_3_compatible_string, print_horizontal_line
-from datetime import datetime
+import os
+import json
+from grafana_backup.dashboardApi import import_grafana_settings, search_folders, get_folder
+from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line
 
-parser = argparse.ArgumentParser()
-parser.add_argument('path',  help='folder path to save folders')
-parser.add_argument('conf_filename', default="grafanaSettings", help='The settings file name in the conf directory'
-                                                                     ' (for example: the server name we want to backup/restore)')
-args = parser.parse_args()
 
-folder_path = args.path
-import_grafana_settings(args.conf_filename)
-log_file = 'folders_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
+settings_dict = import_grafana_settings("grafanaSettings")
+globals().update(settings_dict)  # To be able to use the settings here, we need to update the globals of this module
+
+module_name = "folders"
+folder_path = '{0}/{1}/{2}'.format(BACKUP_DIR, module_name, timestamp)
+log_file = '{0}_{1}.txt'.format(module_name, timestamp)
+
+if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+def main():
+    folders = get_all_folders_in_grafana()
+    print_horizontal_line()
+    get_individual_folder_setting_and_save(folders)
+    print_horizontal_line()
 
 
 def get_all_folders_in_grafana():
@@ -48,9 +55,3 @@ def get_individual_folder_setting_and_save(folders):
             file_path = folder_path + '/' + log_file
             with open(u"{0}".format(file_path), 'w+') as f:
                 f.write('{}\t{}'.format(folder['uid'], to_python2_and_3_compatible_string(folder['title'])))
-
-
-folders = get_all_folders_in_grafana()
-print_horizontal_line()
-get_individual_folder_setting_and_save(folders)
-print_horizontal_line()
