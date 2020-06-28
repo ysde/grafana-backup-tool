@@ -4,8 +4,9 @@ import os, json
 
 
 def main(config_path):
-    # Load config from optional configuration file store in ~/.grafana-backup.yml
+    # Load config from optional configuration file located at ~/.grafana-backup.yml
     # or load defaults from example config stored in grafana-backup.example.yml
+    # environment variables can override settings as well
 
     config_dict = {}
 
