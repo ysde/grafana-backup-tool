@@ -1,27 +1,30 @@
 import os
 import json
-from grafana_backup.dashboardApi import import_grafana_settings, search_alert_channels
+from grafana_backup.dashboardApi import search_alert_channels
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line
 
 
-settings = import_grafana_settings("grafanaSettings")
-globals().update(settings)  # To be able to use the settings here, we need to update the globals of this module
+def main(args, settings):
+    backup_dir = settings.get('BACKUP_DIR')
+    timestamp = settings.get('TIMESTAMP')
+    grafana_url = settings.get('GRAFANA_URL')
+    http_get_headers = settings.get('HTTP_GET_HEADERS')
+    verify_ssl = settings.get('VERIFY_SSL')
+    debug = settings.get('DEBUG')
 
-module_name = "alert_channels"
-folder_path = '{0}/{1}/{2}'.format(BACKUP_DIR, module_name, TIMESTAMP)
-log_file = '{0}_{0}.txt'.format(module_name, TIMESTAMP)
+    folder_path = '{0}/alert_channels/{1}'.format(backup_dir, timestamp)
+    log_file = 'alert_channels_{0}.txt'.format(timestamp)
 
-if not os.path.exists(folder_path):
-    os.makedirs(folder_path)
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
 
-def main():
-    alert_channels = get_all_alert_channels_in_grafana()
-    get_individual_alert_channel_and_save(alert_channels)
+    alert_channels = get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl, debug)
+    get_individual_alert_channel_and_save(alert_channels, folder_path, log_file)
     print_horizontal_line()
 
 
-def get_all_alert_channels_in_grafana():
-    (status, content) = search_alert_channels()
+def get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl, debug):
+    (status, content) = search_alert_channels(grafana_url, http_get_headers, verify_ssl, debug)
     if status == 200:
         channels = content
         print("There are {0} channels:".format(len(channels)))
@@ -33,14 +36,14 @@ def get_all_alert_channels_in_grafana():
         return []
 
 
-def save_alert_channel(channel_name, file_name, alert_channel_setting):
+def save_alert_channel(channel_name, file_name, alert_channel_setting, folder_path):
     file_path = folder_path + '/' + str(file_name) + '.alert_channel'
     with open(file_path, 'w') as f:
         f.write(json.dumps(alert_channel_setting))
     print("alert_channel:{0} is saved to {1}".format(channel_name, file_path))
 
 
-def get_individual_alert_channel_and_save(channels):
+def get_individual_alert_channel_and_save(channels, folder_path, log_file):
     file_path = folder_path + '/' + log_file
     if channels:
         with open(u"{0}".format(file_path), 'w') as f:
@@ -53,7 +56,8 @@ def get_individual_alert_channel_and_save(channels):
                 save_alert_channel(
                     to_python2_and_3_compatible_string(channel['name']),
                     to_python2_and_3_compatible_string(str(channel_identifier)),
-                    channel
+                    channel,
+                    folder_path
                 )
                 f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(channel_identifier)),
                                             to_python2_and_3_compatible_string(channel['name'])))
