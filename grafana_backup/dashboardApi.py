@@ -28,8 +28,8 @@ def search_alert_channels(grafana_url, http_get_headers, verify_ssl, debug):
     return send_grafana_get(url, http_get_headers, verify_ssl, debug)
 
 
-def create_alert_channel(payload, grafana_url, http_post_headers, verify_ssl):
-    return send_grafana_post('{0}/api/alert-notifications'.format(grafana_url), payload, http_post_headers, verify_ssl)
+def create_alert_channel(payload, grafana_url, http_post_headers, verify_ssl, debug):
+    return send_grafana_post('{0}/api/alert-notifications'.format(grafana_url), payload, http_post_headers, verify_ssl, debug)
 
 
 def delete_dashboard(board_uri, grafana_url, http_post_headers):
@@ -38,8 +38,8 @@ def delete_dashboard(board_uri, grafana_url, http_post_headers):
     return int(status_code)
 
 
-def create_dashboard(payload, grafana_url, http_post_headers, verify_ssl):
-    return send_grafana_post('{0}/api/dashboards/db'.format(grafana_url), payload, http_post_headers, verify_ssl)
+def create_dashboard(payload, grafana_url, http_post_headers, verify_ssl, debug):
+    return send_grafana_post('{0}/api/dashboards/db'.format(grafana_url), payload, http_post_headers, verify_ssl, debug)
 
 
 def search_datasource(grafana_url, http_get_headers, verify_ssl, debug):
@@ -47,8 +47,8 @@ def search_datasource(grafana_url, http_get_headers, verify_ssl, debug):
     return send_grafana_get('{0}/api/datasources'.format(grafana_url), http_get_headers, verify_ssl, debug)
 
 
-def create_datasource(payload, grafana_url, http_post_headers, verify_ssl):
-    return send_grafana_post('{0}/api/datasources'.format(grafana_url), payload, http_post_headers, verify_ssl)
+def create_datasource(payload, grafana_url, http_post_headers, verify_ssl, debug):
+    return send_grafana_post('{0}/api/datasources'.format(grafana_url), payload, http_post_headers, verify_ssl, debug)
 
 
 def search_folders(grafana_url, http_get_headers, verify_ssl, debug):
@@ -77,8 +77,8 @@ def get_folder_id_from_old_folder_url(folder_url):
     return 0
 
 
-def create_folder(payload, grafana_url, http_post_headers, verify_ssl):
-    return send_grafana_post('{0}/api/folders'.format(grafana_url), payload, http_post_headers, verify_ssl)
+def create_folder(payload, grafana_url, http_post_headers, verify_ssl, debug):
+    return send_grafana_post('{0}/api/folders'.format(grafana_url), payload, http_post_headers, verify_ssl, debug)
 
 
 def send_grafana_get(url, http_get_headers, verify_ssl, debug):
@@ -88,7 +88,7 @@ def send_grafana_get(url, http_get_headers, verify_ssl, debug):
     return (r.status_code, r.json())
 
 
-def send_grafana_post(url, json_payload, http_post_headers, verify_ssl):
+def send_grafana_post(url, json_payload, http_post_headers, verify_ssl, debug):
     r = requests.post(url, headers=http_post_headers, data=json_payload, verify=verify_ssl)
     if debug:
         log_response(r)
