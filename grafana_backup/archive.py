@@ -1,17 +1,16 @@
-from grafana_backup.dashboardApi import import_grafana_settings
 from glob import glob
 import tarfile, shutil
 
 
-settings_dict = import_grafana_settings("grafanaSettings")
-globals().update(settings_dict)  # To be able to use the settings here, we need to update the globals of this module
+def main(args, settings):
+    backup_dir = settings.get('BACKUP_DIR')
+    timestamp = settings.get('TIMESTAMP')
 
-def main():
-    archive_file = '{0}/{1}.tar.gz'.format(BACKUP_DIR, timestamp)
+    archive_file = '{0}/{1}.tar.gz'.format(backup_dir, timestamp)
     backup_files = list()
 
-    for folder in ['folders', 'datasources', 'dashboards', 'alert_channels']:
-        backup_path = '{0}/{1}/{2}'.format(BACKUP_DIR, folder, timestamp)
+    for folder_name in ['folders', 'datasources', 'dashboards', 'alert_channels']:
+        backup_path = '{0}/{1}/{2}'.format(backup_dir, folder_name, timestamp)
 
         for file_path in glob(backup_path):
             backup_files.append(file_path)

@@ -1,82 +1,63 @@
 import requests, json, re
 import importlib
-from grafana_backup.commons import log_response, to_python2_and_3_compatible_string
+from grafana_backup.commons import log_response
 
 
-def import_grafana_settings(settings_file_name):
-    # On import, load the correct grafana settings from the 'conf' module/directory
-    conf_module_name = "grafana_backup.conf"
-    mdl = importlib.import_module('{0}.{1}'.format(to_python2_and_3_compatible_string(str(conf_module_name)),
-                                                   to_python2_and_3_compatible_string(str(settings_file_name))))
-
-    # is there an __all__?  if so respect it
-    if "__all__" in mdl.__dict__:
-        names = mdl.__dict__["__all__"]
-    else:
-        # otherwise we import all names that don't begin with _
-        names = [x for x in mdl.__dict__ if not x.startswith("_")]
-
-    # now update the globals of this module
-    settings_dict = {k: getattr(mdl, k) for k in names}
-    globals().update(settings_dict)
-
-    return settings_dict
-
-
-def health_check():
-    url = GRAFANA_URL + '/api/health'
+def health_check(grafana_url, http_get_headers, verify_ssl, debug):
+    url = '{0}/api/health'.format(grafana_url)
     print("grafana health: {0}".format(url))
-    return send_grafana_get(url)
+    return send_grafana_get(url, http_get_headers, verify_ssl, debug)
 
 
-def search_dashboard(page, limit):
-    url = GRAFANA_URL + '/api/search/?type=dash-db&limit={0}&page={1}'.format(limit, page)
+def search_dashboard(page, limit, grafana_url, http_get_headers, verify_ssl, debug):
+    url = '{0}/api/search/?type=dash-db&limit={1}&page={2}'.format(grafana_url, limit, page)
     print("search dashboard in grafana: {0}".format(url))
-    return send_grafana_get(url)
+    return send_grafana_get(url, http_get_headers, verify_ssl, debug)
 
 
-def get_dashboard(board_uri):
-    url = GRAFANA_URL + "/api/dashboards/{0}".format(board_uri)
+def get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, debug):
+    url = '{0}/api/dashboards/{1}'.format(grafana_url, board_uri)
     print("query dashboard uri: {0}".format(url))
-    (status_code, content) = send_grafana_get(url)
+    (status_code, content) = send_grafana_get(url, http_get_headers, verify_ssl, debug)
     return (status_code, content)
 
 
-def search_alert_channels():
-    url = GRAFANA_URL + '/api/alert-notifications'
+def search_alert_channels(grafana_url, http_get_headers, verify_ssl, debug):
+    url = '{0}/api/alert-notifications'.format(grafana_url)
     print("search alert channels in grafana: {0}".format(url))
-    return send_grafana_get(url)
+    return send_grafana_get(url, http_get_headers, verify_ssl, debug)
 
 
-def create_alert_channel(payload):
-    return send_grafana_post(GRAFANA_URL + '/api/alert-notifications', payload)
+def create_alert_channel(payload, grafana_url):
+    return send_grafana_post(grafana_url + '/api/alert-notifications', payload)
 
 
-def delete_dashboard(board_uri):
-    r = requests.delete(GRAFANA_URL + "/api/dashboards/db/{0}".format(board_uri), headers=HTTP_POST_HEADERS)
+def delete_dashboard(board_uri, grafana_url, http_post_headers):
+    r = requests.delete(grafana_url + "/api/dashboards/db/{0}".format(board_uri), headers=http_post_headers)
+    # do you mean r.status_code???
     return int(status_code)
 
 
-def create_dashboard(payload):
-    return send_grafana_post(GRAFANA_URL + '/api/dashboards/db', payload)
+def create_dashboard(payload, grafana_url):
+    return send_grafana_post(grafana_url + '/api/dashboards/db', payload)
 
 
-def search_datasource():
+def search_datasource(grafana_url, http_get_headers, verify_ssl, debug):
     print("search datasources in grafana:")
-    return send_grafana_get(GRAFANA_URL + '/api/datasources')
+    return send_grafana_get('{0}/api/datasources'.format(grafana_url), http_get_headers, verify_ssl, debug)
 
 
-def create_datasource(payload):
-    return send_grafana_post(GRAFANA_URL + '/api/datasources', payload)
+def create_datasource(payload, grafana_url):
+    return send_grafana_post(grafana_url + '/api/datasources', payload)
 
 
-def search_folders():
+def search_folders(grafana_url, http_get_headers, verify_ssl, debug):
     print("search folder in grafana:")
-    return send_grafana_get(GRAFANA_URL + '/api/search/?type=dash-folder')
+    return send_grafana_get('{0}/api/search/?type=dash-folder'.format(grafana_url), http_get_headers, verify_ssl, debug)
 
 
-def get_folder(uid):
-    (status_code, content) = send_grafana_get(GRAFANA_URL + "/api/folders/{0}".format(uid))
+def get_folder(uid, grafana_url, http_get_headers, verify_ssl, debug):
+    (status_code, content) = send_grafana_get('{0}/api/folders/{1}'.format(grafana_url, uid), http_get_headers, verify_ssl, debug)
     print("query folder:{0}, status:{1}".format(uid, status_code))
     return (status_code, content)
 
@@ -96,19 +77,19 @@ def get_folder_id_from_old_folder_url(folder_url):
     return 0
 
 
-def create_folder(payload):
-    return send_grafana_post(GRAFANA_URL + '/api/folders', payload)
+def create_folder(payload, grafana_url):
+    return send_grafana_post(grafana_url + '/api/folders', payload)
 
 
-def send_grafana_get(url):
-    r = requests.get(url, headers=HTTP_GET_HEADERS, verify=VERIFY_SSL)
-    if DEBUG:
+def send_grafana_get(url, http_get_headers, verify_ssl, debug):
+    r = requests.get(url, headers=http_get_headers, verify=verify_ssl)
+    if debug:
         log_response(r)
     return (r.status_code, r.json())
 
 
-def send_grafana_post(url, json_payload):
-    r = requests.post(url, headers=HTTP_POST_HEADERS, data=json_payload, verify=VERIFY_SSL)
-    if DEBUG:
+def send_grafana_post(url, json_payload, http_post_headers, verify_ssl):
+    r = requests.post(url, headers=http_post_headers, data=json_payload, verify=verify_ssl)
+    if debug:
         log_response(r)
     return (r.status_code, r.json())

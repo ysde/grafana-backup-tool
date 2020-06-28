@@ -4,12 +4,12 @@ from grafana_backup.dashboardApi import import_grafana_settings, search_folders,
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line
 
 
-settings_dict = import_grafana_settings("grafanaSettings")
-globals().update(settings_dict)  # To be able to use the settings here, we need to update the globals of this module
+settings = import_grafana_settings("grafanaSettings")
+globals().update(settings)  # To be able to use the settings here, we need to update the globals of this module
 
 module_name = "folders"
-folder_path = '{0}/{1}/{2}'.format(BACKUP_DIR, module_name, timestamp)
-log_file = '{0}_{1}.txt'.format(module_name, timestamp)
+folder_path = '{0}/{1}/{2}'.format(BACKUP_DIR, module_name, TIMESTAMP)
+log_file = '{0}_{1}.txt'.format(module_name, TIMESTAMP)
 
 if not os.path.exists(folder_path):
         os.makedirs(folder_path)

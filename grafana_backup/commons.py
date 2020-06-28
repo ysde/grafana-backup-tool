@@ -30,8 +30,12 @@ def to_python2_and_3_compatible_string(some_string):
 def load_config(path=None):
     config = None
     if path:
-        with open(path, 'r') as f:
-            config = yaml.load(f, Loader=yaml.FullLoader)
-        f.closed
+        try:
+            with open(path, 'r') as f:
+                config = yaml.load(f, Loader=yaml.FullLoader)
+            f.closed
+        except IOError as e:
+            print(str(e))
+            sys.exit(2)
 
     return config
