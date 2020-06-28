@@ -10,9 +10,9 @@ docstring = """
 {0} {1}
 
 Usage:
-    grafana-backup save [--verbose] [--url=<grafana_url>] [--token=<grafana_token>] [--config=<filename>]
-    grafana-backup restore <archive_file> [--verbose] [--url=<grafana_url>] [--token=<grafana_token>] [--config=<filename>]
-    grafana-backup [--url=<grafana_url>] [--token=<grafana_token>] [--config=<filename>]
+    grafana-backup save [--config=<filename>]
+    grafana-backup restore <archive_file> [--config=<filename>]
+    grafana-backup [--config=<filename>]
     grafana-backup -h | --help
     grafana-backup --version
 
@@ -20,10 +20,6 @@ Options:
     -h --help                                Show this help message and exit
     --version                                Get version information and exit
     --config=<filename>                      Override default configuration path
-    --url=<grafana_url>                      Override grafana url stored in configuration file
-    --token=<grafana_token>                  Override grafana api token stored in configuration file
-
-    --verbose                                Display verbose output for command
 """.format(PKG_NAME, PKG_VERSION)
 
 args = docopt(docstring, version='{0} {1}'.format(PKG_NAME, PKG_VERSION))
@@ -39,10 +35,6 @@ def main():
         settings = conf(CONFIG_PATH)
     elif Path(example_config).is_file():
         settings = conf(example_config)
-
-    arg_verbose = args.get('--verbose', None)
-    arg_url = args.get('--url', None)
-    arg_token = args.get('--token', None)
 
     if args.get('save', None):
         save(args, settings)
