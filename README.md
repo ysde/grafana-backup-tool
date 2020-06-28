@@ -24,7 +24,7 @@ There are three ways to setup the configuration:
 2. Use `hard-coded settings` in `src/conf/grafanaSettings.py` (this is the default settings file if not specified otherwise).
 3. Use `~/.grafana-backup.yml` to define variables in yaml format.
 
-- If you use `environment variables`, you need to add the following to your `.bashrc` or execute once before using the tool:
+**NOTE** If you use `environment variables`, you need to add the following to your `.bashrc` or execute once before using the tool:
 
 (`GRAFANA_HEADERS` is optional, use it if necessary. please see [#45](https://github.com/ysde/grafana-backup-tool/issues/45))
 ```bash
@@ -36,8 +36,8 @@ export GRAFANA_HEADERS=Host:some.host.org
 ```
 
 To create and obtain a `Token` for your Grafana server, please refer to the [official documentation](https://grafana.com/docs/grafana/latest/http_api/auth/). 
-**NOTE** that you need to generate a `Token` with an `Admin` role for the backup to succeed, otherwise you will have potentially permission issues.
-- If you use the hard-coded settings in `src/conf/` directory, but you have multiple instances of Grafana servers in your network that you would like to backup, you can create multiple settings files in the `src/conf/` directory (for example, where each settings file is named as the hostname of the server that it will backup) and use them when running `backup_grafana.sh` and `restore_grafana.sh` scripts. 
+
+**NOTE** that you need to generate a `Token` with an `Admin` role for the backup to succeed, otherwise you will have potential permission issues.
 
 ## Installation
 First clone this repo
@@ -58,6 +58,7 @@ pip install .
 ## How to Use
 * First perform the **Configuration** and **Installation** sections as described above.
 * Use the `grafana-backup save` command to backup all your folders, dashboards, datasources and alert channels to the `_OUTPUT_` subdirectory of the current directory.
+
 ***Example:***
 ```bash
 $ grafana-backup save
@@ -66,7 +67,10 @@ _OUTPUT_/
 └── 202006272027.tar.gz
 ```
 
-* Use the `grafana-backup restore <archive_file>` command with a path to a previous backup to restore everything. **NOTE** this *may* result in data loss, by overwriting data on the server.
+* Use the `grafana-backup restore <archive_file>` command with a path to a previous backup to restore everything.
+
+**NOTE** this *may* result in data loss, by overwriting data on the server.
+
 ***Example:***
 ```bash
 $ grafana-backup restore _OUTPUT_/202006272027.tar.gz
