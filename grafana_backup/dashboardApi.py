@@ -28,18 +28,18 @@ def search_alert_channels(grafana_url, http_get_headers, verify_ssl, debug):
     return send_grafana_get(url, http_get_headers, verify_ssl, debug)
 
 
-def create_alert_channel(payload, grafana_url):
-    return send_grafana_post(grafana_url + '/api/alert-notifications', payload)
+def create_alert_channel(payload, grafana_url, http_post_headers, verify_ssl):
+    return send_grafana_post('{0}/api/alert-notifications'.format(grafana_url), payload, http_post_headers, verify_ssl)
 
 
 def delete_dashboard(board_uri, grafana_url, http_post_headers):
-    r = requests.delete(grafana_url + "/api/dashboards/db/{0}".format(board_uri), headers=http_post_headers)
+    r = requests.delete('{0}/api/dashboards/db/{1}'.format(grafana_url, board_uri), headers=http_post_headers)
     # do you mean r.status_code???
     return int(status_code)
 
 
-def create_dashboard(payload, grafana_url):
-    return send_grafana_post(grafana_url + '/api/dashboards/db', payload)
+def create_dashboard(payload, grafana_url, http_post_headers, verify_ssl):
+    return send_grafana_post('{0}/api/dashboards/db'.format(grafana_url), payload, http_post_headers, verify_ssl)
 
 
 def search_datasource(grafana_url, http_get_headers, verify_ssl, debug):
@@ -47,8 +47,8 @@ def search_datasource(grafana_url, http_get_headers, verify_ssl, debug):
     return send_grafana_get('{0}/api/datasources'.format(grafana_url), http_get_headers, verify_ssl, debug)
 
 
-def create_datasource(payload, grafana_url):
-    return send_grafana_post(grafana_url + '/api/datasources', payload)
+def create_datasource(payload, grafana_url, http_post_headers, verify_ssl):
+    return send_grafana_post('{0}/api/datasources'.format(grafana_url), payload, http_post_headers, verify_ssl)
 
 
 def search_folders(grafana_url, http_get_headers, verify_ssl, debug):
@@ -77,8 +77,8 @@ def get_folder_id_from_old_folder_url(folder_url):
     return 0
 
 
-def create_folder(payload, grafana_url):
-    return send_grafana_post(grafana_url + '/api/folders', payload)
+def create_folder(payload, grafana_url, http_post_headers, verify_ssl):
+    return send_grafana_post('{0}/api/folders'.format(grafana_url), payload, http_post_headers, verify_ssl)
 
 
 def send_grafana_get(url, http_get_headers, verify_ssl, debug):

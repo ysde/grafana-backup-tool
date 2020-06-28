@@ -48,7 +48,7 @@ def main():
         save(args, settings)
         sys.exit()
     elif args.get('restore', None):
-        restore(args)
+        restore(args, settings)
         sys.exit()
     else:
         print(docstring)

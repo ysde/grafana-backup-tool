@@ -1,11 +1,15 @@
 import json
-from grafana_backup.dashboardApi import import_grafana_settings, create_folder
+from grafana_backup.dashboardApi import create_folder
 
 
-def main(file_path):
+def main(args, settings, file_path):
+    grafana_url = settings.get('GRAFANA_URL')
+    http_post_headers = settings.get('HTTP_POST_HEADERS')
+    verify_ssl = settings.get('VERIFY_SSL')
+
     with open(file_path, 'r') as f:
         data = f.read()
 
     folder = json.loads(data)
-    result = create_folder(json.dumps(folder))
+    result = create_folder(json.dumps(folder), grafana_url, http_post_headers, verify_ssl)
     print("create result status: {0}, msg: {1}".format(result[0], result[1]))
