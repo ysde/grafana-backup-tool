@@ -95,6 +95,11 @@ docker run --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \
            -e GRAFANA_URL={YOUR_GRAFANA_URL} \
            -e VERIFY_SSL={True/False} \
+           -e AWS_S3_BUCKET_NAME={OPTIONALLY_UPLOAD_TO_S3_BUCKET} \
+           -e AWS_S3_BUCKET_KEY={YOUR_S3_BUCKET_KEY} \
+           -e AWS_DEFAULT_REGION={YOUR_AWS_REGION} \
+           -e AWS_ACCESS_KEY_ID={YOUR_AWS_ACCESS_KEY_ID} \
+           -e AWS_SECRET_ACCESS_KEY={YOUR_AWS_SECRET_ACCESS_KEY} \
            -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana-backup-tool/_OUTPUT_  \
            alpinebased:grafana-backup
 ```
@@ -106,6 +111,11 @@ docker run --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN="eyJrIjoiNGZqTDEyeXNaY0RsMXNhbkNTSnlKN2M3bE1VeHdqVTEiLCJuIjoiZ3JhZmFuYS1iYWNrdXAiLCJpZCI6MX0=" \
            -e GRAFANA_URL=http://192.168.0.79:3000 \
            -e VERIFY_SSL=False \
+           -e AWS_S3_BUCKET_NAME="my-backups-bucket" \
+           -e AWS_S3_BUCKET_KEY="grafana-backup-folder" \
+           -e AWS_DEFAULT_REGION="us-east-1" \
+           -e AWS_ACCESS_KEY_ID="secret" \
+           -e AWS_SECRET_ACCESS_KEY="secret" \
            -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_ \
            alpinebased:grafana-backup
 ```
