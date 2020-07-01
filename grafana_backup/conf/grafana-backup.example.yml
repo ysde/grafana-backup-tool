@@ -1,6 +1,6 @@
 ---
 # Copy this file to ~/.grafana-backup.yml
-main:
+general:
   debug: True
   verify_ssl: True
   backup_dir: '_OUTPUT_'

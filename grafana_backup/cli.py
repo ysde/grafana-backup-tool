@@ -1,9 +1,8 @@
-from grafana_backup.constants import (PKG_NAME, PKG_VERSION, CONFIG_PATH)
+from grafana_backup.constants import (PKG_NAME, PKG_VERSION, YAML_CONFIG_PATH, JSON_CONFIG_PATH)
 from grafana_backup.save import main as save
 from grafana_backup.restore import main as restore
 from grafana_backup.conf.grafanaSettings import main as conf
 from docopt import docopt
-from pathlib import Path
 import os, sys
 
 docstring = """
@@ -31,9 +30,11 @@ def main():
 
     if arg_config:
         settings = conf(arg_config)
-    elif Path(CONFIG_PATH).is_file():
-        settings = conf(CONFIG_PATH)
-    elif Path(example_config).is_file():
+    elif os.path.isfile(YAML_CONFIG_PATH):
+        settings = conf(YAML_CONFIG_PATH)
+    elif os.path.isfile(JSON_CONFIG_PATH):
+        settings = conf(JSON_CONFIG_PATH)
+    elif os.path.isfile(example_config):
         settings = conf(example_config)
 
     if args.get('save', None):

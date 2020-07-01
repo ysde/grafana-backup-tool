@@ -1,0 +1,12 @@
+{
+  "general": {
+    "debug": true,
+    "verify_ssl": true,
+    "backup_dir": "_OUTPUT_"
+  },
+  "grafana": {
+    "url": "http://localhost:3000",
+    "token": "eyJrIjoiSkQ5NkdvWllHdnVNdlVhWUV3Tm5LSGc4NG53UFdSTjQiLCJuIjoiYWRtaW4iLCJpZCI6MX0=",
+    "search_api_limit": 5000
+  }
+}

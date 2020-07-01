@@ -16,9 +16,9 @@ def main(config_path):
     grafana_token = config.get('grafana', {}).get('token', '')
     grafana_search_api_limit = config.get('grafana', {}).get('search_api_limit', 5000)
 
-    debug = config.get('main', {}).get('debug', True)
-    verify_ssl = config.get('main', {}).get('verify_ssl', False)
-    backup_dir = config.get('main', {}).get('backup_dir', '_OUTPUT_')
+    debug = config.get('general', {}).get('debug', True)
+    verify_ssl = config.get('general', {}).get('verify_ssl', False)
+    backup_dir = config.get('general', {}).get('backup_dir', '_OUTPUT_')
 
     GRAFANA_URL = os.getenv('GRAFANA_URL', grafana_url)
     TOKEN = os.getenv('GRAFANA_TOKEN', grafana_token)
