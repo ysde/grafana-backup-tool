@@ -1,7 +1,7 @@
-from grafana_backup.constants import (PKG_NAME, PKG_VERSION, YAML_CONFIG_PATH, JSON_CONFIG_PATH)
+from grafana_backup.constants import (PKG_NAME, PKG_VERSION, JSON_CONFIG_PATH)
 from grafana_backup.save import main as save
 from grafana_backup.restore import main as restore
-from grafana_backup.conf.grafanaSettings import main as conf
+from grafana_backup.grafanaSettings import main as conf
 from docopt import docopt
 import os, sys
 
@@ -26,16 +26,14 @@ args = docopt(docstring, version='{0} {1}'.format(PKG_NAME, PKG_VERSION))
 
 def main():
     arg_config = args.get('--config', False)
-    example_config = '{0}/conf/grafana-backup.example.yml'.format(os.path.dirname(__file__))
+    default_config = '{0}/conf/grafanaSettings.json'.format(os.path.dirname(__file__))
 
     if arg_config:
         settings = conf(arg_config)
-    elif os.path.isfile(YAML_CONFIG_PATH):
-        settings = conf(YAML_CONFIG_PATH)
     elif os.path.isfile(JSON_CONFIG_PATH):
         settings = conf(JSON_CONFIG_PATH)
-    elif os.path.isfile(example_config):
-        settings = conf(example_config)
+    elif os.path.isfile(default_config):
+        settings = conf(default_config)
 
     if args.get('save', None):
         save(args, settings)

@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - add setup.py
 - add Makefile (docker build)
-- add grafana-backup.example.yml
+- add grafanaSettings.json
 - add constants.py
 - add archive.py
 
@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - removed global variable passing in favor of positional arguments
   - all code lives inside functions now, no need for globalized code
 - refactored grafanaSettings module
-  - grafanaSettings can now be parameterized via an external yaml config file (~/.grafana-backup.yml)
+  - grafanaSettings can now be parameterized via an external json config file (~/.grafana-backup.json)
 
 ### Removed
 - delete Pipenv

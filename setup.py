@@ -6,8 +6,7 @@ name = PKG_NAME
 version = PKG_VERSION
 requires = [
     'requests',
-    'docopt',
-    'pyyaml'
+    'docopt'
 ]
 
 setup(
