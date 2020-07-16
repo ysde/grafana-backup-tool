@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2020-06-27
+## [1.0.0] - 2020-07-16
 
 ### Added
 - add setup.py
@@ -21,19 +21,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - run as non-root user
 - README.md updates
 - implemented cli "console script" using docopt
-  - replaced backup_grafana.sh with "save" command
-  - replaced restore_grafana.sh with "restore" command
+  - added "save" command
+  - added "restore" command
 - refactored variable passing
   - removed global variable passing in favor of positional arguments
   - all code lives inside functions now, no need for globalized code
 - refactored grafanaSettings module
   - grafanaSettings can now be parameterized via an external json config file (~/.grafana-backup.json)
+- refactored backup/restore shell scripts
 
 ### Removed
 - delete Pipenv
 - delete docker_entry.sh
-- delete backup_grafana.sh
-- delete restore_grafana.sh 
 - delete requirements.txt
 
 ## [0.1.0] - 2019-05-22
