@@ -6,8 +6,17 @@ from grafana_backup.archive import main as archive
 
 
 def main(args, settings):
-    save_dashboards(args, settings)
-    save_datasources(args, settings)
-    save_folders(args, settings)
-    save_alert_channels(args, settings)
+    arg_config = args.get('--components', False)
+    if arg_config:
+        arg_config_list = arg_config.split(',')
+
+    if not arg_config or "dashboards" in arg_config_list:
+        save_dashboards(args, settings)
+    if not arg_config or "datasources" in arg_config_list:
+        save_datasources(args, settings)
+    if not arg_config or "folders" in arg_config_list:
+        save_folders(args, settings)
+    if not arg_config or "alert-channels" in arg_config_list:
+        save_alert_channels(args, settings)
+
     archive(args, settings)

@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - refactored grafanaSettings module
   - grafanaSettings can now be parameterized via an external json config file (~/.grafana-backup.json)
 - refactored backup/restore shell scripts
+- individual components can be backed up using console_script
 
 ### Removed
 - delete Pipenv
