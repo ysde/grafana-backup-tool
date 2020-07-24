@@ -7,6 +7,7 @@ from grafana_backup.archive import main as archive
 
 def main(args, settings):
     arg_components = args.get('--components', False)
+    arg_no_archive = args.get('--no-archive', False)
 
     backup_functions = { 'dashboards': save_dashboards,
                          'datasources': save_datasources,
@@ -23,4 +24,5 @@ def main(args, settings):
         for backup_function in backup_functions.keys():
             backup_functions[backup_function](args, settings)
 
-    archive(args, settings)
+    if not arg_no_archive:
+        archive(args, settings)

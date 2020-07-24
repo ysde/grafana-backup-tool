@@ -9,7 +9,7 @@ docstring = """
 {0} {1}
 
 Usage:
-    grafana-backup save [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels>]
+    grafana-backup save [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels>] [--no-archive]
     grafana-backup restore <archive_file> [--config=<filename>]
     grafana-backup [--config=<filename>]
     grafana-backup -h | --help
@@ -21,6 +21,7 @@ Options:
     --config=<filename>                                             Override default configuration path
     --components=<folders,dashboards,datasources,alert-channels>    Comma separated list of individual components to backup
                                                                     rather than backing up all components by default
+    --no-archive                                                    Skip archive creation and do not delete unarchived files
 """.format(PKG_NAME, PKG_VERSION)
 
 args = docopt(docstring, version='{0} {1}'.format(PKG_NAME, PKG_VERSION))
