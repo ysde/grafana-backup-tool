@@ -6,17 +6,21 @@ from grafana_backup.archive import main as archive
 
 
 def main(args, settings):
-    arg_config = args.get('--components', False)
-    if arg_config:
-        arg_config_list = arg_config.split(',')
+    arg_components = args.get('--components', False)
 
-    if not arg_config or "dashboards" in arg_config_list:
-        save_dashboards(args, settings)
-    if not arg_config or "datasources" in arg_config_list:
-        save_datasources(args, settings)
-    if not arg_config or "folders" in arg_config_list:
-        save_folders(args, settings)
-    if not arg_config or "alert-channels" in arg_config_list:
-        save_alert_channels(args, settings)
+    backup_functions = { 'dashboards': save_dashboards,
+                         'datasources': save_datasources,
+                         'folders': save_folders,
+                         'alert-channels': save_alert_channels }
+    if arg_components:
+        arg_components_list = arg_components.split(',')
+
+        # Backup only the components that provided via an argument
+        for backup_function in arg_components_list:
+            backup_functions[backup_function](args, settings)
+    else:
+        # Backup every component
+        for backup_function in backup_functions.keys():
+            backup_functions[backup_function](args, settings)
 
     archive(args, settings)
