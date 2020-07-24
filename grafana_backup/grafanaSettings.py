@@ -6,7 +6,7 @@ import os, json
 def main(config_path):
     # Load config from optional configuration file located at ~/.grafana-backup.json
     # or load defaults from example config stored in grafanaSettings.json
-    # environment variables can override settings as well
+    # environment variables can override settings as well and are top of the hierarchy
 
     config_dict = {}
 

@@ -1,5 +1,4 @@
 import requests, json, re
-import importlib
 from grafana_backup.commons import log_response
 
 
