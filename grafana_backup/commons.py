@@ -1,4 +1,4 @@
-import sys
+import sys, json
 
 def left_ver_newer_than_right_ver(current_version, specefic_version):
     def convertVersion(ver):
@@ -24,3 +24,17 @@ def to_python2_and_3_compatible_string(some_string):
         return some_string
     else:
         return some_string.encode('utf8')
+
+
+def load_config(path=None):
+    config = None
+
+    try:
+        with open(path, 'r') as f:
+            config = json.load(f)
+        f.closed
+    except IOError as e:
+        print(str(e))
+        sys.exit(2)
+
+    return config
