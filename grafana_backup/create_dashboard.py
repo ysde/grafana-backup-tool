@@ -16,7 +16,7 @@ def main(args, settings, file_path):
 
     payload = {
         'dashboard': content['dashboard'],
-        'folderId': get_folder_id_from_old_folder_url(content['meta']['folderUrl']),
+        'folderId': get_folder_id_from_old_folder_url(content['meta']['folderUrl'], grafana_url, http_post_headers, verify_ssl, debug),
         'overwrite': True
     }
 
