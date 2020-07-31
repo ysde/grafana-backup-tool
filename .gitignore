@@ -4,3 +4,6 @@ __pycache__
 Pipfile.lock
 _OUTPUT_
 venv/
+build/
+dist/
+*.egg-info/
