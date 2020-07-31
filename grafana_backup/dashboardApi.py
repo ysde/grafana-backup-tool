@@ -61,15 +61,15 @@ def get_folder(uid, grafana_url, http_get_headers, verify_ssl, debug):
     return (status_code, content)
 
 
-def get_folder_id_from_old_folder_url(folder_url):
+def get_folder_id_from_old_folder_url(folder_url, grafana_url, http_post_headers, verify_ssl, debug):
     if folder_url != "":
         # Get folder uid
         matches = re.search('dashboards\/[A-Za-z0-9]{1}\/(.*)\/.*', folder_url)
         uid = matches.group(1)
 
-        response = get_folder(uid)
+        response = get_folder(uid, grafana_url, http_post_headers, verify_ssl, debug)
         if isinstance(response[1],dict):
-            folder_data = response[1] 
+            folder_data = response[1]
         else:
             folder_data = json.loads(response[1])
         return folder_data['id']
