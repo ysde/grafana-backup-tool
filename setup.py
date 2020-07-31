@@ -12,7 +12,8 @@ requires = [
 setup(
     name=name,
     version=version,
-    description='A Python-based application to backup Grafana settings using the Grafana API.',
+    description='A Python-based application to backup Grafana settings using the Grafana API',
+    long_description_content_type='text/markdown',
     long_description=open('README.md', 'r').read(),
     author="author",
     author_email="ysde108@gmail.com",
