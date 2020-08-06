@@ -1,10 +1,11 @@
+from grafana_backup.api_checks import main as api_checks
 from grafana_backup.create_folder import main as create_folder
 from grafana_backup.create_datasource import main as create_datasource
 from grafana_backup.create_dashboard import main as create_dashboard
 from grafana_backup.create_alert_channel import main as create_alert_channel
 from grafana_backup.s3_download import main as s3_download
 from glob import glob
-import tarfile, tempfile
+import sys, tarfile, tempfile
 
 
 def main(args, settings):
@@ -12,6 +13,13 @@ def main(args, settings):
     arg_components = args.get('--components', False)
 
     aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
+
+    (status, json_resp, api_version) = api_checks(settings)
+
+    # Do not continue if API is unavailable or token is not valid
+    if not status == 200:
+        print("server status is not ok: {0}".format(json_resp))
+        sys.exit(1)
 
     # Use tar data stream if S3 bucket name is specified
     if aws_s3_bucket_name:

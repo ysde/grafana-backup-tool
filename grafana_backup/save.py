@@ -1,9 +1,11 @@
+from grafana_backup.api_checks import main as api_checks
 from grafana_backup.save_dashboards import main as save_dashboards
 from grafana_backup.save_datasources import main as save_datasources
 from grafana_backup.save_folders import main as save_folders
 from grafana_backup.save_alert_channels import main as save_alert_channels
 from grafana_backup.archive import main as archive
 from grafana_backup.s3_upload import main as s3_upload
+import sys
 
 
 def main(args, settings):
@@ -14,6 +16,16 @@ def main(args, settings):
                          'datasources': save_datasources,
                          'folders': save_folders,
                          'alert-channels': save_alert_channels }
+
+    (status, json_resp, api_version) = api_checks(settings)
+
+    # Do not continue if API is unavailable or token is not valid
+    if not status == 200:
+        print("server status is not ok: {0}".format(json_resp))
+        sys.exit(1)
+
+    settings.update( {'API_VERSION': api_version} )
+
     if arg_components:
         arg_components_list = arg_components.split(',')
 
