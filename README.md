@@ -40,15 +40,23 @@ To create and obtain a `Token` for your Grafana server, please refer to the [off
 **NOTE** that you need to generate a `Token` with an `Admin` role for the backup to succeed, otherwise you will have potential permission issues.
 
 ## Installation
-First clone this repo
-```
-git clone https://github.com/ysde/grafana-backup-tool.git
-cd grafana-backup-tool
-```
+### Virtual environment (optional but recommended)
 Create a virtualenv, you could using something like `pyenv` if you'd prefer
 ```
 virtualenv -p $(which python3) venv
 source venv/bin/activate
+```
+
+### Installation using pypi
+```
+pip install grafana-backup
+```
+
+### Installation using this repo
+First clone this repo
+```
+git clone https://github.com/ysde/grafana-backup-tool.git
+cd grafana-backup-tool
 ```
 Installation works best using `pip`
 ```
