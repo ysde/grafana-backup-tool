@@ -8,6 +8,12 @@ def health_check(grafana_url, http_get_headers, verify_ssl, debug):
     return send_grafana_get(url, http_get_headers, verify_ssl, debug)
 
 
+def auth_check(grafana_url, http_get_headers, verify_ssl, debug):
+    url = '{0}/api/auth/keys'.format(grafana_url)
+    print("grafana auth check: {0}".format(url))
+    return send_grafana_get(url, http_get_headers, verify_ssl, debug)
+
+
 def search_dashboard(page, limit, grafana_url, http_get_headers, verify_ssl, debug):
     url = '{0}/api/search/?type=dash-db&limit={1}&page={2}'.format(grafana_url, limit, page)
     print("search dashboard in grafana: {0}".format(url))

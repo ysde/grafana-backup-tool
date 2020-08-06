@@ -1,14 +1,22 @@
+from grafana_backup.api_checks import main as api_checks
 from grafana_backup.create_folder import main as create_folder
 from grafana_backup.create_datasource import main as create_datasource
 from grafana_backup.create_dashboard import main as create_dashboard
 from grafana_backup.create_alert_channel import main as create_alert_channel
 from glob import glob
-import tarfile, tempfile
+import sys, tarfile, tempfile
 
 
 def main(args, settings):
     archive_file = args.get('<archive_file>', None)
     arg_components = args.get('--components', False)
+
+    (status, json_resp, api_version) = api_checks(settings)
+
+    # Do not continue if API is unavailable or token is not valid
+    if not status == 200:
+        print("server status is not ok: {0}".format(json_resp))
+        sys.exit(1)
 
     try:
         tarfile.is_tarfile(archive_file)
