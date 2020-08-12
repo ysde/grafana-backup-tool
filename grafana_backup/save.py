@@ -3,6 +3,7 @@ from grafana_backup.save_datasources import main as save_datasources
 from grafana_backup.save_folders import main as save_folders
 from grafana_backup.save_alert_channels import main as save_alert_channels
 from grafana_backup.archive import main as archive
+from grafana_backup.s3_upload import main as s3_upload
 
 
 def main(args, settings):
@@ -24,5 +25,10 @@ def main(args, settings):
         for backup_function in backup_functions.keys():
             backup_functions[backup_function](args, settings)
 
+    aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
+
     if not arg_no_archive:
         archive(args, settings)
+
+    if aws_s3_bucket_name:
+        s3_upload(args, settings)
