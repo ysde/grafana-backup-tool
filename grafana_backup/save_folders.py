@@ -48,15 +48,15 @@ def save_folder_setting(folder_name, file_name, folder_settings, folder_path):
 
 
 def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
-    for folder in folders:
-        status_code_and_content = get_folder(folder['uid'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-        if status_code_and_content[0] == 200:
-            save_folder_setting(
-                to_python2_and_3_compatible_string(folder['title']), 
-                folder['uid'],
-                status_code_and_content[1],
-                folder_path
-            )
-            file_path = folder_path + '/' + log_file
-            with open(u"{0}".format(file_path), 'w+') as f:
-                f.write('{}\t{}'.format(folder['uid'], to_python2_and_3_compatible_string(folder['title'])))
+    file_path = folder_path + '/' + log_file
+    with open(u"{0}".format(file_path), 'w+') as f:
+        for folder in folders:
+            (status, content) = get_folder(folder['uid'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+            if status == 200:
+                save_folder_setting(
+                    to_python2_and_3_compatible_string(folder['title']), 
+                    folder['uid'],
+                    content,
+                    folder_path
+                )
+                f.write('{0}\t{1}\n'.format(folder['uid'], to_python2_and_3_compatible_string(folder['title'])))
