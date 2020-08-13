@@ -18,6 +18,7 @@ def main(config_path):
 
     debug = config.get('general', {}).get('debug', True)
     verify_ssl = config.get('general', {}).get('verify_ssl', False)
+    client_cert = config.get('general', {}).get('client_cert', None)
     backup_dir = config.get('general', {}).get('backup_dir', '_OUTPUT_')
     aws_s3_bucket_name = config.get('aws', {}).get('s3_bucket_name', '')
     aws_s3_bucket_key = config.get('aws', {}).get('s3_bucket_key', '')
@@ -43,6 +44,8 @@ def main(config_path):
     if isinstance(VERIFY_SSL, str):
         VERIFY_SSL = json.loads(VERIFY_SSL.lower()) # convert environment variable string to bool
 
+    CLIENT_CERT = os.getenv('CLIENT_CERT', client_cert)
+
     BACKUP_DIR = os.getenv('BACKUP_DIR', backup_dir)
 
     EXTRA_HEADERS = dict(h.split(':') for h in os.getenv('GRAFANA_HEADERS', '').split(',') if 'GRAFANA_HEADERS' in os.environ)
@@ -61,6 +64,7 @@ def main(config_path):
     config_dict['SEARCH_API_LIMIT'] = SEARCH_API_LIMIT
     config_dict['DEBUG'] = DEBUG
     config_dict['VERIFY_SSL'] = VERIFY_SSL
+    config_dict['CLIENT_CERT'] = CLIENT_CERT
     config_dict['BACKUP_DIR'] = BACKUP_DIR
     config_dict['EXTRA_HEADERS'] = EXTRA_HEADERS
     config_dict['HTTP_GET_HEADERS'] = HTTP_GET_HEADERS
