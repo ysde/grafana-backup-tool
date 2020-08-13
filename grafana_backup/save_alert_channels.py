@@ -10,6 +10,7 @@ def main(args, settings):
     grafana_url = settings.get('GRAFANA_URL')
     http_get_headers = settings.get('HTTP_GET_HEADERS')
     verify_ssl = settings.get('VERIFY_SSL')
+    client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
 
     folder_path = '{0}/alert_channels/{1}'.format(backup_dir, timestamp)
@@ -18,13 +19,13 @@ def main(args, settings):
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
-    alert_channels = get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl, debug)
+    alert_channels = get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     get_individual_alert_channel_and_save(alert_channels, folder_path, log_file)
     print_horizontal_line()
 
 
-def get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl, debug):
-    (status, content) = search_alert_channels(grafana_url, http_get_headers, verify_ssl, debug)
+def get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    (status, content) = search_alert_channels(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     if status == 200:
         channels = content
         print("There are {0} channels:".format(len(channels)))

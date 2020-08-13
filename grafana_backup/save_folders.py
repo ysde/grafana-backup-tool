@@ -10,6 +10,7 @@ def main(args, settings):
     grafana_url = settings.get('GRAFANA_URL')
     http_get_headers = settings.get('HTTP_GET_HEADERS')
     verify_ssl = settings.get('VERIFY_SSL')
+    client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
 
     folder_path = '{0}/folders/{1}'.format(backup_dir, timestamp)
@@ -18,14 +19,14 @@ def main(args, settings):
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
-    folders = get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, debug)
+    folders = get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     print_horizontal_line()
-    get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, debug)
+    get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     print_horizontal_line()
 
 
-def get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, debug):
-    status_and_content_of_all_folders = search_folders(grafana_url, http_get_headers, verify_ssl, debug)
+def get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    status_and_content_of_all_folders = search_folders(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     status = status_and_content_of_all_folders[0]
     content = status_and_content_of_all_folders[1]
     if status == 200:
@@ -46,11 +47,11 @@ def save_folder_setting(folder_name, file_name, folder_settings, folder_path):
     print("folder:{0} are saved to {1}".format(folder_name, file_path))
 
 
-def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, debug):
+def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     file_path = folder_path + '/' + log_file
     with open(u"{0}".format(file_path), 'w+') as f:
         for folder in folders:
-            (status, content) = get_folder(folder['uid'], grafana_url, http_get_headers, verify_ssl, debug)
+            (status, content) = get_folder(folder['uid'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
             if status == 200:
                 save_folder_setting(
                     to_python2_and_3_compatible_string(folder['title']), 
