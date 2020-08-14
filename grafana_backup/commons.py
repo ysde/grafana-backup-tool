@@ -1,5 +1,6 @@
 import sys, json
 
+
 def left_ver_newer_than_right_ver(current_version, specefic_version):
     def convertVersion(ver):
         return int(''.join(ver.split("-")[0].split(".")))

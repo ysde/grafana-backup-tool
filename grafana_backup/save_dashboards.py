@@ -1,6 +1,6 @@
 import os
 import json
-from grafana_backup.dashboardApi import search_dashboard, get_dashboard, health_check
+from grafana_backup.dashboardApi import search_dashboard, get_dashboard
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, left_ver_newer_than_right_ver
 
 
@@ -13,6 +13,7 @@ def main(args, settings):
     verify_ssl = settings.get('VERIFY_SSL')
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
+    api_version = settings.get('API_VERSION')
 
     folder_path = '{0}/dashboards/{1}'.format(backup_dir, timestamp)
     log_file = 'dashboards_{0}.txt'.format(timestamp)
@@ -20,16 +21,11 @@ def main(args, settings):
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
-    (status, resp) = health_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-    status = 200
-    if status == 200:
-        is_api_support_page_param = left_ver_newer_than_right_ver(resp['version'], "6.2.0")
-        if is_api_support_page_param:
-            save_dashboards_above_Ver6_2(folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-        else:
-            save_dashboards(folder_path, log_file, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    is_api_support_page_param = left_ver_newer_than_right_ver(api_version, "6.2.0")
+    if is_api_support_page_param:
+        save_dashboards_above_Ver6_2(folder_path, log_file, grafana_url, http_get_headers, verify_ssl, debug)
     else:
-        print("server status is not ok: {0}".format(resp))
+        save_dashboards(folder_path, log_file, limit, grafana_url, http_get_headers, verify_ssl, debug)
 
 
 def get_all_dashboards_in_grafana(page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
