@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.1.2] - 2020-08-14
+
+### Added
+
+### Changed
+- #70 Fix parameters for get_folder_id_from_old_folder_url
+- #74 Fixed Bug folders.txt does not contain all folders
+- #75 Introduces the settings option client_cert
+- #76 require api checks to succeed before save or restore
+- #78 fixed issue #77 TypeError: health_check
+
+### Removed
+
 ## [1.1.0] - 2020-07-28
 
 ### Added

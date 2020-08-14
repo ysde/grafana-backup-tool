@@ -23,9 +23,9 @@ def main(args, settings):
 
     is_api_support_page_param = left_ver_newer_than_right_ver(api_version, "6.2.0")
     if is_api_support_page_param:
-        save_dashboards_above_Ver6_2(folder_path, log_file, grafana_url, http_get_headers, verify_ssl, debug)
+        save_dashboards_above_Ver6_2(folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     else:
-        save_dashboards(folder_path, log_file, limit, grafana_url, http_get_headers, verify_ssl, debug)
+        save_dashboards(folder_path, log_file, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
 
 
 def get_all_dashboards_in_grafana(page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
