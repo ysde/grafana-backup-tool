@@ -33,8 +33,7 @@ def create_alert_channel(payload, grafana_url, http_post_headers, verify_ssl, de
 
 def delete_dashboard(board_uri, grafana_url, http_post_headers):
     r = requests.delete('{0}/api/dashboards/db/{1}'.format(grafana_url, board_uri), headers=http_post_headers)
-    # do you mean r.status_code???
-    return int(status_code)
+    return int(r.status_code)
 
 
 def create_dashboard(payload, grafana_url, http_post_headers, verify_ssl, debug):
