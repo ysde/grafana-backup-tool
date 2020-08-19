@@ -1,9 +1,10 @@
 import sys, json
 
-def left_ver_newer_than_right_ver(current_version, specefic_version):
+
+def left_ver_newer_than_right_ver(current_version, specific_version):
     def convertVersion(ver):
         return int(''.join(ver.split("-")[0].split(".")))
-    return convertVersion(current_version) > convertVersion(specefic_version)
+    return convertVersion(current_version) > convertVersion(specific_version)
 
 
 def print_horizontal_line():

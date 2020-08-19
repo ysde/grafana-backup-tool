@@ -6,6 +6,7 @@ def main(args, settings, file_path):
     grafana_url = settings.get('GRAFANA_URL')
     http_post_headers = settings.get('HTTP_POST_HEADERS')
     verify_ssl = settings.get('VERIFY_SSL')
+    client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
 
     with open(file_path, 'r') as f:
@@ -16,9 +17,9 @@ def main(args, settings, file_path):
 
     payload = {
         'dashboard': content['dashboard'],
-        'folderId': get_folder_id_from_old_folder_url(content['meta']['folderUrl'], grafana_url, http_post_headers, verify_ssl, debug),
+        'folderId': get_folder_id_from_old_folder_url(content['meta']['folderUrl'], grafana_url, http_post_headers, verify_ssl, client_cert, debug),
         'overwrite': True
     }
 
-    result = create_dashboard(json.dumps(payload), grafana_url, http_post_headers, verify_ssl, debug)
+    result = create_dashboard(json.dumps(payload), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
     print("create response status: {0}, msg: {1}".format(result[0], result[1]))
