@@ -15,7 +15,7 @@ def main(args, settings):
         for file_path in glob(backup_path):
             backup_files.append(file_path)
 
-    with tarfile.open(archive_file, "x:gz") as tar:
+    with tarfile.open(archive_file, "w:gz") as tar:
         for file_path in backup_files:
             tar.add(file_path)
             shutil.rmtree(file_path)
