@@ -1,8 +1,10 @@
+from grafana_backup.create_org import main as create_org
 from grafana_backup.api_checks import main as api_checks
 from grafana_backup.create_folder import main as create_folder
 from grafana_backup.create_datasource import main as create_datasource
 from grafana_backup.create_dashboard import main as create_dashboard
 from grafana_backup.create_alert_channel import main as create_alert_channel
+from grafana_backup.create_user import main as create_user
 from grafana_backup.s3_download import main as s3_download
 from glob import glob
 import sys, tarfile, tempfile
@@ -11,7 +13,6 @@ import sys, tarfile, tempfile
 def main(args, settings):
     arg_archive_file = args.get('<archive_file>', None)
     arg_components = args.get('--components', False)
-
     aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
 
     (status, json_resp, api_version) = api_checks(settings)
@@ -48,7 +49,9 @@ def main(args, settings):
         restore_functions = { 'folder': create_folder,
                               'datasource': create_datasource,
                               'dashboard': create_dashboard,
-                              'alert_channel': create_alert_channel }
+                              'alert_channel': create_alert_channel,
+                              'organization': create_org,
+                              'user': create_user}
 
         if arg_components:
             arg_components_list = arg_components.split(',')

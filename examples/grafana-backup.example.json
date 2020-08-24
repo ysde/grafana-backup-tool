@@ -7,7 +7,10 @@
   "grafana": {
     "url": "http://localhost:3000",
     "token": "{YOUR_GRAFANA_TOKEN}",
-    "search_api_limit": 5000
+    "search_api_limit": 5000,
+    "default_password": "00000000",
+    "admin_account": "admin",
+    "admin_password": "admin"
   },
   "aws": {
     "s3_bucket_name": "bucket_name",

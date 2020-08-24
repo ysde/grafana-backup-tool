@@ -11,6 +11,12 @@ The aim of this tool is to:
 * Dashboard (contains Alert)
 * Datasource
 * Alert Channel
+* Organization (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
+	* You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+	* Or Sets this ENV of the Grafana server `GF_USERS_ALLOW_ORG_CREATE=true`. see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#create-organization)
+* User (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
+	* You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+	* Grafana's api doesn't provide user's password when backing up, so the `default_password (which is in the grafanaSetting.json)` will be used when restoring.
 
 ## Requirements
 * Bash
@@ -20,6 +26,7 @@ The aim of this tool is to:
 
 ## Configuration
 There are three ways to setup the configuration:
+
 1. Use `environment variables` to define the variables for connecting to a Grafana server.
 2. Use `hard-coded settings` in `conf/grafanaSettings.json` (this is the default settings file if not specified otherwise).
 3. Use `~/.grafana-backup.json` to define variables in json format.
@@ -30,10 +37,12 @@ There are three ways to setup the configuration:
 **NOTE** If you use `environment variables`, you need to add the following to your `.bashrc` or execute once before using the tool (please change variables according to your setup):
 
 (`GRAFANA_HEADERS` is optional, use it if necessary. please see [#45](https://github.com/ysde/grafana-backup-tool/issues/45))
+
 ```bash
-# Do not use a trailing slash on GRAFANA_URL
+### Do not use a trailing slash on GRAFANA_URL
 export GRAFANA_URL=http://some.host.org:3000
 export GRAFANA_TOKEN=eyJrIjoidUhaU2ZQQndrWFN3RRVkUnVfrT56a1JoaG9KWFFObEgiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
+
 # GRAFANA_HEADERS is optional
 export GRAFANA_HEADERS=Host:some.host.org 
 ```
@@ -71,6 +80,7 @@ pip install .
 * Use the `grafana-backup save` command to backup all your folders, dashboards, datasources and alert channels to the `_OUTPUT_` subdirectory of the current directory.
 
 ***Example:***
+
 ```bash
 $ grafana-backup save
 $ tree _OUTPUT_
@@ -83,6 +93,7 @@ _OUTPUT_/
 **NOTE** this *may* result in data loss, by overwriting data on the server.
 
 ***Example:***
+
 ```bash
 $ grafana-backup restore _OUTPUT_/202006272027.tar.gz
 ```

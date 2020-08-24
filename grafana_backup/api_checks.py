@@ -1,3 +1,4 @@
+from grafana_backup.commons import print_horizontal_line
 from grafana_backup.dashboardApi import health_check, auth_check
 
 
@@ -15,5 +16,6 @@ def main(settings):
     api_version = json_resp['version']
 
     (status, json_resp) = auth_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    print_horizontal_line()
 
     return (status, json_resp, api_version)

@@ -14,4 +14,4 @@ if [[ ! -f "${archive_file}" || ! -f "${settings_file}" ]]; then
 	exit 1
 fi
 
-grafana-backup --config $settings_file restore $archive_file
+python -m grafana_backup.cli --config $settings_file restore $archive_file

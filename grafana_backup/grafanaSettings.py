@@ -1,4 +1,6 @@
-from grafana_backup.commons import load_config
+import base64
+
+from grafana_backup.commons import load_config, to_python2_and_3_compatible_string
 from datetime import datetime
 import os, json
 
@@ -26,6 +28,9 @@ def main(config_path):
     aws_access_key_id = config.get('aws', {}).get('access_key_id', '')
     aws_secret_access_key = config.get('aws', {}).get('secret_access_key', '')
 
+    admin_account = config.get('grafana', {}).get('admin_account', '')
+    admin_password = config.get('grafana', {}).get('admin_password', '')
+
     GRAFANA_URL = os.getenv('GRAFANA_URL', grafana_url)
     TOKEN = os.getenv('GRAFANA_TOKEN', grafana_token)
     SEARCH_API_LIMIT = os.getenv('SEARCH_API_LIMIT', grafana_search_api_limit)
@@ -36,30 +41,45 @@ def main(config_path):
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', aws_access_key_id)
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', aws_secret_access_key)
 
+    ADMIN_ACCOUNT = os.getenv('GRAFANA_ADMIN_ACCOUNT', admin_account)
+    ADMIN_PASSWORD = os.getenv('GRAFANA_ADMIN_PASSWORD', admin_password)
+    GRAFANA_BASIC_AUTH = os.getenv('GRAFANA_BASIC_AUTH', None)
+
     DEBUG = os.getenv('DEBUG', debug)
     if isinstance(DEBUG, str):
-        DEBUG = json.loads(DEBUG.lower()) # convert environment variable string to bool
+        DEBUG = json.loads(DEBUG.lower())  # convert environment variable string to bool
 
     VERIFY_SSL = os.getenv('VERIFY_SSL', verify_ssl)
     if isinstance(VERIFY_SSL, str):
-        VERIFY_SSL = json.loads(VERIFY_SSL.lower()) # convert environment variable string to bool
+        VERIFY_SSL = json.loads(VERIFY_SSL.lower())  # convert environment variable string to bool
 
     CLIENT_CERT = os.getenv('CLIENT_CERT', client_cert)
 
     BACKUP_DIR = os.getenv('BACKUP_DIR', backup_dir)
 
-    EXTRA_HEADERS = dict(h.split(':') for h in os.getenv('GRAFANA_HEADERS', '').split(',') if 'GRAFANA_HEADERS' in os.environ)
+    EXTRA_HEADERS = dict(
+        h.split(':') for h in os.getenv('GRAFANA_HEADERS', '').split(',') if 'GRAFANA_HEADERS' in os.environ)
 
     HTTP_GET_HEADERS = {'Authorization': 'Bearer ' + TOKEN}
     HTTP_POST_HEADERS = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
 
-    for k,v in EXTRA_HEADERS.items():
+    for k, v in EXTRA_HEADERS.items():
         HTTP_GET_HEADERS.update({k: v})
         HTTP_POST_HEADERS.update({k: v})
 
     TIMESTAMP = datetime.today().strftime('%Y%m%d%H%M')
 
     config_dict['GRAFANA_URL'] = GRAFANA_URL
+    config_dict['GRAFANA_ADMIN_ACCOUNT'] = ADMIN_ACCOUNT
+    config_dict['GRAFANA_ADMIN_PASSWORD'] = ADMIN_PASSWORD
+
+    if not GRAFANA_BASIC_AUTH and (ADMIN_ACCOUNT and ADMIN_PASSWORD):
+        config_dict['GRAFANA_BASIC_AUTH'] = base64.b64encode(
+            "{0}:{1}".format(ADMIN_ACCOUNT, ADMIN_PASSWORD).encode('utf8')
+        ).decode('utf8')
+    else:
+        config_dict['GRAFANA_BASIC_AUTH'] = None
+
     config_dict['TOKEN'] = TOKEN
     config_dict['SEARCH_API_LIMIT'] = SEARCH_API_LIMIT
     config_dict['DEBUG'] = DEBUG

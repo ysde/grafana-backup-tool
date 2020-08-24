@@ -15,8 +15,8 @@ def print_horizontal_line():
 
 def log_response(resp):
     status_code = resp.status_code
-    print("[DEBUG] status: {0}".format(status_code))
-    print("[DEBUG] body: {0}".format(resp.json()))
+    print("[DEBUG] resp status: {0}".format(status_code))
+    print("[DEBUG] resp body: {0}".format(resp.json()))
     return resp
 
 

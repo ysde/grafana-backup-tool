@@ -22,4 +22,4 @@ def main(args, settings, file_path):
     }
 
     result = create_dashboard(json.dumps(payload), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
-    print("create response status: {0}, msg: {1}".format(result[0], result[1]))
+    print("create dashboard {0} response status: {1}, msg: {2} \n".format(content['dashboard'].get('title', ''), result[0], result[1]))

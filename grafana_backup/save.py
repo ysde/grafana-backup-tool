@@ -5,6 +5,8 @@ from grafana_backup.save_folders import main as save_folders
 from grafana_backup.save_alert_channels import main as save_alert_channels
 from grafana_backup.archive import main as archive
 from grafana_backup.s3_upload import main as s3_upload
+from grafana_backup.save_orgs import main as save_orgs
+from grafana_backup.save_users import main as save_users
 import sys
 
 
@@ -12,10 +14,12 @@ def main(args, settings):
     arg_components = args.get('--components', False)
     arg_no_archive = args.get('--no-archive', False)
 
-    backup_functions = { 'dashboards': save_dashboards,
-                         'datasources': save_datasources,
-                         'folders': save_folders,
-                         'alert-channels': save_alert_channels }
+    backup_functions = {'dashboards': save_dashboards,
+                        'datasources': save_datasources,
+                        'folders': save_folders,
+                        'alert-channels': save_alert_channels,
+                        'orgnaizations': save_orgs,
+                        'users': save_users}
 
     (status, json_resp, api_version) = api_checks(settings)
 
@@ -24,7 +28,7 @@ def main(args, settings):
         print("server status is not ok: {0}".format(json_resp))
         sys.exit(1)
 
-    settings.update( {'API_VERSION': api_version} )
+    settings.update({'API_VERSION': api_version})
 
     if arg_components:
         arg_components_list = arg_components.split(',')
@@ -43,4 +47,5 @@ def main(args, settings):
         archive(args, settings)
 
     if aws_s3_bucket_name:
+        print('Upload archives to S3:')
         s3_upload(args, settings)
