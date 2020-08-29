@@ -18,7 +18,7 @@ def main(args, settings):
                         'datasources': save_datasources,
                         'folders': save_folders,
                         'alert-channels': save_alert_channels,
-                        'orgnaizations': save_orgs,
+                        'organizations': save_orgs,
                         'users': save_users}
 
     (status, json_resp, api_version) = api_checks(settings)
