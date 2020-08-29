@@ -10,23 +10,20 @@ def main(args, settings):
     timestamp = settings.get('TIMESTAMP')
     limit = settings.get('SEARCH_API_LIMIT')
     grafana_url = settings.get('GRAFANA_URL')
-    http_get_headers = settings.get('HTTP_GET_HEADERS')
+    http_get_headers_basic_auth = settings.get('HTTP_GET_HEADERS_BASIC_AUTH')
     verify_ssl = settings.get('VERIFY_SSL')
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     api_version = settings.get('API_VERSION')
 
-    basic_auth = settings.get('GRAFANA_BASIC_AUTH')
-    if basic_auth:
-        http_get_headers.update({'Authorization': 'Basic {0}'.format(basic_auth)})
-
+    if http_get_headers_basic_auth:
         folder_path = '{0}/users/{1}'.format(backup_dir, timestamp)
         log_file = 'users_{0}.txt'.format(timestamp)
 
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
-        save_users(folder_path, log_file, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+        save_users(folder_path, log_file, limit, grafana_url, http_get_headers_basic_auth, verify_ssl, client_cert, debug)
     else:
         print('[ERROR] Backing up users needs to set ENV GRAFANA_ADMIN_ACCOUNT and GRAFANA_ADMIN_PASSWORD first. \n')
         print_horizontal_line()

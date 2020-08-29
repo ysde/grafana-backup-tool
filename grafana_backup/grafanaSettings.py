@@ -74,11 +74,19 @@ def main(config_path):
     config_dict['GRAFANA_ADMIN_PASSWORD'] = ADMIN_PASSWORD
 
     if not GRAFANA_BASIC_AUTH and (ADMIN_ACCOUNT and ADMIN_PASSWORD):
-        config_dict['GRAFANA_BASIC_AUTH'] = base64.b64encode(
+        GRAFANA_BASIC_AUTH = base64.b64encode(
             "{0}:{1}".format(ADMIN_ACCOUNT, ADMIN_PASSWORD).encode('utf8')
         ).decode('utf8')
+
+    if GRAFANA_BASIC_AUTH:
+        HTTP_GET_HEADERS_BASIC_AUTH = HTTP_GET_HEADERS.copy()
+        HTTP_GET_HEADERS_BASIC_AUTH.update({'Authorization': 'Basic {0}'.format(GRAFANA_BASIC_AUTH)})
+        HTTP_POST_HEADERS_BASIC_AUTH = HTTP_POST_HEADERS.copy()
+        HTTP_POST_HEADERS_BASIC_AUTH.update({'Authorization': 'Basic {0}'.format(GRAFANA_BASIC_AUTH)})
+
     else:
-        config_dict['GRAFANA_BASIC_AUTH'] = None
+        HTTP_GET_HEADERS_BASIC_AUTH = None
+        HTTP_POST_HEADERS_BASIC_AUTH = None
 
     config_dict['TOKEN'] = TOKEN
     config_dict['SEARCH_API_LIMIT'] = SEARCH_API_LIMIT
@@ -89,6 +97,8 @@ def main(config_path):
     config_dict['EXTRA_HEADERS'] = EXTRA_HEADERS
     config_dict['HTTP_GET_HEADERS'] = HTTP_GET_HEADERS
     config_dict['HTTP_POST_HEADERS'] = HTTP_POST_HEADERS
+    config_dict['HTTP_GET_HEADERS_BASIC_AUTH'] = HTTP_GET_HEADERS_BASIC_AUTH
+    config_dict['HTTP_POST_HEADERS_BASIC_AUTH'] = HTTP_POST_HEADERS_BASIC_AUTH
     config_dict['TIMESTAMP'] = TIMESTAMP
     config_dict['AWS_S3_BUCKET_NAME'] = AWS_S3_BUCKET_NAME
     config_dict['AWS_S3_BUCKET_KEY'] = AWS_S3_BUCKET_KEY
