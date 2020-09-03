@@ -40,7 +40,7 @@ def get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl,
 def save_alert_channel(channel_name, file_name, alert_channel_setting, folder_path):
     file_path = folder_path + '/' + str(file_name) + '.alert_channel'
     with open(file_path, 'w') as f:
-        f.write(json.dumps(alert_channel_setting))
+        f.write(json.dumps(alert_channel_setting, sort_keys=True, indent=4, separators=(',', ': ')))
     print("alert_channel:{0} is saved to {1}".format(channel_name, file_path))
 
 

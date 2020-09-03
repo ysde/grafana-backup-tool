@@ -26,7 +26,7 @@ def main(args, settings):
 def save_datasource(file_name, datasource_setting, folder_path):
     file_path = folder_path + '/' + file_name + '.datasource'
     with open(file_path, 'w') as f:
-        f.write(json.dumps(datasource_setting))
+        f.write(json.dumps(datasource_setting, sort_keys=True, indent=4, separators=(',', ': ')))
         print("datasource:{0} is saved to {1}".format(file_name, file_path))
 
 

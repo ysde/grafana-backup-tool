@@ -49,7 +49,7 @@ def save_org_info(org_name, file_name, dashboard_settings, folder_path):
     file_path = folder_path + '/' + file_name + '.organization'
     print(dashboard_settings)
     with open(u"{0}".format(file_path), 'w') as f:
-        f.write(json.dumps(dashboard_settings))
+        f.write(json.dumps(dashboard_settings), sort_keys=True, indent=4, separators=(',', ': '))
     print("org: {0} -> saved to: {1}".format(org_name, file_path))
 
 

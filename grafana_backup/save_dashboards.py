@@ -50,7 +50,7 @@ def save_dashboard_setting(dashboard_name, file_name, dashboard_settings, folder
     file_path = folder_path + '/' + file_name + '.dashboard'
     print(dashboard_settings)
     with open(u"{0}".format(file_path), 'w') as f:
-        f.write(json.dumps(dashboard_settings))
+        f.write(json.dumps(dashboard_settings, sort_keys=True, indent=4, separators=(',', ': ')))
     print("dashboard: {0} -> saved to: {1}".format(dashboard_name, file_path))
 
 

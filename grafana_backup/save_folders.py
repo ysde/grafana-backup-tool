@@ -43,7 +43,7 @@ def get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, client
 def save_folder_setting(folder_name, file_name, folder_settings, folder_path):
     file_path = folder_path + '/' + file_name + '.folder'
     with open(file_path, 'w') as f:
-        f.write(json.dumps(folder_settings))
+        f.write(json.dumps(folder_settings, sort_keys=True, indent=4, separators=(',', ': ')))
     print("folder:{0} are saved to {1}".format(folder_name, file_path))
 
 

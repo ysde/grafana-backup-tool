@@ -50,7 +50,7 @@ def get_all_users(page, limit, grafana_url, http_get_headers, verify_ssl, client
 def save_user_info(user_name, file_name, user_data, folder_path):
     file_path = folder_path + '/' + file_name + '.user'
     with open(u"{0}".format(file_path), 'w') as f:
-        f.write(json.dumps(user_data))
+        f.write(json.dumps(user_data), sort_keys=True, indent=4, separators=(',', ': '))
     print("user: {0} -> saved to: {1}".format(user_name, file_path))
 
 
