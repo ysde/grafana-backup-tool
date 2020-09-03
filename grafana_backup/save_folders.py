@@ -6,6 +6,7 @@ from grafana_backup.commons import to_python2_and_3_compatible_string, print_hor
 
 def main(args, settings):
     backup_dir = settings.get('BACKUP_DIR')
+    timestamp_output = settings.get('TIMESTAMP_OUTPUT')
     timestamp = settings.get('TIMESTAMP')
     grafana_url = settings.get('GRAFANA_URL')
     http_get_headers = settings.get('HTTP_GET_HEADERS')
@@ -13,8 +14,12 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
 
-    folder_path = '{0}/folders/{1}'.format(backup_dir, timestamp)
-    log_file = 'folders_{0}.txt'.format(timestamp)
+    if timestamp_output:
+        folder_path = '{0}/folders/{1}'.format(backup_dir, timestamp)
+        log_file = 'folders_{0}.txt'.format(timestamp)
+    else:
+        folder_path = '{0}/folders'.format(backup_dir)
+        log_file = 'folders.txt'
 
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)

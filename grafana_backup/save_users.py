@@ -7,6 +7,7 @@ from grafana_backup.commons import to_python2_and_3_compatible_string, print_hor
 
 def main(args, settings):
     backup_dir = settings.get('BACKUP_DIR')
+    timestamp_output = settings.get('TIMESTAMP_OUTPUT')
     timestamp = settings.get('TIMESTAMP')
     limit = settings.get('SEARCH_API_LIMIT')
     grafana_url = settings.get('GRAFANA_URL')
@@ -17,8 +18,12 @@ def main(args, settings):
     api_version = settings.get('API_VERSION')
 
     if http_get_headers_basic_auth:
-        folder_path = '{0}/users/{1}'.format(backup_dir, timestamp)
-        log_file = 'users_{0}.txt'.format(timestamp)
+        if timestamp_output:
+            folder_path = '{0}/users/{1}'.format(backup_dir, timestamp)
+            log_file = 'users_{0}.txt'.format(timestamp)
+        else:
+            folder_path = '{0}/users'.format(backup_dir)
+            log_file = 'users.txt'
 
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)

@@ -8,11 +8,13 @@ from grafana_backup.s3_upload import main as s3_upload
 from grafana_backup.save_orgs import main as save_orgs
 from grafana_backup.save_users import main as save_users
 import sys
-
+import os.path
+from os import path
+import shutil
 
 def main(args, settings):
     arg_components = args.get('--components', False)
-    arg_no_archive = args.get('--no-archive', False)
+    arg_no_archive = args.get('--no-archive', False) or (not settings.get('ARCHIVE_OUTPUT'))
 
     backup_functions = {'dashboards': save_dashboards,
                         'datasources': save_datasources,
@@ -29,6 +31,13 @@ def main(args, settings):
         sys.exit(1)
 
     settings.update({'API_VERSION': api_version})
+
+    if settings.get('TIMESTAMP_OUTPUT') == False:
+        ## If we are not timestamping outputs, we should delete any existing output files before generating new ones
+        backup_dir = settings.get('BACKUP_DIR')
+        if path.exists(backup_dir):
+            print("{0} exists - deleting before creating new non-timestamped backup.".format(backup_dir))
+            shutil.rmtree(backup_dir)
 
     if arg_components:
         arg_components_list = arg_components.split(',')
