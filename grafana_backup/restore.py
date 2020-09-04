@@ -7,7 +7,7 @@ from grafana_backup.create_alert_channel import main as create_alert_channel
 from grafana_backup.create_user import main as create_user
 from grafana_backup.s3_download import main as s3_download
 from glob import glob
-import sys, tarfile, tempfile
+import sys, tarfile, tempfile, os
 
 
 def main(args, settings):
@@ -30,6 +30,16 @@ def main(args, settings):
         except Exception as e:
             print(str(e))
             sys.exit(1)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tar.extractall(tmpdir)
+            tar.close()
+            restore_from_dir(args, arg_components, settings, tmpdir)
+
+    # If the archive file given is actually an already untarred (or never tarred) directory...
+    elif os.path.isdir(arg_archive_file) and os.path.exists(arg_archive_file):
+        restore_from_dir(args, arg_components, settings, arg_archive_file)
+
     else:
         try:
             tarfile.is_tarfile(name=arg_archive_file)
@@ -42,29 +52,28 @@ def main(args, settings):
             print(str(e))
             sys.exit(1)
 
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tar.extractall(tmpdir)
-        tar.close()
 
-        restore_functions = { 'folder': create_folder,
-                              'datasource': create_datasource,
-                              'dashboard': create_dashboard,
-                              'alert_channel': create_alert_channel,
-                              'organization': create_org,
-                              'user': create_user}
+def restore_from_dir(args, arg_components, settings, restore_dir):
 
-        if arg_components:
-            arg_components_list = arg_components.split(',')
+    restore_functions = { 'folder': create_folder,
+                            'datasource': create_datasource,
+                            'dashboard': create_dashboard,
+                            'alert_channel': create_alert_channel,
+                            'organization': create_org,
+                            'user': create_user}
 
-            # Restore only the components that provided via an argument
-            # but must also exist in extracted archive
-            for ext in arg_components_list:
-                for file_path in glob('{0}/**/*.{1}'.format(tmpdir, ext[:-1]), recursive=True):
-                    print('restoring {0}: {1}'.format(ext, file_path))
-                    restore_functions[ext[:-1]](args, settings, file_path)
-        else:
-            # Restore every component included in extracted archive
-            for ext in restore_functions.keys():
-                for file_path in glob('{0}/**/*.{1}'.format(tmpdir, ext), recursive=True):
-                    print('restoring {0}: {1}'.format(ext, file_path))
-                    restore_functions[ext](args, settings, file_path)
+    if arg_components:
+        arg_components_list = arg_components.split(',')
+
+        # Restore only the components that provided via an argument
+        # but must also exist in extracted archive
+        for ext in arg_components_list:
+            for file_path in glob('{0}/**/*.{1}'.format(restore_dir, ext[:-1]), recursive=True):
+                print('restoring {0}: {1}'.format(ext, file_path))
+                restore_functions[ext[:-1]](args, settings, file_path)
+    else:
+        # Restore every component included in extracted archive
+        for ext in restore_functions.keys():
+            for file_path in glob('{0}/**/*.{1}'.format(restore_dir, ext), recursive=True):
+                print('restoring {0}: {1}'.format(ext, file_path))
+                restore_functions[ext](args, settings, file_path)

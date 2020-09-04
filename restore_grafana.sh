@@ -7,11 +7,11 @@ trap 'echo -ne "\n:::\n:::\tCaught signal, exiting at line $LINENO, while runnin
 archive_file="$1"
 settings_file="${2:-grafanaSettings.json}"
 
-if [[ ! -f "${archive_file}" || ! -f "${settings_file}" ]]; then
+if [[ (! -f "${archive_file}" && ! -d "${archive_file}" ) || ! -f "${settings_file}" ]]; then
 	echo "Usage:"
 	echo -e "\t$0 <path_to_archive_file> <path_to_settings_file>"
 	echo -e "\te.g. $0 '_OUTPUT_/2019-05-13T11-04-33.tar.gz' '/path/to/grafanaSettings.json'"
 	exit 1
 fi
 
-python -m grafana_backup.cli --config $settings_file restore $archive_file
+python3 -m grafana_backup.cli --config $settings_file restore $archive_file
