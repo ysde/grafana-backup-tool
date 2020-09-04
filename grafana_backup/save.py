@@ -33,11 +33,16 @@ def main(args, settings):
     settings.update({'API_VERSION': api_version})
 
     if settings.get('TIMESTAMP_OUTPUT') == False:
-        ## If we are not timestamping outputs, we should delete any existing output files before generating new ones
+        # If we are not timestamping outputs, we should delete any existing output files before generating new ones
+        # However we don't want to just delete the whole directory since there may be, e.g. a .git directory in there
         backup_dir = settings.get('BACKUP_DIR')
-        if path.exists(backup_dir):
-            print("{0} exists - deleting before creating new non-timestamped backup.".format(backup_dir))
-            shutil.rmtree(backup_dir)
+        print("{0} exists - deleting contents before creating new non-timestamped backup.".format(backup_dir))
+        # Special-case /alert_channels vs alert-channels in the backup_functions list
+        if path.exists(backup_dir + '/alert_channels' ):
+            shutil.rmtree(backup_dir + '/alert_channels')
+        for subdir in backup_functions.keys():
+            if path.exists(backup_dir + '/' + subdir ):
+                shutil.rmtree(backup_dir + '/' + subdir)
 
     if arg_components:
         arg_components_list = arg_components.split(',')
