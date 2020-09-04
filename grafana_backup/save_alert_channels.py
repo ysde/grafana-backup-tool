@@ -1,7 +1,7 @@
 import os
 import json
 from grafana_backup.dashboardApi import search_alert_channels
-from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line
+from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
 
 def main(args, settings):
@@ -12,6 +12,7 @@ def main(args, settings):
     verify_ssl = settings.get('VERIFY_SSL')
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
+    pretty_print = settings.get('PRETTY_PRINT')
 
     folder_path = '{0}/alert_channels/{1}'.format(backup_dir, timestamp)
     log_file = 'alert_channels_{0}.txt'.format(timestamp)
@@ -20,7 +21,7 @@ def main(args, settings):
         os.makedirs(folder_path)
 
     alert_channels = get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-    get_individual_alert_channel_and_save(alert_channels, folder_path, log_file)
+    get_individual_alert_channel_and_save(alert_channels, folder_path, log_file, pretty_print)
     print_horizontal_line()
 
 
@@ -37,14 +38,12 @@ def get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl,
         return []
 
 
-def save_alert_channel(channel_name, file_name, alert_channel_setting, folder_path):
-    file_path = folder_path + '/' + str(file_name) + '.alert_channel'
-    with open(file_path, 'w') as f:
-        f.write(json.dumps(alert_channel_setting, sort_keys=True, indent=4, separators=(',', ': ')))
+def save_alert_channel(channel_name, file_name, alert_channel_setting, folder_path, pretty_print):
+    file_path = save_json(file_name, alert_channel_setting, folder_path, 'alert_channel', pretty_print)
     print("alert_channel:{0} is saved to {1}".format(channel_name, file_path))
 
 
-def get_individual_alert_channel_and_save(channels, folder_path, log_file):
+def get_individual_alert_channel_and_save(channels, folder_path, log_file, pretty_print):
     file_path = folder_path + '/' + log_file
     if channels:
         with open(u"{0}".format(file_path), 'w') as f:
@@ -58,7 +57,8 @@ def get_individual_alert_channel_and_save(channels, folder_path, log_file):
                     to_python2_and_3_compatible_string(channel['name']),
                     to_python2_and_3_compatible_string(str(channel_identifier)),
                     channel,
-                    folder_path
+                    folder_path,
+                    pretty_print
                 )
                 f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(channel_identifier)),
                                             to_python2_and_3_compatible_string(channel['name'])))
