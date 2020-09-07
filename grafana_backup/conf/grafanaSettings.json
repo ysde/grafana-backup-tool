@@ -3,7 +3,7 @@
     "debug": true,
     "verify_ssl": true,
     "backup_dir": "_OUTPUT_",
-	"pretty_print": false
+    "pretty_print": false
   },
   "grafana": {
     "url": "http://localhost:3000",
