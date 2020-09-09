@@ -4,7 +4,8 @@
     "verify_ssl": true,
     "backup_dir": "_OUTPUT_",
     "archive":  true,
-    "timestamp_backups": true
+    "timestamp_backups": true,
+    "pretty_print": false
   },
   "grafana": {
     "url": "http://localhost:3000",

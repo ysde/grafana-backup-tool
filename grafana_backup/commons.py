@@ -39,3 +39,14 @@ def load_config(path=None):
         sys.exit(2)
 
     return config
+
+
+def save_json(file_name, data, folder_path, extension, pretty_print):
+    file_path = folder_path + '/' + file_name + '.' + extension
+    with open(u"{0}".format(file_path), 'w') as f:
+        if pretty_print:
+            f.write(json.dumps(data, sort_keys=True, indent=4, separators=(',', ': ')))
+        else:
+            f.write(json.dumps(data))
+    # Return file_path for showing in the console message
+    return file_path

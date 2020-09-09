@@ -2,7 +2,7 @@ import os
 import json
 from grafana_backup.dashboardApi import get_dashboard, search_users, get_user_org, get_user
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, \
-    left_ver_newer_than_right_ver
+    left_ver_newer_than_right_ver, save_json
 
 
 def main(args, settings):
@@ -16,6 +16,7 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     api_version = settings.get('API_VERSION')
+    pretty_print = settings.get('PRETTY_PRINT')
 
     if http_get_headers_basic_auth:
         if timestamp_output:
@@ -28,7 +29,7 @@ def main(args, settings):
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
-        save_users(folder_path, log_file, limit, grafana_url, http_get_headers_basic_auth, verify_ssl, client_cert, debug)
+        save_users(folder_path, log_file, limit, grafana_url, http_get_headers_basic_auth, verify_ssl, client_cert, debug, pretty_print)
     else:
         print('[ERROR] Backing up users needs to set ENV GRAFANA_ADMIN_ACCOUNT and GRAFANA_ADMIN_PASSWORD first. \n')
         print_horizontal_line()
@@ -52,15 +53,13 @@ def get_all_users(page, limit, grafana_url, http_get_headers, verify_ssl, client
         return []
 
 
-def save_user_info(user_name, file_name, user_data, folder_path):
-    file_path = folder_path + '/' + file_name + '.user'
-    with open(u"{0}".format(file_path), 'w') as f:
-        f.write(json.dumps(user_data))
+def save_user_info(user_name, file_name, user_data, folder_path, pretty_print):
+    file_path = save_json(file_name, user_data, folder_path, 'user', pretty_print)
     print("user: {0} -> saved to: {1}".format(user_name, file_path))
 
 
 def get_individual_user_and_save(users, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert,
-                                 debug):
+                                 debug, pretty_print):
     file_path = folder_path + '/' + log_file
     if users:
         with open(u"{0}".format(file_path), 'w') as f:
@@ -77,7 +76,8 @@ def get_individual_user_and_save(users, folder_path, log_file, grafana_url, http
                     to_python2_and_3_compatible_string(user['name']),
                     str(user['id']),
                     user,
-                    folder_path
+                    folder_path,
+                    pretty_print
                 )
                 f.write('{0}\t{1}\n'.format(user['id'], to_python2_and_3_compatible_string(user['name'])))
 
@@ -87,5 +87,5 @@ def save_users(folder_path, log_file, limit, grafana_url, http_get_headers, veri
     users = get_all_users(current_page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     print_horizontal_line()
     get_individual_user_and_save(users, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert,
-                                 debug)
+                                 debug, pretty_print)
     print_horizontal_line()
