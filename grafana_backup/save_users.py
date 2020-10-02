@@ -77,7 +77,7 @@ def get_individual_user_and_save(users, folder_path, log_file, grafana_url, http
                 f.write('{0}\t{1}\n'.format(user['id'], to_python2_and_3_compatible_string(user['name'])))
 
 
-def save_users(folder_path, log_file, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+def save_users(folder_path, log_file, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print):
     current_page = 1
     users = get_all_users(current_page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     print_horizontal_line()
