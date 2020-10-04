@@ -116,6 +116,8 @@ sudo chown 1337:1337 /tmp/backup
 docker run --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \
            -e GRAFANA_URL={YOUR_GRAFANA_URL} \
+           -e GRAFANA_ADMIN_ACCOUNT={YOUR_GRAFANA_ADMIN_ACCOUNT} \
+           -e GRAFANA_ADMIN_PASSWORD={YOUR_GRAFANA_ADMIN_PASSWORD} \
            -e VERIFY_SSL={True/False} \
            -e AWS_S3_BUCKET_NAME={OPTIONALLY_UPLOAD_TO_S3_BUCKET} \
            -e AWS_S3_BUCKET_KEY={YOUR_S3_BUCKET_KEY} \
@@ -132,6 +134,8 @@ docker run --rm --name grafana-backup-tool \
 docker run --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN="eyJrIjoiNGZqTDEyeXNaY0RsMXNhbkNTSnlKN2M3bE1VeHdqVTEiLCJuIjoiZ3JhZmFuYS1iYWNrdXAiLCJpZCI6MX0=" \
            -e GRAFANA_URL=http://192.168.0.79:3000 \
+           -e GRAFANA_ADMIN_ACCOUNT=admin \
+           -e GRAFANA_ADMIN_PASSWORD=adminpassword \
            -e VERIFY_SSL=False \
            -e AWS_S3_BUCKET_NAME="my-backups-bucket" \
            -e AWS_S3_BUCKET_KEY="grafana-backup-folder" \
@@ -149,6 +153,8 @@ docker run --rm --name grafana-backup-tool \
 docker run --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \
            -e GRAFANA_URL={YOUR_GRAFANA_URL} \
+           -e GRAFANA_ADMIN_ACCOUNT={YOUR_GRAFANA_ADMIN_ACCOUNT} \
+           -e GRAFANA_ADMIN_PASSWORD={YOUR_GRAFANA_ADMIN_PASSWORD} \
            -e VERIFY_SSL={True/False} \
            -e RESTORE="true" \
            -e ARCHIVE_FILE={THE_ARCHIVED_FILE_NAME} \
@@ -162,6 +168,8 @@ docker run --rm --name grafana-backup-tool \
 docker run --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN="eyJrIjoiNGZqTDEyeXNaY0RsMXNhbkNTSnlKN2M3bE1VeHdqVTEiLCJuIjoiZ3JhZmFuYS1iYWNrdXAiLCJpZCI6MX0=" \
            -e GRAFANA_URL=http://192.168.0.79:3000 \
+           -e GRAFANA_ADMIN_ACCOUNT=admin \
+           -e GRAFANA_ADMIN_PASSWORD=adminpassword \
            -e VERIFY_SSL=False \
            -e RESTORE="true" \
            -e ARCHIVE_FILE="202006280247.tar.gz" \
