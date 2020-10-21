@@ -1,8 +1,10 @@
 import base64
-
-from grafana_backup.commons import load_config, to_python2_and_3_compatible_string
+import json
+import os
 from datetime import datetime
-import os, json
+
+from grafana_backup.commons import (load_config,
+                                    to_python2_and_3_compatible_string)
 
 
 def main(config_path):
@@ -28,6 +30,7 @@ def main(config_path):
     aws_default_region = config.get('aws', {}).get('default_region', '')
     aws_access_key_id = config.get('aws', {}).get('access_key_id', '')
     aws_secret_access_key = config.get('aws', {}).get('secret_access_key', '')
+    aws_endpoint_url = config.get('aws', {}).get('endpoint_url', None)
 
     admin_account = config.get('grafana', {}).get('admin_account', '')
     admin_password = config.get('grafana', {}).get('admin_password', '')
@@ -41,6 +44,7 @@ def main(config_path):
     AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION', aws_default_region)
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', aws_access_key_id)
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', aws_secret_access_key)
+    AWS_ENDPOINT_URL = os.getenv('AWS_ENDPOINT_URL', aws_endpoint_url)
 
     ADMIN_ACCOUNT = os.getenv('GRAFANA_ADMIN_ACCOUNT', admin_account)
     ADMIN_PASSWORD = os.getenv('GRAFANA_ADMIN_PASSWORD', admin_password)
@@ -111,5 +115,6 @@ def main(config_path):
     config_dict['AWS_DEFAULT_REGION'] = AWS_DEFAULT_REGION
     config_dict['AWS_ACCESS_KEY_ID'] = AWS_ACCESS_KEY_ID
     config_dict['AWS_SECRET_ACCESS_KEY'] = AWS_SECRET_ACCESS_KEY
+    config_dict['AWS_ENDPOINT_URL'] = AWS_ENDPOINT_URL
 
     return config_dict
