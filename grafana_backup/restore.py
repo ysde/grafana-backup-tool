@@ -7,12 +7,11 @@ from grafana_backup.create_alert_channel import main as create_alert_channel
 from grafana_backup.create_user import main as create_user
 from grafana_backup.s3_download import main as s3_download
 from glob import glob
-import sys, tarfile, tempfile
+import sys, tarfile, tempfile, os, shutil, fnmatch
 
 
 def main(args, settings):
     arg_archive_file = args.get('<archive_file>', None)
-    arg_components = args.get('--components', False)
     aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
 
     (status, json_resp, api_version) = api_checks(settings)
@@ -42,29 +41,59 @@ def main(args, settings):
             print(str(e))
             sys.exit(1)
 
-    with tempfile.TemporaryDirectory() as tmpdir:
+    restore_functions = { 'folder': create_folder,
+                          'datasource': create_datasource,
+                          'dashboard': create_dashboard,
+                          'alert_channel': create_alert_channel,
+                          'organization': create_org,
+                          'user': create_user}
+
+    if sys.version_info >= (3,):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tar.extractall(tmpdir)
+            tar.close()
+            restore_components(args, settings, restore_functions, tmpdir)
+            tmpdir.cleanup()
+    else:
+        tmpdir = tempfile.mkdtemp()
         tar.extractall(tmpdir)
         tar.close()
+        restore_components(args, settings, restore_functions, tmpdir)
+        try:
+            shutil.rmtree(tmpdir)
+        except OSError as e:
+            print("Error: %s : %s" % (tmpdir, e.strerror))
 
-        restore_functions = { 'folder': create_folder,
-                              'datasource': create_datasource,
-                              'dashboard': create_dashboard,
-                              'alert_channel': create_alert_channel,
-                              'organization': create_org,
-                              'user': create_user}
 
-        if arg_components:
-            arg_components_list = arg_components.split(',')
+def restore_components(args, settings, restore_functions, tmpdir):
+    arg_components = args.get('--components', False)
 
-            # Restore only the components that provided via an argument
-            # but must also exist in extracted archive
-            for ext in arg_components_list:
+    if arg_components:
+        arg_components_list = arg_components.split(',')
+
+        # Restore only the components that provided via an argument
+        # but must also exist in extracted archive
+        for ext in arg_components_list:
+            if sys.version_info >= (3,):
                 for file_path in glob('{0}/**/*.{1}'.format(tmpdir, ext[:-1]), recursive=True):
                     print('restoring {0}: {1}'.format(ext, file_path))
                     restore_functions[ext[:-1]](args, settings, file_path)
-        else:
-            # Restore every component included in extracted archive
-            for ext in restore_functions.keys():
+            else:
+                for root, dirnames, filenames in os.walk('{0}'.format(tmpdir)):
+                    for filename in fnmatch.filter(filenames, '*.{0}'.format(ext[:-1])):
+                        file_path = os.path.join(root, filename)
+                        print('restoring {0}: {1}'.format(ext, file_path))
+                        restore_functions[ext[:-1]](args, settings, file_path)
+    else:
+        # Restore every component included in extracted archive
+        for ext in restore_functions.keys():
+            if sys.version_info >= (3,):
                 for file_path in glob('{0}/**/*.{1}'.format(tmpdir, ext), recursive=True):
                     print('restoring {0}: {1}'.format(ext, file_path))
                     restore_functions[ext](args, settings, file_path)
+            else:
+                for root, dirnames, filenames in os.walk('{0}'.format(tmpdir)):
+                    for filename in fnmatch.filter(filenames, '*.{0}'.format(ext)):
+                        file_path = os.path.join(root, filename)
+                        print('restoring {0}: {1}'.format(ext, file_path))
+                        restore_functions[ext](args, settings, file_path)
