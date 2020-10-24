@@ -23,6 +23,7 @@ def main(config_path):
     client_cert = config.get('general', {}).get('client_cert', None)
     backup_dir = config.get('general', {}).get('backup_dir', '_OUTPUT_')
     backup_file_format = config.get('general', {}).get('backup_file_format', '%Y%m%d%H%M')
+    pretty_print = config.get('general', {}).get('pretty_print', False)
     aws_s3_bucket_name = config.get('aws', {}).get('s3_bucket_name', '')
     aws_s3_bucket_key = config.get('aws', {}).get('s3_bucket_key', '')
     aws_default_region = config.get('aws', {}).get('default_region', '')
@@ -58,6 +59,10 @@ def main(config_path):
 
     BACKUP_DIR = os.getenv('BACKUP_DIR', backup_dir)
 
+    PRETTY_PRINT = os.getenv('PRETTY_PRINT', pretty_print)
+    if isinstance(PRETTY_PRINT, str):
+        PRETTY_PRINT = json.loads(PRETTY_PRINT.lower())  # convert environment variable string to bool
+
     EXTRA_HEADERS = dict(
         h.split(':') for h in os.getenv('GRAFANA_HEADERS', '').split(',') if 'GRAFANA_HEADERS' in os.environ)
 
@@ -75,11 +80,19 @@ def main(config_path):
     config_dict['GRAFANA_ADMIN_PASSWORD'] = ADMIN_PASSWORD
 
     if not GRAFANA_BASIC_AUTH and (ADMIN_ACCOUNT and ADMIN_PASSWORD):
-        config_dict['GRAFANA_BASIC_AUTH'] = base64.b64encode(
+        GRAFANA_BASIC_AUTH = base64.b64encode(
             "{0}:{1}".format(ADMIN_ACCOUNT, ADMIN_PASSWORD).encode('utf8')
         ).decode('utf8')
+
+    if GRAFANA_BASIC_AUTH:
+        HTTP_GET_HEADERS_BASIC_AUTH = HTTP_GET_HEADERS.copy()
+        HTTP_GET_HEADERS_BASIC_AUTH.update({'Authorization': 'Basic {0}'.format(GRAFANA_BASIC_AUTH)})
+        HTTP_POST_HEADERS_BASIC_AUTH = HTTP_POST_HEADERS.copy()
+        HTTP_POST_HEADERS_BASIC_AUTH.update({'Authorization': 'Basic {0}'.format(GRAFANA_BASIC_AUTH)})
+
     else:
-        config_dict['GRAFANA_BASIC_AUTH'] = None
+        HTTP_GET_HEADERS_BASIC_AUTH = None
+        HTTP_POST_HEADERS_BASIC_AUTH = None
 
     config_dict['TOKEN'] = TOKEN
     config_dict['SEARCH_API_LIMIT'] = SEARCH_API_LIMIT
@@ -87,9 +100,12 @@ def main(config_path):
     config_dict['VERIFY_SSL'] = VERIFY_SSL
     config_dict['CLIENT_CERT'] = CLIENT_CERT
     config_dict['BACKUP_DIR'] = BACKUP_DIR
+    config_dict['PRETTY_PRINT'] = PRETTY_PRINT
     config_dict['EXTRA_HEADERS'] = EXTRA_HEADERS
     config_dict['HTTP_GET_HEADERS'] = HTTP_GET_HEADERS
     config_dict['HTTP_POST_HEADERS'] = HTTP_POST_HEADERS
+    config_dict['HTTP_GET_HEADERS_BASIC_AUTH'] = HTTP_GET_HEADERS_BASIC_AUTH
+    config_dict['HTTP_POST_HEADERS_BASIC_AUTH'] = HTTP_POST_HEADERS_BASIC_AUTH
     config_dict['TIMESTAMP'] = TIMESTAMP
     config_dict['AWS_S3_BUCKET_NAME'] = AWS_S3_BUCKET_NAME
     config_dict['AWS_S3_BUCKET_KEY'] = AWS_S3_BUCKET_KEY

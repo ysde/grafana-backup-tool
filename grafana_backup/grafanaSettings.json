@@ -1,0 +1,18 @@
+{
+  "general": {
+    "debug": true,
+    "verify_ssl": true,
+    "backup_dir": "_OUTPUT_",
+    "backup_file_format": "%Y%m%d%H%M",
+    "pretty_print": false
+  },
+  "grafana": {
+    "url": "http://localhost:3000",
+    "token": "",
+    "search_api_limit": 5000,
+    "default_password": "00000000",
+    "admin_account": "",
+    "admin_password": ""
+  }
+}
+
