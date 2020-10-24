@@ -8,7 +8,7 @@
   },
   "grafana": {
     "url": "http://localhost:3000",
-    "token": ""
+    "token": "",
     "search_api_limit": 5000,
     "default_password": "00000000",
     "admin_account": "",
