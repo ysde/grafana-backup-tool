@@ -8,6 +8,7 @@ def main(args, settings):
     aws_default_region = settings.get('AWS_DEFAULT_REGION')
     aws_access_key_id = settings.get('AWS_ACCESS_KEY_ID')
     aws_secret_access_key = settings.get('AWS_SECRET_ACCESS_KEY')
+    aws_endpoint_url = settings.get('AWS_ENDPOINT_URL')
 
     backup_dir = settings.get('BACKUP_DIR')
     timestamp = settings.get('TIMESTAMP')
@@ -21,7 +22,10 @@ def main(args, settings):
         region_name=aws_default_region
     )
 
-    s3 = session.resource('s3')
+    s3 = session.resource(
+        service_name='s3',
+        endpoint_url=aws_endpoint_url
+    )
 
     s3_object = s3.Object(aws_s3_bucket_name, '{0}/{1}'.format(aws_s3_bucket_key, s3_file_name))
 
