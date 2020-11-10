@@ -69,8 +69,12 @@ def main(config_path):
     EXTRA_HEADERS = dict(
         h.split(':') for h in os.getenv('GRAFANA_HEADERS', '').split(',') if 'GRAFANA_HEADERS' in os.environ)
 
-    HTTP_GET_HEADERS = {'Authorization': 'Bearer ' + TOKEN}
-    HTTP_POST_HEADERS = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
+    if TOKEN:
+        HTTP_GET_HEADERS = {'Authorization': 'Bearer ' + TOKEN}
+        HTTP_POST_HEADERS = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
+    else:
+        HTTP_GET_HEADERS = {}
+        HTTP_POST_HEADERS = {'Content-Type': 'application/json'}
 
     for k, v in EXTRA_HEADERS.items():
         HTTP_GET_HEADERS.update({k: v})
@@ -92,7 +96,6 @@ def main(config_path):
         HTTP_GET_HEADERS_BASIC_AUTH.update({'Authorization': 'Basic {0}'.format(GRAFANA_BASIC_AUTH)})
         HTTP_POST_HEADERS_BASIC_AUTH = HTTP_POST_HEADERS.copy()
         HTTP_POST_HEADERS_BASIC_AUTH.update({'Authorization': 'Basic {0}'.format(GRAFANA_BASIC_AUTH)})
-
     else:
         HTTP_GET_HEADERS_BASIC_AUTH = None
         HTTP_POST_HEADERS_BASIC_AUTH = None
