@@ -1,8 +1,10 @@
-import json, sys, re, argparse
+import argparse
+import json
+
 from dashboardApi import *
 
 parser = argparse.ArgumentParser()
-parser.add_argument('path',  help='file path saved of folder\' setting')
+parser.add_argument('path', help='file path saved of folder\' setting')
 args = parser.parse_args()
 
 file_path = args.path

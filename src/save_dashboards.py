@@ -1,15 +1,18 @@
 import argparse
-from dashboardApi import *
-from commons import *
+import sys
 from datetime import datetime
 
+from commons import *
+from dashboardApi import *
+
 parser = argparse.ArgumentParser()
-parser.add_argument('path',  help='folder path to save dashboards')
+parser.add_argument('path', help='folder path to save dashboards')
 args = parser.parse_args()
 
 folder_path = args.path
 
 log_file = 'dashboards_{0}.txt'.format(datetime.today().strftime('%Y%m%d%H%M'))
+
 
 def get_all_dashboards_in_grafana(page, limit=SEARCH_API_LIMIT):
     (status, content) = search_dashboard(page, limit)
@@ -21,7 +24,7 @@ def get_all_dashboards_in_grafana(page, limit=SEARCH_API_LIMIT):
         return dashboards
     else:
         print("get dashboards failed, status: {0}, msg: {1}".format(status, content))
-        return []
+        sys.exit(1)
 
 
 def save_dashboard_setting(dashboard_name, file_name, dashboard_settings):
@@ -37,16 +40,17 @@ def get_indivisual_dashboard_setting_and_save(dashboards):
         (status, content) = get_dashboard(board['uri'])
         if status == 200:
             save_dashboard_setting(
-                to_python2_and_3_compatible_string(board['title']), 
-                board['uid'], 
+                to_python2_and_3_compatible_string(board['title']),
+                board['uid'],
                 content
             )
             file_path = folder_path + '/' + log_file
-            with open(u"{0}".format(file_path) , 'w+') as f:
+            with open(u"{0}".format(file_path), 'w+') as f:
                 f.write('{}\t{}'.format(board['uid'], to_python2_and_3_compatible_string(board['title'])))
 
+
 def save_dashboards_above_Ver6_2():
-    limit = 5000 # limit is 5000 above V6.2+
+    limit = 5000  # limit is 5000 above V6.2+
     current_page = 1
     while True:
         dashboards = get_all_dashboards_in_grafana(current_page, limit)
@@ -57,12 +61,14 @@ def save_dashboards_above_Ver6_2():
             current_page += 1
         get_indivisual_dashboard_setting_and_save(dashboards)
         print_horizontal_line()
-    
+
+
 def save_dashboards():
     dashboards = get_all_dashboards_in_grafana(1)
     print_horizontal_line()
     get_indivisual_dashboard_setting_and_save(dashboards)
     print_horizontal_line()
+
 
 (status, resp) = health_check()
 if status == 200:
@@ -73,3 +79,4 @@ if status == 200:
         save_dashboards()
 else:
     print("server status is not ok: {0}".format(resp))
+    sys.exit(1)

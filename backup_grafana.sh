@@ -7,7 +7,7 @@ trap 'echo -ne "\n:::\n:::\tCaught signal, exiting at line $LINENO, while runnin
 current_path=$(pwd)
 backup_dir="_OUTPUT_"
 timestamp=$(date +"%Y-%m-%dT%H-%M-%S")
-BACKUP_FOLDER="${CLUSTER_NAME}"
+BACKUP_FOLDER="${GRAFANABACKUP_FOLDER_NAME}"
 if [ -n "${GRAFANA_SERVICE_PORT}" ]; then
 	GRAFANA_URL="${GRAFANA_URL}:${GRAFANA_SERVICE_PORT}"
 fi

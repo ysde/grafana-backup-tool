@@ -1,10 +1,11 @@
 import argparse
-from dashboardApi import *
-from commons import *
 from datetime import datetime
 
+from commons import *
+from dashboardApi import *
+
 parser = argparse.ArgumentParser()
-parser.add_argument('path',  help='folder path to save datasources')
+parser.add_argument('path', help='folder path to save datasources')
 args = parser.parse_args()
 
 folder_path = args.path
@@ -27,9 +28,10 @@ def get_all_datasources_and_save():
             print(datasource)
             save_datasource(datasource['name'], datasource)
     else:
-        print("query datasource failed, status: {}, msg: {}".format(status_code_and_content[0], status_code_and_content[1]))
+        print("query datasource failed, status: {}, msg: {}".format(status_code_and_content[0],
+                                                                    status_code_and_content[1]))
+        sys.exit(1)
 
 
 datasources = get_all_datasources_and_save()
 print_horizontal_line()
-
