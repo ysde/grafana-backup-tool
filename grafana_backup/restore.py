@@ -53,7 +53,6 @@ def main(args, settings):
             tar.extractall(tmpdir)
             tar.close()
             restore_components(args, settings, restore_functions, tmpdir)
-            tmpdir.cleanup()
     else:
         tmpdir = tempfile.mkdtemp()
         tar.extractall(tmpdir)
