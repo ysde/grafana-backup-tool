@@ -24,6 +24,7 @@ def main(config_path):
     verify_ssl = config.get('general', {}).get('verify_ssl', False)
     client_cert = config.get('general', {}).get('client_cert', None)
     backup_dir = config.get('general', {}).get('backup_dir', '_OUTPUT_')
+    backup_file_format = config.get('general', {}).get('backup_file_format', '%Y%m%d%H%M')
     pretty_print = config.get('general', {}).get('pretty_print', False)
     aws_s3_bucket_name = config.get('aws', {}).get('s3_bucket_name', '')
     aws_s3_bucket_key = config.get('aws', {}).get('s3_bucket_key', '')
@@ -80,7 +81,7 @@ def main(config_path):
         HTTP_GET_HEADERS.update({k: v})
         HTTP_POST_HEADERS.update({k: v})
 
-    TIMESTAMP = datetime.today().strftime('%Y%m%d%H%M')
+    TIMESTAMP = datetime.today().strftime(backup_file_format)
 
     config_dict['GRAFANA_URL'] = GRAFANA_URL
     config_dict['GRAFANA_ADMIN_ACCOUNT'] = ADMIN_ACCOUNT
