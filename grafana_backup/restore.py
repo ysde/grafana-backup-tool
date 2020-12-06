@@ -7,7 +7,7 @@ from grafana_backup.create_alert_channel import main as create_alert_channel
 from grafana_backup.create_user import main as create_user
 from grafana_backup.s3_download import main as s3_download
 from glob import glob
-import sys, tarfile, tempfile, os, shutil, fnmatch
+import sys, tarfile, tempfile, os, shutil, fnmatch, collections
 
 
 def main(args, settings):
@@ -41,12 +41,13 @@ def main(args, settings):
             print(str(e))
             sys.exit(1)
 
-    restore_functions = { 'folder': create_folder,
-                          'datasource': create_datasource,
-                          'dashboard': create_dashboard,
-                          'alert_channel': create_alert_channel,
-                          'organization': create_org,
-                          'user': create_user}
+    restore_functions = collections.OrderedDict()
+    restore_functions['folder']        = create_folder
+    restore_functions['datasource']    = create_datasource
+    restore_functions['dashboard']     = create_dashboard
+    restore_functions['alert_channel'] = create_alert_channel
+    restore_functions['organization']  = create_org
+    restore_functions['user']          = create_user
 
     if sys.version_info >= (3,):
         with tempfile.TemporaryDirectory() as tmpdir:
