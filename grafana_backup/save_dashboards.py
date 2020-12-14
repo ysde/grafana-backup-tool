@@ -57,7 +57,8 @@ def get_individual_dashboard_setting_and_save(dashboards, folder_path, log_file,
     if dashboards:
         with open(u"{0}".format(file_path), 'w') as f:
             for board in dashboards:
-                (status, content) = get_dashboard(board['uri'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+                board_uri = "uid/{0}".format(board['uid'])
+                (status, content) = get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
                 if status == 200:
                     save_dashboard_setting(
                         to_python2_and_3_compatible_string(board['title']), 

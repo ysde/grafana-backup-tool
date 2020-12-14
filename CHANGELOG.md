@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-# [1.1.5] - 2020-12-06
+# [1.1.5] - 2020-12-13
 
 ### Added
 
@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #104 added python2 support to restore functions 
 - #105 add configuration attribute to set backup file name
 - #112 changed restore_functions to ordered dict
+- #113 [Fixed] Dashboards with same name in different folders not restored
 
 ### Removed
 - #110 remove useless cleanup method within tempfile
