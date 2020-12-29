@@ -21,14 +21,15 @@ def main(args, settings):
                         'organizations': save_orgs,
                         'users': save_users}
 
-    (status, json_resp, api_version) = api_checks(settings)
+    (status, json_resp, uid_support, paging_support) = api_checks(settings)
 
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:
         print("server status is not ok: {0}".format(json_resp))
         sys.exit(1)
 
-    settings.update({'API_VERSION': api_version})
+    settings.update({'UID_SUPPORT': uid_support})
+    settings.update({'PAGING_SUPPORT': paging_support})
 
     if arg_components:
         arg_components_list = arg_components.split(',')

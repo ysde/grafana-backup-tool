@@ -13,6 +13,7 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     pretty_print = settings.get('PRETTY_PRINT')
+    uid_support = settings.get('UID_SUPPORT')
 
     folder_path = '{0}/folders/{1}'.format(backup_dir, timestamp)
     log_file = 'folders_{0}.txt'.format(timestamp)
@@ -22,7 +23,7 @@ def main(args, settings):
 
     folders = get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     print_horizontal_line()
-    get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print)
+    get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support)
     print_horizontal_line()
 
 
@@ -46,17 +47,22 @@ def save_folder_setting(folder_name, file_name, folder_settings, folder_path, pr
     print("folder:{0} are saved to {1}".format(folder_name, file_path))
 
 
-def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print):
+def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support):
     file_path = folder_path + '/' + log_file
     with open(u"{0}".format(file_path), 'w+') as f:
         for folder in folders:
-            (status, content) = get_folder(folder['uid'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+            if uid_support:
+                folder_uri = "uid/{0}".format(folder['uid'])
+            else:
+                folder_uri = folder['uri']
+
+            (status, content) = get_folder(folder_uri, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
             if status == 200:
                 save_folder_setting(
                     to_python2_and_3_compatible_string(folder['title']), 
-                    folder['uid'],
+                    folder_uri,
                     content,
                     folder_path,
                     pretty_print
                 )
-                f.write('{0}\t{1}\n'.format(folder['uid'], to_python2_and_3_compatible_string(folder['title'])))
+                f.write('{0}\t{1}\n'.format(folder_uri, to_python2_and_3_compatible_string(folder['title'])))

@@ -14,6 +14,54 @@ def auth_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
 
 
+def uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    # Get first dashboard on first page
+    (status, content) = search_dashboard(1, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if status == 200 and len(content):
+        if 'uid' in content[0]:
+            uid_support = True
+        else:
+            uid_support = False
+        return uid_support
+    else:
+        if len(content):
+            return "get dashboards failed, status: {0}, msg: {1}".format(status, content)
+        else:
+            # No dashboards exist, disable uid feature
+            return False
+
+
+def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    # Get first dashboard on first page
+    (status, content) = search_dashboard(1, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if status == 200 and len(content):
+        dashboard_one_values = sorted(content[0].items(), key=lambda kv: str(kv[1]))
+    else:
+        if len(content):
+            return "get dashboards failed, status: {0}, msg: {1}".format(status, content)
+        else:
+            # No dashboards exist, disable paging feature
+            return False
+
+    # Get first dashboard on second page
+    (status, content) = search_dashboard(2, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if status == 200 and len(content):
+        dashboard_two_values = sorted(content[0].items(), key=lambda kv: str(kv[1]))
+    else:
+        if len(content):
+            return "get dashboards failed, status: {0}, msg: {1}".format(status, content)
+        else:
+            # No dashboards exist, disable paging feature
+            return False
+
+    if dashboard_one_values == dashboard_two_values:
+        paging_support = False
+    else:
+        paging_support = True
+
+    return paging_support
+
+
 def search_dashboard(page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     url = '{0}/api/search/?type=dash-db&limit={1}&page={2}'.format(grafana_url, limit, page)
     print("search dashboard in grafana: {0}".format(url))

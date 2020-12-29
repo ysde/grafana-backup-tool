@@ -1,8 +1,7 @@
 import os
 import json
 from grafana_backup.dashboardApi import get_dashboard, search_users, get_user_org, get_user
-from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, \
-    left_ver_newer_than_right_ver, save_json
+from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
 
 def main(args, settings):
@@ -14,7 +13,6 @@ def main(args, settings):
     verify_ssl = settings.get('VERIFY_SSL')
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
-    api_version = settings.get('API_VERSION')
     pretty_print = settings.get('PRETTY_PRINT')
 
     if http_get_headers_basic_auth:

@@ -1,5 +1,5 @@
 from grafana_backup.commons import print_horizontal_line
-from grafana_backup.dashboardApi import health_check, auth_check
+from grafana_backup.dashboardApi import health_check, auth_check, uid_feature_check, paging_feature_check
 
 
 def main(settings):
@@ -11,11 +11,20 @@ def main(settings):
 
     (status, json_resp) = health_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     if not status == 200:
-        return (status, json_resp, None)
-
-    api_version = json_resp['version']
+        return (status, json_resp, None, None)
 
     (status, json_resp) = auth_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if not status == 200:
+        return (status, json_resp, None, None)
+
+    uid_support = uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if isinstance(uid_support, str):
+        raise Exception(uid_support)
+
+    paging_support = paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if isinstance(paging_support, str):
+        raise Exception(paging_support)
+
     print_horizontal_line()
 
-    return (status, json_resp, api_version)
+    return (status, json_resp, uid_support, paging_support)
