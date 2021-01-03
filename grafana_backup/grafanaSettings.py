@@ -26,6 +26,7 @@ def main(config_path):
     backup_dir = config.get('general', {}).get('backup_dir', '_OUTPUT_')
     backup_file_format = config.get('general', {}).get('backup_file_format', '%Y%m%d%H%M')
     pretty_print = config.get('general', {}).get('pretty_print', False)
+    
     aws_s3_bucket_name = config.get('aws', {}).get('s3_bucket_name', '')
     aws_s3_bucket_key = config.get('aws', {}).get('s3_bucket_key', '')
     aws_default_region = config.get('aws', {}).get('default_region', '')
@@ -35,6 +36,11 @@ def main(config_path):
 
     admin_account = config.get('grafana', {}).get('admin_account', '')
     admin_password = config.get('grafana', {}).get('admin_password', '')
+
+    git_repository_path = config.get('git', {}).get('repository_path', False)
+    git_username = config.get('git', {}).get('username', False)
+    git_password = config.get('git', {}).get('password', False)
+
 
     GRAFANA_URL = os.getenv('GRAFANA_URL', grafana_url)
     TOKEN = os.getenv('GRAFANA_TOKEN', grafana_token)
@@ -120,5 +126,8 @@ def main(config_path):
     config_dict['AWS_ACCESS_KEY_ID'] = AWS_ACCESS_KEY_ID
     config_dict['AWS_SECRET_ACCESS_KEY'] = AWS_SECRET_ACCESS_KEY
     config_dict['AWS_ENDPOINT_URL'] = AWS_ENDPOINT_URL
+    config_dict['GIT_REPOSITORY_PATH'] = git_repository_path
+    config_dict['GIT_USERNAME'] = git_username
+    config_dict['GIT_PASSWORD'] = git_password
 
     return config_dict
