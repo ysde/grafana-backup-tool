@@ -13,10 +13,16 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     pretty_print = settings.get('PRETTY_PRINT')
-
-    folder_path = '{0}/folders/{1}'.format(backup_dir, timestamp)
-    log_file = 'folders_{0}.txt'.format(timestamp)
-
+    gitVersion = args.get('--git', False)
+    
+    if gitVersion:
+        folder_path = '{0}/folders/'.format(backup_dir)        
+        log_file = 'folders.txt'
+    else:
+        folder_path = '{0}/folders/'.format(backup_dir, timestamp)
+        log_file = 'folders_{0}.txt'.format(timestamp)
+    
+    
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
