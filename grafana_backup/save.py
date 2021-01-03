@@ -8,11 +8,13 @@ from grafana_backup.s3_upload import main as s3_upload
 from grafana_backup.save_orgs import main as save_orgs
 from grafana_backup.save_users import main as save_users
 import sys
+from git import *
 
 
 def main(args, settings):
     arg_components = args.get('--components', False)
     arg_no_archive = args.get('--no-archive', False)
+    gitVersion = args.get('--git', False)
 
     backup_functions = {'dashboards': save_dashboards,
                         'datasources': save_datasources,
@@ -42,6 +44,19 @@ def main(args, settings):
             backup_functions[backup_function](args, settings)
 
     aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
+    
+    if gitVersion:
+        timestamp = settings.get('TIMESTAMP')
+        repo = Repo(settings.get('GIT_REPOSITORY_PATH'))
+        current = repo.create_head("branch_{0}".format(timestamp))
+        current.checkout()
+        master = repo.heads.master
+        repo.git.pull('origin', master)
+        if repo.index.diff(None) or repo.untracked_files:
+            repo.git.add(A=True)
+            repo.git.commit(m='msg')
+            repo.git.push('--set-upstream', 'origin', current)
+            
 
     if not arg_no_archive:
         archive(args, settings)
