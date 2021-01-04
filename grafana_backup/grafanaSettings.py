@@ -41,7 +41,6 @@ def main(config_path):
     git_username = config.get('git', {}).get('username', False)
     git_password = config.get('git', {}).get('password', False)
 
-
     GRAFANA_URL = os.getenv('GRAFANA_URL', grafana_url)
     TOKEN = os.getenv('GRAFANA_TOKEN', grafana_token)
     SEARCH_API_LIMIT = os.getenv('SEARCH_API_LIMIT', grafana_search_api_limit)
