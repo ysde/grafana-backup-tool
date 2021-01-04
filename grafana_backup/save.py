@@ -14,8 +14,7 @@ from git import *
 def main(args, settings):
     arg_components = args.get('--components', False)
     arg_no_archive = args.get('--no-archive', False)
-    args_git_version = args.get('--git', False)
-
+    
     backup_functions = {'dashboards': save_dashboards,
                         'datasources': save_datasources,
                         'folders': save_folders,
@@ -44,20 +43,7 @@ def main(args, settings):
             backup_functions[backup_function](args, settings)
 
     aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
-    
-    if args_git_version:
-        timestamp = settings.get('TIMESTAMP')
-        repo = Repo(settings.get('GIT_REPOSITORY_PATH'))
-        current = repo.create_head("branch_{0}".format(timestamp))
-        current.checkout()
-        master = repo.heads.master
-        repo.git.pull('origin', master)
-        if repo.index.diff(None) or repo.untracked_files:
-            repo.git.add(A=True)
-            repo.git.commit(m='msg')
-            repo.git.push('--set-upstream', 'origin', current)
-            
-
+   
     if not arg_no_archive:
         archive(args, settings)
 

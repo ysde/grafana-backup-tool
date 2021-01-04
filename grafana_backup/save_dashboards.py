@@ -15,9 +15,9 @@ def main(args, settings):
     debug = settings.get('DEBUG')
     api_version = settings.get('API_VERSION')
     pretty_print = settings.get('PRETTY_PRINT')
-    gitVersion = args.get('--git', False)
+    flat = args.get('--flat', False)
     
-    if gitVersion:
+    if flat:
         folder_path = '{0}/dashboards/'.format(backup_dir)        
         log_file = 'dashboards.txt'
     else:

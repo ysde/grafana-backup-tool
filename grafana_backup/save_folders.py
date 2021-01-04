@@ -13,9 +13,9 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     pretty_print = settings.get('PRETTY_PRINT')
-    gitVersion = args.get('--git', False)
+    flat = args.get('--flat', False)
     
-    if gitVersion:
+    if flat:
         folder_path = '{0}/folders/'.format(backup_dir)        
         log_file = 'folders.txt'
     else:

@@ -33,13 +33,8 @@ def main(config_path):
     aws_access_key_id = config.get('aws', {}).get('access_key_id', '')
     aws_secret_access_key = config.get('aws', {}).get('secret_access_key', '')
     aws_endpoint_url = config.get('aws', {}).get('endpoint_url', None)
-
     admin_account = config.get('grafana', {}).get('admin_account', '')
     admin_password = config.get('grafana', {}).get('admin_password', '')
-
-    git_repository_path = config.get('git', {}).get('repository_path', False)
-    git_username = config.get('git', {}).get('username', False)
-    git_password = config.get('git', {}).get('password', False)
 
     GRAFANA_URL = os.getenv('GRAFANA_URL', grafana_url)
     TOKEN = os.getenv('GRAFANA_TOKEN', grafana_token)
@@ -124,9 +119,6 @@ def main(config_path):
     config_dict['AWS_DEFAULT_REGION'] = AWS_DEFAULT_REGION
     config_dict['AWS_ACCESS_KEY_ID'] = AWS_ACCESS_KEY_ID
     config_dict['AWS_SECRET_ACCESS_KEY'] = AWS_SECRET_ACCESS_KEY
-    config_dict['AWS_ENDPOINT_URL'] = AWS_ENDPOINT_URL
-    config_dict['GIT_REPOSITORY_PATH'] = git_repository_path
-    config_dict['GIT_USERNAME'] = git_username
-    config_dict['GIT_PASSWORD'] = git_password
+    config_dict['AWS_ENDPOINT_URL'] = AWS_ENDPOINT_URL    
 
     return config_dict
