@@ -21,7 +21,7 @@ def main(args, settings):
         folder_path = '{0}/dashboards/'.format(backup_dir)        
         log_file = 'dashboards.txt'
     else:
-        folder_path = '{0}/dashboards/'.format(backup_dir, timestamp)
+        folder_path = '{0}/dashboards_{1}/'.format(backup_dir, timestamp)
         log_file = 'dashboards_{0}.txt'.format(timestamp)
 
     if not os.path.exists(folder_path):

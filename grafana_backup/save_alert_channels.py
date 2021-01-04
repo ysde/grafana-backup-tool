@@ -19,7 +19,7 @@ def main(args, settings):
         folder_path = '{0}/alert_channels/'.format(backup_dir)        
         log_file = 'alert_channels.txt'
     else:
-        folder_path = '{0}/alert_channels/'.format(backup_dir, timestamp)
+        folder_path = '{0}/alert_channels_{1}/'.format(backup_dir, timestamp)
         log_file = 'alert_channels_{0}.txt'.format(timestamp)
     
 

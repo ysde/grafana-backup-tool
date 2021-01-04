@@ -19,7 +19,7 @@ def main(args, settings):
         folder_path = '{0}/folders/'.format(backup_dir)        
         log_file = 'folders.txt'
     else:
-        folder_path = '{0}/folders/'.format(backup_dir, timestamp)
+        folder_path = '{0}/folders_{1}/'.format(backup_dir, timestamp)
         log_file = 'folders_{0}.txt'.format(timestamp)
     
     

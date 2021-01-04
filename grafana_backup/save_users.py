@@ -23,7 +23,7 @@ def main(args, settings):
             folder_path = '{0}/users/'.format(backup_dir)        
             log_file = 'users.txt'
         else:
-            folder_path = '{0}/users/'.format(backup_dir, timestamp)
+            folder_path = '{0}/users_{1}/'.format(backup_dir, timestamp)
             log_file = 'users_{0}.txt'.format(timestamp)    
 
         if not os.path.exists(folder_path):

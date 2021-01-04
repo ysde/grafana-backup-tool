@@ -19,7 +19,7 @@ def main(args, settings):
         folder_path = '{0}/datasources/'.format(backup_dir)        
         log_file = 'datasources.txt'
     else:
-        folder_path = '{0}/datasources/'.format(backup_dir, timestamp)
+        folder_path = '{0}/datasources_{1}/'.format(backup_dir, timestamp)
         log_file = 'datasources_{0}.txt'.format(timestamp)
     
     
