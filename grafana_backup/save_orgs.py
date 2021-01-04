@@ -15,10 +15,15 @@ def main(args, settings):
     debug = settings.get('DEBUG')
     api_version = settings.get('API_VERSION')
     pretty_print = settings.get('PRETTY_PRINT')
-
-    folder_path = '{0}/organizations/{1}'.format(backup_dir, timestamp)
-    log_file = 'organaizations_{0}.txt'.format(timestamp)
-
+    gitVersion = args.get('--git', False)
+    
+    if gitVersion:
+        folder_path = '{0}/organizations/'.format(backup_dir)        
+        log_file = 'organizations.txt'
+    else:
+        folder_path = '{0}/organizations_{1}/'.format(backup_dir, timestamp)
+        log_file = 'organizations_{0}.txt'.format(timestamp)
+    
     if http_get_headers_basic_auth:
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
