@@ -1,9 +1,14 @@
-FROM alpine:latest
+FROM google/cloud-sdk:alpine
 
 LABEL maintainer="ysde108@gmail.com"
 
 ENV RESTORE false
 ENV ARCHIVE_FILE ""
+
+RUN apk update
+
+# Adding the package path to local
+ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
 RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
     && apk --no-cache add python3 py3-pip py3-cffi py3-cryptography ca-certificates bash
