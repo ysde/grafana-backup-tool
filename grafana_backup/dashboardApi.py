@@ -32,34 +32,38 @@ def uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, de
 
 
 def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    def get_first_dashboard_by_page(page):
+        (status, content) = search_dashboard(page, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+        if status == 200 and len(content):
+            dashboard_values = sorted(content[0].items(), key=lambda kv: str(kv[1]))
+            return True, dashboard_values
+        else:
+            if len(content):
+                return False, "get dashboards failed, status: {0}, msg: {1}".format(status, content)
+            else:
+                # No dashboards exist, disable paging feature
+                return False, False
+
     # Get first dashboard on first page
-    (status, content) = search_dashboard(1, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-    if status == 200 and len(content):
-        dashboard_one_values = sorted(content[0].items(), key=lambda kv: str(kv[1]))
+    (status, content) = get_first_dashboard_by_page(1)
+    if status is False and content is False:
+        return False  # Paging feature not supported
+    elif status is True:
+        dashboard_one_values = content
     else:
-        if len(content):
-            return "get dashboards failed, status: {0}, msg: {1}".format(status, content)
-        else:
-            # No dashboards exist, disable paging feature
-            return False
+        return content  # Fail Message
 
-    # Get first dashboard on second page
-    (status, content) = search_dashboard(2, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-    if status == 200 and len(content):
-        dashboard_two_values = sorted(content[0].items(), key=lambda kv: str(kv[1]))
+    # Get second dashboard on second page
+    (status, content) = get_first_dashboard_by_page(2)
+    if status is False and content is False:
+        return False  # Paging feature not supported
+    elif status is True:
+        dashboard_two_values = content
     else:
-        if len(content):
-            return "get dashboards failed, status: {0}, msg: {1}".format(status, content)
-        else:
-            # No dashboards exist, disable paging feature
-            return False
+        return content  # Fail Message
 
-    if dashboard_one_values == dashboard_two_values:
-        paging_support = False
-    else:
-        paging_support = True
-
-    return paging_support
+    # Compare both pages
+    return dashboard_one_values != dashboard_two_values
 
 
 def search_dashboard(page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
