@@ -13,7 +13,6 @@ def main(args, settings):
     verify_ssl = settings.get('VERIFY_SSL')
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
-    api_version = settings.get('API_VERSION')
     pretty_print = settings.get('PRETTY_PRINT')
 
     folder_path = '{0}/organizations/{1}'.format(backup_dir, timestamp)

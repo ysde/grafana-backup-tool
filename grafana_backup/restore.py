@@ -14,7 +14,7 @@ def main(args, settings):
     arg_archive_file = args.get('<archive_file>', None)
     aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
 
-    (status, json_resp, api_version) = api_checks(settings)
+    (status, json_resp, uid_support, paging_support) = api_checks(settings)
 
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:

@@ -1,10 +1,4 @@
-import sys, json
-
-
-def left_ver_newer_than_right_ver(current_version, specific_version):
-    def convertVersion(ver):
-        return int(''.join(ver.split("-")[0].split(".")))
-    return convertVersion(current_version) > convertVersion(specific_version)
+import re, sys, json
 
 
 def print_horizontal_line():
@@ -42,6 +36,10 @@ def load_config(path=None):
 
 
 def save_json(file_name, data, folder_path, extension, pretty_print):
+    pattern = "^db/|^uid/"
+    if re.match(pattern, file_name):
+        file_name = re.sub(pattern, '', file_name)
+
     file_path = folder_path + '/' + file_name + '.' + extension
     with open(u"{0}".format(file_path), 'w') as f:
         if pretty_print:

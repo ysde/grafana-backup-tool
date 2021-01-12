@@ -1,6 +1,5 @@
-import os
 from glob import glob
-import tarfile, shutil
+import os, tarfile, shutil
 
 
 def main(args, settings):

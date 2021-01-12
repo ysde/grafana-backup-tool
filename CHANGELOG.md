@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.1.6] - 2020-12-28
+
+### Added
+
+### Changed
+- #94 Key Error in api_checks.py (ensure compat with hide_version Grafana setting)
+- #117 replace api version check with specific feature checks
+
+### Removed
+
 # [1.1.5] - 2020-12-13
 
 ### Added
