@@ -44,10 +44,10 @@ export GRAFANA_URL=http://some.host.org:3000
 export GRAFANA_TOKEN=eyJrIjoidUhaU2ZQQndrWFN3RRVkUnVfrT56a1JoaG9KWFFObEgiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
 
 # GRAFANA_HEADERS is optional
-export GRAFANA_HEADERS=Host:some.host.org 
+export GRAFANA_HEADERS=Host:some.host.org
 ```
 
-To create and obtain a `Token` for your Grafana server, please refer to the [official documentation](https://grafana.com/docs/grafana/latest/http_api/auth/). 
+To create and obtain a `Token` for your Grafana server, please refer to the [official documentation](https://grafana.com/docs/grafana/latest/http_api/auth/).
 
 **NOTE** that you need to generate a `Token` with an `Admin` role for the backup to succeed, otherwise you will have potential permission issues.
 
