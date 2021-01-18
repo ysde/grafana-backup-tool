@@ -56,7 +56,8 @@ def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafa
             else:
                 folder_uri = folder['uri']
 
-            (status, content) = get_folder(folder_uri, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+            (status, content) = get_folder(folder['uid'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+
             if status == 200:
                 save_folder_setting(
                     to_python2_and_3_compatible_string(folder['title']), 
