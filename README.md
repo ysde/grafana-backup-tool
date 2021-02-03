@@ -113,7 +113,7 @@ sudo chown 1337:1337 /tmp/backup
 ```
 
 ```
-docker run --rm --name grafana-backup-tool \
+docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \
            -e GRAFANA_URL={YOUR_GRAFANA_URL} \
            -e GRAFANA_ADMIN_ACCOUNT={YOUR_GRAFANA_ADMIN_ACCOUNT} \
@@ -131,7 +131,7 @@ docker run --rm --name grafana-backup-tool \
 ***Example:***
 
 ```
-docker run --rm --name grafana-backup-tool \
+docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN="eyJrIjoiNGZqTDEyeXNaY0RsMXNhbkNTSnlKN2M3bE1VeHdqVTEiLCJuIjoiZ3JhZmFuYS1iYWNrdXAiLCJpZCI6MX0=" \
            -e GRAFANA_URL=http://192.168.0.79:3000 \
            -e GRAFANA_ADMIN_ACCOUNT=admin \
@@ -150,7 +150,7 @@ docker run --rm --name grafana-backup-tool \
 ### Restore
 
 ```
-docker run --rm --name grafana-backup-tool \
+docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN={YOUR_GRAFANA_TOKEN} \
            -e GRAFANA_URL={YOUR_GRAFANA_URL} \
            -e GRAFANA_ADMIN_ACCOUNT={YOUR_GRAFANA_ADMIN_ACCOUNT} \
@@ -165,7 +165,7 @@ docker run --rm --name grafana-backup-tool \
 ***Example:***
 
 ```
-docker run --rm --name grafana-backup-tool \
+docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_TOKEN="eyJrIjoiNGZqTDEyeXNaY0RsMXNhbkNTSnlKN2M3bE1VeHdqVTEiLCJuIjoiZ3JhZmFuYS1iYWNrdXAiLCJpZCI6MX0=" \
            -e GRAFANA_URL=http://192.168.0.79:3000 \
            -e GRAFANA_ADMIN_ACCOUNT=admin \
