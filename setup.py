@@ -7,7 +7,8 @@ version = PKG_VERSION
 requires = [
     'requests',
     'docopt',
-    'boto3'
+    'boto3',
+    'azure-storage-blob'
 ]
 
 setup(

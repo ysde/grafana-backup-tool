@@ -6,6 +6,7 @@ from grafana_backup.create_dashboard import main as create_dashboard
 from grafana_backup.create_alert_channel import main as create_alert_channel
 from grafana_backup.create_user import main as create_user
 from grafana_backup.s3_download import main as s3_download
+from grafana_backup.azure_storage_download import main as azure_storage_download
 from glob import glob
 import sys, tarfile, tempfile, os, shutil, fnmatch, collections
 
@@ -13,6 +14,7 @@ import sys, tarfile, tempfile, os, shutil, fnmatch, collections
 def main(args, settings):
     arg_archive_file = args.get('<archive_file>', None)
     aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
+    azure_storage_container_name = settings.get('AZURE_STORAGE_CONTAINER_NAME')
 
     (status, json_resp, uid_support, paging_support) = api_checks(settings)
 
@@ -26,6 +28,13 @@ def main(args, settings):
         s3_data = s3_download(args, settings)
         try:
             tar = tarfile.open(fileobj=s3_data, mode='r:gz')    
+        except Exception as e:
+            print(str(e))
+            sys.exit(1)
+    elif azure_storage_container_name:
+        azure_storage_data = azure_storage_download(args, settings)
+        try:
+            tar = tarfile.open(fileobj=azure_storage_data, mode='r:gz')    
         except Exception as e:
             print(str(e))
             sys.exit(1)
