@@ -8,6 +8,7 @@ from grafana_backup.s3_upload import main as s3_upload
 from grafana_backup.save_orgs import main as save_orgs
 from grafana_backup.save_users import main as save_users
 from grafana_backup.azure_storage_upload import main as azure_storage_upload
+from grafana_backup.gcs_upload import main as gcs_upload
 import sys
 
 
@@ -45,6 +46,7 @@ def main(args, settings):
 
     aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
     azure_storage_container_name = settings.get('AZURE_STORAGE_CONTAINER_NAME')
+    gcs_bucket_name = settings.get('GCS_BUCKET_NAME')
 
     if not arg_no_archive:
         archive(args, settings)
@@ -56,3 +58,7 @@ def main(args, settings):
     if azure_storage_container_name:
         print('Upload archives to Azure Storage:')
         azure_storage_upload(args, settings)
+
+    if gcs_bucket_name:
+        print('Upload archives to GCS:')
+        gcs_upload(args, settings)

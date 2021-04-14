@@ -8,7 +8,8 @@ requires = [
     'requests',
     'docopt',
     'boto3',
-    'azure-storage-blob'
+    'azure-storage-blob',
+    'google-cloud-storage'
 ]
 
 setup(

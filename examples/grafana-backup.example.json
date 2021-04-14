@@ -22,5 +22,9 @@
   "azure": {
     "container_name": "container_name",
     "connection_string": "azure_storage_connection_string"
+  },
+  "gcp": {
+    "gcs_bucket_name": "bucket_name",
+    "google_application_credentials": "google_credential_file_path"
   }
 }

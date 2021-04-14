@@ -26,14 +26,21 @@ def main(config_path):
     backup_dir = config.get('general', {}).get('backup_dir', '_OUTPUT_')
     backup_file_format = config.get('general', {}).get('backup_file_format', '%Y%m%d%H%M')
     pretty_print = config.get('general', {}).get('pretty_print', False)
+
+    # Cloud storage settings - AWS
     aws_s3_bucket_name = config.get('aws', {}).get('s3_bucket_name', '')
     aws_s3_bucket_key = config.get('aws', {}).get('s3_bucket_key', '')
     aws_default_region = config.get('aws', {}).get('default_region', '')
     aws_access_key_id = config.get('aws', {}).get('access_key_id', '')
     aws_secret_access_key = config.get('aws', {}).get('secret_access_key', '')
     aws_endpoint_url = config.get('aws', {}).get('endpoint_url', None)
+    # Cloud storage settings - Azure
     azure_storage_container_name = config.get('azure', {}).get('container_name', '')
     azure_storage_connection_string = config.get('azure', {}).get('connection_string', '')
+    # Cloud storage settings - GCP
+    gcp_config = config.get('gcp', {})
+    gcs_bucket_name = gcp_config.get('gcs_bucket_name', '')
+    google_application_credentials = gcp_config.get('google_application_credentials', '')
 
     admin_account = config.get('grafana', {}).get('admin_account', '')
     admin_password = config.get('grafana', {}).get('admin_password', '')
@@ -51,6 +58,10 @@ def main(config_path):
 
     AZURE_STORAGE_CONTAINER_NAME = os.getenv('AZURE_STORAGE_CONTAINER_NAME', azure_storage_container_name)
     AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING', azure_storage_connection_string)
+
+    GCS_BUCKET_NAME = os.getenv('GCS_BUCKET_NAME', gcs_bucket_name)
+    if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS') and google_application_credentials:
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_application_credentials
 
     ADMIN_ACCOUNT = os.getenv('GRAFANA_ADMIN_ACCOUNT', admin_account)
     ADMIN_PASSWORD = os.getenv('GRAFANA_ADMIN_PASSWORD', admin_password)
@@ -127,5 +138,6 @@ def main(config_path):
     config_dict['AWS_ENDPOINT_URL'] = AWS_ENDPOINT_URL
     config_dict['AZURE_STORAGE_CONTAINER_NAME'] = AZURE_STORAGE_CONTAINER_NAME
     config_dict['AZURE_STORAGE_CONNECTION_STRING'] = AZURE_STORAGE_CONNECTION_STRING
+    config_dict['GCS_BUCKET_NAME'] = GCS_BUCKET_NAME
 
     return config_dict
