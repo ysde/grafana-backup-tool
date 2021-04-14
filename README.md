@@ -4,7 +4,10 @@ A Python-based application to backup Grafana settings using the [Grafana API](ht
 
 The aim of this tool is to:
 1. Easily backup and restore Grafana.
-2. Have versioned backups`(date and time in file name)` for restoring and saving to cloud storage providers like `Amazon S3` or `Azure Storage`.
+2. Have versioned backups`(date and time in file name)` for restoring and saving to cloud storage providers. Currently support 
+   1. `Amazon S3`
+   2. `Azure Storage`
+   3. `GCP Cloud Storage` (Use service-account's credential file, [see here](https://cloud.google.com/storage/docs/reference/libraries#linux-or-macos))
 
 ## Supported components
 * Folder
@@ -119,11 +122,6 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_ADMIN_ACCOUNT={YOUR_GRAFANA_ADMIN_ACCOUNT} \
            -e GRAFANA_ADMIN_PASSWORD={YOUR_GRAFANA_ADMIN_PASSWORD} \
            -e VERIFY_SSL={True/False} \
-           -e AWS_S3_BUCKET_NAME={OPTIONALLY_UPLOAD_TO_S3_BUCKET} \
-           -e AWS_S3_BUCKET_KEY={YOUR_S3_BUCKET_KEY} \
-           -e AWS_DEFAULT_REGION={YOUR_AWS_REGION} \
-           -e AWS_ACCESS_KEY_ID={YOUR_AWS_ACCESS_KEY_ID} \
-           -e AWS_SECRET_ACCESS_KEY={YOUR_AWS_SECRET_ACCESS_KEY} \
            -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana-backup-tool/_OUTPUT_  \
            alpinebased:grafana-backup
 ```
@@ -137,13 +135,29 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_ADMIN_ACCOUNT=admin \
            -e GRAFANA_ADMIN_PASSWORD=adminpassword \
            -e VERIFY_SSL=False \
+           -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_ \
+           alpinebased:grafana-backup
+```
+
+***S3 Example:*** Set S3 configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
+```
            -e AWS_S3_BUCKET_NAME="my-backups-bucket" \
            -e AWS_S3_BUCKET_KEY="grafana-backup-folder" \
            -e AWS_DEFAULT_REGION="us-east-1" \
            -e AWS_ACCESS_KEY_ID="secret" \
            -e AWS_SECRET_ACCESS_KEY="secret" \
-           -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_ \
-           alpinebased:grafana-backup
+```
+
+***Azure Example:*** Set Azure configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
+```
+		   -e AZURE_STORAGE_CONTAINER_NAME="azure-storage-container-name" \
+		   -e AZURE_STORAGE_CONNECTION_STRING="azure-storage-connection-string" 
+```
+
+***Azure Example:*** Set GCS configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
+```
+		   -e GCS_BUCKET_NAME="bucket-name" \
+		   -e GOOGLE_APPLICATION_CREDENTIALS="credential-file-path" 
 ```
 
 

@@ -4,18 +4,19 @@ from grafana_backup.commons import log_response
 
 def health_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     url = '{0}/api/health'.format(grafana_url)
-    print("grafana health: {0}".format(url))
+    print("\n[Pre-Check] grafana health check: {0}".format(url))
     return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
 
 
 def auth_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     url = '{0}/api/auth/keys'.format(grafana_url)
-    print("grafana auth check: {0}".format(url))
+    print("\n[Pre-Check] grafana auth check: {0}".format(url))
     return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
 
 
 def uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     # Get first dashboard on first page
+    print("\n[Pre-Check] grafana uid feature check: calling 'search_dashboard'")
     (status, content) = search_dashboard(1, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     if status == 200 and len(content):
         if 'uid' in content[0]:
@@ -32,6 +33,7 @@ def uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, de
 
 
 def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    print("\n[Pre-Check] grafana paging_feature_check: calling 'search_dashboard'")
     def get_first_dashboard_by_page(page):
         (status, content) = search_dashboard(page, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         if status == 200 and len(content):

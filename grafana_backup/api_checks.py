@@ -26,5 +26,10 @@ def main(settings):
         raise Exception(paging_support)
 
     print_horizontal_line()
+    if status == 200:
+        print("[Pre-Check] Server status is 'OK' !!")
+    else:
+        print("[Pre-Check] Server status is NOT OK !!: {0}".format(json_resp))
+    print_horizontal_line()
 
     return (status, json_resp, uid_support, paging_support)
