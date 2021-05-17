@@ -6,7 +6,7 @@ ENV RESTORE false
 ENV ARCHIVE_FILE ""
 
 RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
-    && apk --no-cache add python3 py3-pip py3-cffi py3-cryptography ca-certificates bash
+    && apk --no-cache add python3-dev libffi-dev gcc libc-dev py3-pip py3-cffi py3-cryptography ca-certificates bash
 
 WORKDIR /opt/grafana-backup-tool
 ADD . /opt/grafana-backup-tool
