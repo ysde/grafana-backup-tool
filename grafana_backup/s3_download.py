@@ -4,10 +4,6 @@ from botocore.exceptions import NoCredentialsError, ClientError
 
 def main(args, settings):
     arg_archive_file = args.get("<archive_file>", None)
-    if not arg_archive_file:
-        print("No archive file specified")
-        return False
-
     aws_s3_bucket_name = settings.get("AWS_S3_BUCKET_NAME")
     aws_s3_bucket_key = settings.get("AWS_S3_BUCKET_KEY")
     aws_default_region = settings.get("AWS_DEFAULT_REGION")
