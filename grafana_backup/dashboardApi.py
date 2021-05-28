@@ -159,6 +159,10 @@ def create_org(payload, grafana_url, http_post_headers, verify_ssl, client_cert,
     return send_grafana_post('{0}/api/orgs'.format(grafana_url), payload, http_post_headers, verify_ssl, client_cert,
                              debug)
 
+def update_org(id, payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_put('{0}/api/orgs/{1}'.format(grafana_url, id), payload, http_post_headers, verify_ssl, client_cert,
+                             debug)
+
 
 def search_users(page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     return send_grafana_get('{0}/api/users?perpage={1}&page={2}'.format(grafana_url, limit, page),
@@ -191,6 +195,12 @@ def send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug):
 
 def send_grafana_post(url, json_payload, http_post_headers, verify_ssl=False, client_cert=None, debug=True):
     r = requests.post(url, headers=http_post_headers, data=json_payload, verify=verify_ssl, cert=client_cert)
+    if debug:
+        log_response(r)
+    return (r.status_code, r.json())
+
+def send_grafana_put(url, json_payload, http_post_headers, verify_ssl=False, client_cert=None, debug=True):
+    r = requests.put(url, headers=http_post_headers, data=json_payload, verify=verify_ssl, cert=client_cert)
     if debug:
         log_response(r)
     return (r.status_code, r.json())
