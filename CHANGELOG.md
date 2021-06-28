@@ -4,15 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-# [1.1.9] - 2021-05-26
+# [1.1.9] - 2021-06-27
+
+### Added
+- c6b6f68 Create python-publish.yml
+- #100 GCS support 
+
+### Changed
+- #92 better error message when the user specifies a bad S3 key
+- #135 Update main organization instead of creating a new one  
+- #133 Creating the docker container without these packages didn't work
+- #139 windows env var fix
+
+### Removed
+
+# [1.1.8] - 2021-04-14
 
 ### Added
 
 ### Changed
-- #92 better error message when the user specifies a bad S3 key
+- #124 fixed #123
+- #121 multi arch docker support
+- #127 add azure storage support
 
 ### Removed
-
 
 # [1.1.7] - 2021-01-13
 

@@ -26,7 +26,7 @@ def main(args, settings):
         print("Download from S3 was successful")
     except ClientError as e:
         if e.response["Error"]["Code"] == "NoSuchKey":
-            print(f"Error: Key {s3_path} does not exist in bucket {aws_s3_bucket_name}")
+            print("Error: Key {0} does not exist in bucket {1}".format(s3_path, aws_s3_bucket_name))
             return False
         raise e
     except NoCredentialsError:
