@@ -1,5 +1,5 @@
 import json
-from grafana_backup.dashboardApi import get_folder_id_from_old_folder_url, create_org
+from grafana_backup.dashboardApi import get_folder_id_from_old_folder_url, create_org, update_org
 
 
 def main(args, settings, file_path):
@@ -14,8 +14,13 @@ def main(args, settings, file_path):
             data = f.read()
 
         content = json.loads(data)
+        org_id = content["id"]
 
-        result = create_org(json.dumps(content), grafana_url, http_post_headers_basic_auth, verify_ssl, client_cert, debug)
-        print('create org "{0}" response status: {1}, msg: {2} \n'.format(content.get('name', ''), result[0], result[1]))
+        if (org_id == 1):
+            result = update_org(org_id, json.dumps(content), grafana_url, http_post_headers_basic_auth, verify_ssl, client_cert, debug)
+            print('update org "{0}" response status: {1}, msg: {2} \n'.format(content.get('name', ''), result[0], result[1]))
+        else:
+            result = create_org(json.dumps(content), grafana_url, http_post_headers_basic_auth, verify_ssl, client_cert, debug)
+            print('create org "{0}" response status: {1}, msg: {2} \n'.format(content.get('name', ''), result[0], result[1]))
     else:
         print('[ERROR] Restoring organizations needs to set GRAFANA_ADMIN_ACCOUNT and GRAFANA_ADMIN_PASSWORD first. \n')
