@@ -10,7 +10,7 @@ docstring = """
 
 Usage:
     grafana-backup save [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,organizations,users>] [--no-archive]
-    grafana-backup restore <archive_file> [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,organizations,users>]
+    grafana-backup restore <archive_file> [--config=<filename>] [--components=<folders,folders_permissions,dashboards,datasources,alert-channels,organizations,users>]
     grafana-backup [--config=<filename>]
     grafana-backup -h | --help
     grafana-backup --version
@@ -19,7 +19,7 @@ Options:
     -h --help                                                       Show this help message and exit
     --version                                                       Get version information and exit
     --config=<filename>                                             Override default configuration path
-    --components=<folders,dashboards,datasources,alert-channels,organizations,users>    Comma separated list of individual components to backup
+    --components=<folders,folders_permissions,dashboards,datasources,alert-channels,organizations,users>    Comma separated list of individual components to backup
                                                                     rather than backing up all components by default
     --no-archive                                                    Skip archive creation and do not delete unarchived files
                                                                     (used for troubleshooting purposes)
