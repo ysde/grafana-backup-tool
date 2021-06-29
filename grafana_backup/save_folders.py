@@ -1,6 +1,6 @@
 import os
 import json
-from grafana_backup.dashboardApi import search_folders, get_folder
+from grafana_backup.dashboardApi import search_folders, get_folder, get_folder_permissions
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
 
@@ -42,9 +42,11 @@ def get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, client
         return []
 
 
-def save_folder_setting(folder_name, file_name, folder_settings, folder_path, pretty_print):
+def save_folder_setting(folder_name, file_name, folder_settings, folder_permissions, folder_path, pretty_print):
     file_path = save_json(file_name, folder_settings, folder_path, 'folder', pretty_print)
     print("folder:{0} are saved to {1}".format(folder_name, file_path))
+    file_path = save_json(file_name,  folder_permissions, folder_path, 'folder_permissions', pretty_print)
+    print("folder permissions:{0} are saved to {1}".format(folder_name, file_path))
 
 
 def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support):
@@ -56,13 +58,15 @@ def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafa
             else:
                 folder_uri = folder['uri']
 
-            (status, content) = get_folder(folder['uid'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+            (status_folder_settings, content_folder_settings) = get_folder(folder['uid'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+            (status_folder_permissions, content_folder_permissions) = get_folder_permissions(folder['uid'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
 
-            if status == 200:
+            if status_folder_settings == 200 and status_folder_permissions == 200:
                 save_folder_setting(
                     to_python2_and_3_compatible_string(folder['title']), 
                     folder_uri,
-                    content,
+                    content_folder_settings,
+                    content_folder_permissions,
                     folder_path,
                     pretty_print
                 )

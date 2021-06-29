@@ -125,6 +125,13 @@ def get_folder(uid, grafana_url, http_get_headers, verify_ssl, client_cert, debu
     return (status_code, content)
 
 
+def get_folder_permissions(uid, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    (status_code, content) = send_grafana_get('{0}/api/folders/{1}/permissions'.format(grafana_url, uid), http_get_headers,
+                                              verify_ssl, client_cert, debug)
+    print("query folder permissions:{0}, status:{1}".format(uid, status_code))
+    return (status_code, content)
+
+
 def get_folder_id_from_old_folder_url(folder_url, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     if folder_url != "":
         # Get folder uid
