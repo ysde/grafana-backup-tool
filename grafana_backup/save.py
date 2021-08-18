@@ -3,6 +3,7 @@ from grafana_backup.save_dashboards import main as save_dashboards
 from grafana_backup.save_datasources import main as save_datasources
 from grafana_backup.save_folders import main as save_folders
 from grafana_backup.save_alert_channels import main as save_alert_channels
+from grafana_backup.save_snapshots import main as save_snapshots
 from grafana_backup.archive import main as archive
 from grafana_backup.s3_upload import main as s3_upload
 from grafana_backup.save_orgs import main as save_orgs
@@ -21,7 +22,8 @@ def main(args, settings):
                         'folders': save_folders,
                         'alert-channels': save_alert_channels,
                         'organizations': save_orgs,
-                        'users': save_users}
+                        'users': save_users,
+                        'snapshots': save_snapshots}
 
     (status, json_resp, uid_support, paging_support) = api_checks(settings)
 
@@ -50,7 +52,7 @@ def main(args, settings):
 
     if not arg_no_archive:
         archive(args, settings)
-   
+
     if aws_s3_bucket_name:
         print('Upload archives to S3:')
         s3_upload(args, settings)

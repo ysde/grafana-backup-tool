@@ -1,4 +1,6 @@
-import requests, json, re
+import re
+import json
+import requests
 from grafana_backup.commons import log_response
 
 
@@ -34,6 +36,7 @@ def uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, de
 
 def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     print("\n[Pre-Check] grafana paging_feature_check: calling 'search_dashboard'")
+
     def get_first_dashboard_by_page(page):
         (status, content) = search_dashboard(page, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         if status == 200 and len(content):
@@ -107,6 +110,11 @@ def search_datasource(grafana_url, http_get_headers, verify_ssl, client_cert, de
     return send_grafana_get('{0}/api/datasources'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
 
 
+def search_snapshot(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    print("search snapshots in grafana:")
+    return send_grafana_get('{0}/api/dashboard/snapshots'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
+
+
 def create_datasource(payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_post('{0}/api/datasources'.format(grafana_url), payload, http_post_headers, verify_ssl,
                              client_cert, debug)
@@ -159,9 +167,10 @@ def create_org(payload, grafana_url, http_post_headers, verify_ssl, client_cert,
     return send_grafana_post('{0}/api/orgs'.format(grafana_url), payload, http_post_headers, verify_ssl, client_cert,
                              debug)
 
+
 def update_org(id, payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_put('{0}/api/orgs/{1}'.format(grafana_url, id), payload, http_post_headers, verify_ssl, client_cert,
-                             debug)
+                            debug)
 
 
 def search_users(page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
@@ -173,9 +182,11 @@ def get_user(id, grafana_url, http_get_headers, verify_ssl=False, client_cert=No
     return send_grafana_get('{0}/api/users/{1}'.format(grafana_url, id),
                             http_get_headers, verify_ssl, client_cert, debug)
 
+
 def get_user_org(id, grafana_url, http_get_headers, verify_ssl=False, client_cert=None, debug=True):
     return send_grafana_get('{0}/api/users/{1}/orgs'.format(grafana_url, id),
                             http_get_headers, verify_ssl, client_cert, debug)
+
 
 def create_user(payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_post('{0}/api/admin/users'.format(grafana_url), payload, http_post_headers, verify_ssl, client_cert,
@@ -185,6 +196,7 @@ def create_user(payload, grafana_url, http_post_headers, verify_ssl, client_cert
 def add_user_to_org(org_id, payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_post('{0}/api/orgs/{1}/users'.format(grafana_url, org_id), payload, http_post_headers, verify_ssl, client_cert,
                              debug)
+
 
 def send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug):
     r = requests.get(url, headers=http_get_headers, verify=verify_ssl, cert=client_cert)
@@ -198,6 +210,7 @@ def send_grafana_post(url, json_payload, http_post_headers, verify_ssl=False, cl
     if debug:
         log_response(r)
     return (r.status_code, r.json())
+
 
 def send_grafana_put(url, json_payload, http_post_headers, verify_ssl=False, client_cert=None, debug=True):
     r = requests.put(url, headers=http_post_headers, data=json_payload, verify=verify_ssl, cert=client_cert)
