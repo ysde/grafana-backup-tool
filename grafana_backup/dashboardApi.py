@@ -115,6 +115,11 @@ def search_snapshot(grafana_url, http_get_headers, verify_ssl, client_cert, debu
     return send_grafana_get('{0}/api/dashboard/snapshots'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
 
 
+def create_snapshot(payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_post('{0}/api/dashboard/snapshots'.format(grafana_url), payload, http_post_headers, verify_ssl,
+                             client_cert, debug)
+
+
 def create_datasource(payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_post('{0}/api/datasources'.format(grafana_url), payload, http_post_headers, verify_ssl,
                              client_cert, debug)
