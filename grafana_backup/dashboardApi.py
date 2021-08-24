@@ -112,6 +112,11 @@ def delete_folder(uid, grafana_url, http_post_headers):
     return int(r.status_code)
 
 
+def delete_snapshot(key, grafana_url, http_post_headers):
+    r = requests.delete('{0}/api/snapshots/{1}'.format(grafana_url, key), headers=http_post_headers)
+    return int(r.status_code)
+
+
 def delete_dashboard(board_uri, grafana_url, http_post_headers):
     r = requests.delete('{0}/api/dashboards/uid/{1}'.format(grafana_url, board_uri), headers=http_post_headers)
     return int(r.status_code)
