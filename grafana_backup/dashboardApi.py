@@ -107,6 +107,11 @@ def delete_alert_channel_by_id(id_, grafana_url, http_post_headers):
     return int(r.status_code)
 
 
+def delete_folder(uid, grafana_url, http_post_headers):
+    r = requests.delete('{0}/api/folders/{1}'.format(grafana_url, uid), headers=http_post_headers)
+    return int(r.status_code)
+
+
 def delete_dashboard(board_uri, grafana_url, http_post_headers):
     r = requests.delete('{0}/api/dashboards/uid/{1}'.format(grafana_url, board_uri), headers=http_post_headers)
     return int(r.status_code)
