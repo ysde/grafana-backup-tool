@@ -9,7 +9,7 @@ docstring = """
 {0} {1}
 
 Usage:
-    grafana-backup delete [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,organizations,users,snapshots>]
+    grafana-backup delete [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,snapshots>]
     grafana-backup [--config=<filename>]
     grafana-backup -h | --help
     grafana-backup --version
@@ -18,7 +18,7 @@ Options:
     -h --help                                                       Show this help message and exit
     --version                                                       Get version information and exit
     --config=<filename>                                             Override default configuration path
-    --components=<folders,dashboards,datasources,alert-channels,organizations,users,snapshots>    Comma separated list of individual components to delete
+    --components=<folders,dashboards,datasources,alert-channels,snapshots>    Comma separated list of individual components to delete
                                                                     rather than deleting all components by default
 """.format(PKG_NAME, PKG_VERSION)
 
