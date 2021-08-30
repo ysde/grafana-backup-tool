@@ -115,8 +115,14 @@ def search_snapshot(grafana_url, http_get_headers, verify_ssl, client_cert, debu
     return send_grafana_get('{0}/api/dashboard/snapshots'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
 
 
+def get_snapshot(key, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/snapshots/{1}'.format(grafana_url, key)
+    (status_code, content) = send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+    return (status_code, content)
+
+
 def create_snapshot(payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
-    return send_grafana_post('{0}/api/dashboard/snapshots'.format(grafana_url), payload, http_post_headers, verify_ssl,
+    return send_grafana_post('{0}/api/snapshots'.format(grafana_url), payload, http_post_headers, verify_ssl,
                              client_cert, debug)
 
 
@@ -214,7 +220,10 @@ def send_grafana_post(url, json_payload, http_post_headers, verify_ssl=False, cl
     r = requests.post(url, headers=http_post_headers, data=json_payload, verify=verify_ssl, cert=client_cert)
     if debug:
         log_response(r)
-    return (r.status_code, r.json())
+    try:
+        return (r.status_code, r.json())
+    except ValueError:
+        return (r.status_code, r.text)
 
 
 def send_grafana_put(url, json_payload, http_post_headers, verify_ssl=False, client_cert=None, debug=True):
