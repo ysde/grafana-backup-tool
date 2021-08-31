@@ -95,8 +95,30 @@ def create_alert_channel(payload, grafana_url, http_post_headers, verify_ssl, cl
                              client_cert, debug)
 
 
+def delete_alert_channel_by_uid(uid, grafana_url, http_post_headers):
+    print('{0}/api/alert-notifications/uid/{1}'.format(grafana_url, uid))
+    print(http_post_headers)
+    r = requests.delete('{0}/api/alert-notifications/uid/{1}'.format(grafana_url, uid), headers=http_post_headers)
+    return int(r.status_code)
+
+
+def delete_alert_channel_by_id(id_, grafana_url, http_post_headers):
+    r = requests.delete('{0}/api/alert-notifications/{1}'.format(grafana_url, id_), headers=http_post_headers)
+    return int(r.status_code)
+
+
+def delete_folder(uid, grafana_url, http_post_headers):
+    r = requests.delete('{0}/api/folders/{1}'.format(grafana_url, uid), headers=http_post_headers)
+    return int(r.status_code)
+
+
+def delete_snapshot(key, grafana_url, http_post_headers):
+    r = requests.delete('{0}/api/snapshots/{1}'.format(grafana_url, key), headers=http_post_headers)
+    return int(r.status_code)
+
+
 def delete_dashboard(board_uri, grafana_url, http_post_headers):
-    r = requests.delete('{0}/api/dashboards/db/{1}'.format(grafana_url, board_uri), headers=http_post_headers)
+    r = requests.delete('{0}/api/dashboards/uid/{1}'.format(grafana_url, board_uri), headers=http_post_headers)
     return int(r.status_code)
 
 
@@ -129,6 +151,11 @@ def create_snapshot(payload, grafana_url, http_post_headers, verify_ssl, client_
 def create_datasource(payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_post('{0}/api/datasources'.format(grafana_url), payload, http_post_headers, verify_ssl,
                              client_cert, debug)
+
+
+def delete_datasource(uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    r = requests.delete('{0}/api/datasources/uid/{1}'.format(grafana_url, uid), headers=http_post_headers)
+    return int(r.status_code)
 
 
 def search_folders(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
