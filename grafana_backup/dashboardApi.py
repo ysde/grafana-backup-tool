@@ -191,6 +191,20 @@ def create_folder(payload, grafana_url, http_post_headers, verify_ssl, client_ce
                              debug)
 
 
+def get_dashboard_versions(dashboard_id, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    (status_code, content) = send_grafana_get('{0}/api/dashboards/id/{1}/versions'.format(grafana_url, dashboard_id), http_get_headers,
+                                              verify_ssl, client_cert, debug)
+    print("query dashboard versions: {0}, status: {1}".format(dashboard_id, status_code))
+    return (status_code, content)
+
+
+def get_version(dashboard_id, version_number, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    (status_code, content) = send_grafana_get('{0}/api/dashboards/id/{1}/versions/{2}'.format(grafana_url, dashboard_id, version_number), http_get_headers,
+                                              verify_ssl, client_cert, debug)
+    print("query dashboard {0} version {1}, status: {2}".format(dashboard_id, version_number, status_code))
+    return (status_code, content)
+
+
 def search_orgs(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     return send_grafana_get('{0}/api/orgs'.format(grafana_url), http_get_headers, verify_ssl,
                             client_cert, debug)

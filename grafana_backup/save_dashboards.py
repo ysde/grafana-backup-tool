@@ -1,5 +1,4 @@
 import os
-import json
 from grafana_backup.dashboardApi import search_dashboard, get_dashboard
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
@@ -65,7 +64,7 @@ def get_individual_dashboard_setting_and_save(dashboards, folder_path, log_file,
                 (status, content) = get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
                 if status == 200:
                     save_dashboard_setting(
-                        to_python2_and_3_compatible_string(board['title']), 
+                        to_python2_and_3_compatible_string(board['title']),
                         board_uri,
                         content,
                         folder_path,
@@ -75,7 +74,7 @@ def get_individual_dashboard_setting_and_save(dashboards, folder_path, log_file,
 
 
 def save_dashboards_above_Ver6_2(folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support):
-    limit = 5000 # limit is 5000 above V6.2+
+    limit = 5000  # limit is 5000 above V6.2+
     current_page = 1
     while True:
         dashboards = get_all_dashboards_in_grafana(current_page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
