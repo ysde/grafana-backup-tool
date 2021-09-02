@@ -1,5 +1,4 @@
 import os
-import json
 from grafana_backup.dashboardApi import search_folders, get_folder
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
@@ -60,7 +59,7 @@ def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafa
 
             if status == 200:
                 save_folder_setting(
-                    to_python2_and_3_compatible_string(folder['title']), 
+                    to_python2_and_3_compatible_string(folder['title']),
                     folder_uri,
                     content,
                     folder_path,
