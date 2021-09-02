@@ -4,6 +4,7 @@ from grafana_backup.save_datasources import main as save_datasources
 from grafana_backup.save_folders import main as save_folders
 from grafana_backup.save_alert_channels import main as save_alert_channels
 from grafana_backup.save_snapshots import main as save_snapshots
+from grafana_backup.save_versions import main as save_versions
 from grafana_backup.archive import main as archive
 from grafana_backup.s3_upload import main as s3_upload
 from grafana_backup.save_orgs import main as save_orgs
@@ -23,7 +24,8 @@ def main(args, settings):
                         'alert-channels': save_alert_channels,
                         'organizations': save_orgs,
                         'users': save_users,
-                        'snapshots': save_snapshots}
+                        'snapshots': save_snapshots,
+                        'versions': save_versions}
 
     (status, json_resp, uid_support, paging_support) = api_checks(settings)
 
