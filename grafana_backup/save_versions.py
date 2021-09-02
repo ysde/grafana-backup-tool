@@ -25,8 +25,9 @@ def main(args, settings):
 
 
 def save_dashboard_versions(folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support):
-    limit = 5000  # limit is 5000 above V6.2+
+    limit = 5000
     current_page = 1
+
     while True:
         dashboards = get_all_dashboards_in_grafana(current_page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         print_horizontal_line()
@@ -38,9 +39,17 @@ def save_dashboard_versions(folder_path, log_file, grafana_url, http_get_headers
         print_horizontal_line()
 
 
-def save_version(file_name, version, folder_path, pretty_print):
-    file_path = save_json(file_name, version, folder_path, 'version', pretty_print)
-    print("version: {0} -> saved to: {1}".format(file_name, file_path))
+def get_versions_and_save(dashboards, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support):
+    if dashboards:
+        for board in dashboards:
+            board_folder_path = os.path.join(folder_path, board['uid'])
+            if not os.path.exists(board_folder_path):
+                os.makedirs(board_folder_path)
+
+            (status, content) = get_dashboard_versions(board['id'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+            if status == 200:
+                print("found {0} versions for dashboard {1}".format(len(content), board['title']))
+                get_individual_versions(content, board_folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print)
 
 
 def get_individual_versions(versions, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print):
@@ -50,15 +59,10 @@ def get_individual_versions(versions, folder_path, log_file, grafana_url, http_g
             for version in versions:
                 (status, content) = get_version(version['dashboardId'], version['version'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
                 if status == 200:
-                    version_name = "{0} {1}".format(version['dashboardId'], version['version'])
-                    save_version(version_name, content, folder_path, pretty_print)
-                    f.write('{0}\n'.format(version_name))
+                    save_version(str(version['version']), content, folder_path, pretty_print)
+                    f.write('{0}\n'.format(version['version']))
 
 
-def get_versions_and_save(dashboards, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support):
-    if dashboards:
-        for board in dashboards:
-            (status, content) = get_dashboard_versions(board['id'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-            if status == 200:
-                print("found {0} versions for dashboard {1}".format(len(content), board['title']))
-                get_individual_versions(content, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print)
+def save_version(file_name, version, folder_path, pretty_print):
+    file_path = save_json(file_name, version, folder_path, 'version', pretty_print)
+    print("version: {0} -> saved to: {1}".format(file_name, file_path))
