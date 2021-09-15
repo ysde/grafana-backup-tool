@@ -4,6 +4,7 @@ from grafana_backup.delete_datasources import main as delete_datasources
 from grafana_backup.delete_folders import main as delete_folders
 from grafana_backup.delete_alert_channels import main as delete_alert_channels
 from grafana_backup.delete_snapshots import main as delete_snapshots
+from grafana_backup.delete_annotations import main as delete_annotations
 import sys
 
 
@@ -14,7 +15,8 @@ def main(args, settings):
                         'datasources': delete_datasources,
                         'folders': delete_folders,
                         'alert-channels': delete_alert_channels,
-                        'snapshots': delete_snapshots}
+                        'snapshots': delete_snapshots,
+                        'annotations': delete_annotations}
 
     (status, json_resp, uid_support, paging_support) = api_checks(settings)
 

@@ -84,6 +84,23 @@ def get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_c
     return (status_code, content)
 
 
+def search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/annotations?type=annotation&limit=5000&from={1}&to={2}'.format(grafana_url, ts_from, ts_to)
+    print("query annotation uri: {0}".format(url))
+    (status_code, content) = send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+    return (status_code, content)
+
+
+def create_annotation(annotation, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/annotations'.format(grafana_url)
+    return send_grafana_post(url, annotation, http_post_headers, verify_ssl, client_cert, debug)
+
+
+def delete_annotation(id_, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    r = requests.delete('{0}/api/annotations/{1}'.format(grafana_url, id_), headers=http_get_headers)
+    return int(r.status_code)
+
+
 def search_alert_channels(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     url = '{0}/api/alert-notifications'.format(grafana_url)
     print("search alert channels in grafana: {0}".format(url))
@@ -96,8 +113,6 @@ def create_alert_channel(payload, grafana_url, http_post_headers, verify_ssl, cl
 
 
 def delete_alert_channel_by_uid(uid, grafana_url, http_post_headers):
-    print('{0}/api/alert-notifications/uid/{1}'.format(grafana_url, uid))
-    print(http_post_headers)
     r = requests.delete('{0}/api/alert-notifications/uid/{1}'.format(grafana_url, uid), headers=http_post_headers)
     return int(r.status_code)
 
