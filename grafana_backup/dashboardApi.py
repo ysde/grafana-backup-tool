@@ -85,7 +85,7 @@ def get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_c
 
 
 def search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl, client_cert, debug):
-    url = '{0}/api/annotations?limit=5000&from={1}&to={2}'.format(grafana_url, ts_from, ts_to)
+    url = '{0}/api/annotations?type=annotation&limit=5000&from={1}&to={2}'.format(grafana_url, ts_from, ts_to)
     print("query annotation uri: {0}".format(url))
     (status_code, content) = send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
     return (status_code, content)

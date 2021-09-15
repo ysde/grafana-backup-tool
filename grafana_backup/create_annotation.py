@@ -13,9 +13,5 @@ def main(args, settings, file_path):
         data = f.read()
 
     annotation = json.loads(data)
-    # bug of grafana. alerts create annotations without a text although text is a mandatory field
-    if not annotation['text']:
-        annotation['text'] = annotation['alertName']
-
     result = create_annotation(json.dumps(annotation), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
     print("create annotation: {0}, status: {1}, msg: {2}".format(annotation['id'], result[0], result[1]))
