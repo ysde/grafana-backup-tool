@@ -17,24 +17,24 @@ def main(args, settings):
     settings.update({'PAGING_SUPPORT': paging_support})
 
     grafana_url = settings.get('GRAFANA_URL')
-    http_get_headers = settings.get('HTTP_GET_HEADERS')
+    http_get_headers = settings.get('HTTP_POST_HEADERS')
     verify_ssl = settings.get('VERIFY_SSL')
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     timestamp = settings.get('TIMESTAMP')
     pretty_print = settings.get('PRETTY_PRINT')
 
-    folder_path = 'alert_status/{1}'.format(timestamp)
+    folder_path = 'alert_status/{0}'.format(timestamp)
 
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
     alerts = get_all_alerts(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     file_path = save_json("alerts.json", alerts, folder_path, 'alerts', pretty_print)
-    print("alerts have been saved to {1}".format(file_path))
+    print("alerts have been saved to {0}".format(file_path))
 
     for alert in alerts:
-        status = pause_alert(alert['id'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+        (status, content) = pause_alert(alert['id'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         if status != 200:
             print("pausing of alert {0} failed with {1}".format(alert['name'], status))
 

@@ -128,7 +128,7 @@ def search_alerts(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
 
 
 def pause_alert(id_, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
-    url = '{0}/api/alerts/{1}/pause'.format(grafana_url)
+    url = '{0}/api/alerts/{1}/pause'.format(grafana_url, id_)
     payload = '{ "paused": true }'
     (status_code, content) = send_grafana_post(url, payload, http_post_headers, verify_ssl, client_cert, debug)
     return (status_code, content)

@@ -1,7 +1,7 @@
 from grafana_backup.constants import (PKG_NAME, PKG_VERSION, JSON_CONFIG_PATH)
 from grafana_backup.grafanaSettings import main as conf
-from grafanaSettings.pausealerts import main as pause
-from grafanaSettings.unpausealerts import main as unpause
+from grafana_backup.pausealerts import main as pause
+#from grafana_backup.unpausealerts import main as unpause
 from docopt import docopt
 import os
 import sys
