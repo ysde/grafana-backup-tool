@@ -1,17 +1,17 @@
+import os
+import sys
+from docopt import docopt
 from grafana_backup.constants import (PKG_NAME, PKG_VERSION, JSON_CONFIG_PATH)
 from grafana_backup.grafanaSettings import main as conf
 from grafana_backup.pausealerts import main as pause
-#from grafana_backup.unpausealerts import main as unpause
-from docopt import docopt
-import os
-import sys
+from grafana_backup.unpausealerts import main as unpause
 
 docstring = """
 {0} {1}
 
 Usage:
     grafana-backup pausealerts [--config=<filename>]
-    grafana-backup unpausealerts [--config=<filename>]
+    grafana-backup unpausealerts <alerts_filename> [--config=<filename>]
     grafana-backup -h | --help
     grafana-backup --version
 

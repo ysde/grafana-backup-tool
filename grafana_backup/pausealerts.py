@@ -16,13 +16,13 @@ def main(args, settings):
     settings.update({'UID_SUPPORT': uid_support})
     settings.update({'PAGING_SUPPORT': paging_support})
 
-    grafana_url = settings.get('GRAFANA_URL')
-    http_get_headers = settings.get('HTTP_POST_HEADERS')
-    verify_ssl = settings.get('VERIFY_SSL')
-    client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     timestamp = settings.get('TIMESTAMP')
+    verify_ssl = settings.get('VERIFY_SSL')
+    client_cert = settings.get('CLIENT_CERT')
+    grafana_url = settings.get('GRAFANA_URL')
     pretty_print = settings.get('PRETTY_PRINT')
+    http_get_headers = settings.get('HTTP_POST_HEADERS')
 
     folder_path = 'alert_status/{0}'.format(timestamp)
 
