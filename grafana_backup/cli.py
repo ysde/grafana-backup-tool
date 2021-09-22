@@ -1,6 +1,7 @@
 from grafana_backup.constants import (PKG_NAME, PKG_VERSION, JSON_CONFIG_PATH)
 from grafana_backup.save import main as save
 from grafana_backup.restore import main as restore
+from grafana_backup.delete import main as delete
 from grafana_backup.grafanaSettings import main as conf
 from docopt import docopt
 import os
@@ -12,6 +13,7 @@ docstring = """
 Usage:
     grafana-backup save [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,organizations,users,snapshots,versions,annotations>] [--no-archive]
     grafana-backup restore <archive_file> [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,organizations,users,snapshots,annotations>]
+    grafana-backup delete [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,snapshots,annotations>]
     grafana-backup [--config=<filename>]
     grafana-backup -h | --help
     grafana-backup --version
@@ -45,6 +47,9 @@ def main():
         sys.exit()
     elif args.get('restore', None):
         restore(args, settings)
+        sys.exit()
+    elif args.get('delete', None):
+        delete(args, settings)
         sys.exit()
     else:
         print(docstring)
