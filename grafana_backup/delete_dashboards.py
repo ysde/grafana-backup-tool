@@ -1,4 +1,4 @@
-from grafana_backup.dashboardApi import search_dashboard, delete_dashboard
+from grafana_backup.dashboardApi import search_dashboard, delete_dashboard_by_uid, delete_dashboard_by_slug
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line
 
 
@@ -40,7 +40,11 @@ def get_all_dashboards_in_grafana(page, limit, grafana_url, http_get_headers, ve
 def get_individual_dashboard_and_delete(dashboards, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support):
     if dashboards:
         for board in dashboards:
-            status = delete_dashboard(board['uid'], grafana_url, http_get_headers)
+            if uid_support:
+                status = delete_dashboard_by_uid(board['uid'], grafana_url, http_get_headers)
+            else:
+                status = delete_dashboard_by_slug(board['slug'], grafana_url, http_get_headers)
+
             if status == 200:
                 print("deleted dashboard {0}".format(board['title']))
             else:
