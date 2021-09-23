@@ -19,7 +19,7 @@ def main(args, settings):
         blob.upload_from_filename(archive_file)
 
         print("Upload to gcs: was successful")
-    except FileNotFoundError:
+    except FileNotFoundError:  # noqa: F821
         print("The file: {0} was not found".format(gcs_file_name))
         return False
     except api_core.exceptions.Forbidden as e:

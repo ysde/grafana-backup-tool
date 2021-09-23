@@ -14,4 +14,4 @@ if [[ ! -f "${settings_file}" ]]; then
 	exit 1
 fi
 
-python -m grafana_backup.cli save --config $settings_file
+python -m grafana_backup.cli save --config "$settings_file"

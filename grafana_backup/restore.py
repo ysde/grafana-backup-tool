@@ -1,4 +1,3 @@
-from grafana_backup.commons import print_horizontal_line
 from grafana_backup.create_org import main as create_org
 from grafana_backup.api_checks import main as api_checks
 from grafana_backup.create_folder import main as create_folder
@@ -6,6 +5,8 @@ from grafana_backup.create_datasource import main as create_datasource
 from grafana_backup.create_dashboard import main as create_dashboard
 from grafana_backup.create_alert_channel import main as create_alert_channel
 from grafana_backup.create_user import main as create_user
+from grafana_backup.create_snapshot import main as create_snapshot
+from grafana_backup.create_annotation import main as create_annotation
 from grafana_backup.s3_download import main as s3_download
 from grafana_backup.azure_storage_download import main as azure_storage_download
 from grafana_backup.gcs_download import main as gcs_download
@@ -68,6 +69,8 @@ def main(args, settings):
     restore_functions['alert_channel'] = create_alert_channel
     restore_functions['organization']  = create_org
     restore_functions['user']          = create_user
+    restore_functions['snapshot']      = create_snapshot
+    restore_functions['annotation']    = create_annotation
 
     if sys.version_info >= (3,):
         with tempfile.TemporaryDirectory() as tmpdir:

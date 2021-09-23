@@ -1,5 +1,4 @@
 import os
-import json
 from grafana_backup.dashboardApi import search_alert_channels
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
@@ -52,7 +51,7 @@ def get_individual_alert_channel_and_save(channels, folder_path, log_file, prett
                     channel_identifier = channel['uid']
                 else:
                     channel_identifier = channel['id']
-                    
+
                 save_alert_channel(
                     to_python2_and_3_compatible_string(channel['name']),
                     to_python2_and_3_compatible_string(str(channel_identifier)),

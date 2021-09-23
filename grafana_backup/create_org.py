@@ -1,5 +1,5 @@
 import json
-from grafana_backup.dashboardApi import get_folder_id_from_old_folder_url, create_org, update_org
+from grafana_backup.dashboardApi import create_org, update_org
 
 
 def main(args, settings, file_path):

@@ -1,5 +1,4 @@
 import os
-import json
 from grafana_backup.dashboardApi import search_datasource
 from grafana_backup.commons import print_horizontal_line, save_json
 
@@ -15,12 +14,12 @@ def main(args, settings):
     pretty_print = settings.get('PRETTY_PRINT')
 
     folder_path = '{0}/datasources/{1}'.format(backup_dir, timestamp)
-    log_file = 'datasources_{0}.txt'.format(timestamp)
+    'datasources_{0}.txt'.format(timestamp)
 
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
-    datasources = get_all_datasources_and_save(folder_path, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print)
+    get_all_datasources_and_save(folder_path, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print)
     print_horizontal_line()
 
 
