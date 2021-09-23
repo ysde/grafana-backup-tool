@@ -86,7 +86,6 @@ def get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_c
 
 def search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl, client_cert, debug):
     url = '{0}/api/annotations?type=annotation&limit=5000&from={1}&to={2}'.format(grafana_url, ts_from, ts_to)
-    print("query annotation uri: {0}".format(url))
     (status_code, content) = send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
     return (status_code, content)
 
@@ -120,6 +119,26 @@ def delete_alert_channel_by_uid(uid, grafana_url, http_post_headers):
 def delete_alert_channel_by_id(id_, grafana_url, http_post_headers):
     r = requests.delete('{0}/api/alert-notifications/{1}'.format(grafana_url, id_), headers=http_post_headers)
     return int(r.status_code)
+
+
+def search_alerts(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/alerts'.format(grafana_url)
+    (status_code, content) = send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+    return (status_code, content)
+
+
+def pause_alert(id_, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/alerts/{1}/pause'.format(grafana_url, id_)
+    payload = '{ "paused": true }'
+    (status_code, content) = send_grafana_post(url, payload, http_post_headers, verify_ssl, client_cert, debug)
+    return (status_code, content)
+
+
+def unpause_alert(id_, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/alerts/{1}/pause'.format(grafana_url, id_)
+    payload = '{ "paused": false }'
+    (status_code, content) = send_grafana_post(url, payload, http_post_headers, verify_ssl, client_cert, debug)
+    return (status_code, content)
 
 
 def delete_folder(uid, grafana_url, http_post_headers):
