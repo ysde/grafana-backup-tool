@@ -132,8 +132,13 @@ def delete_snapshot(key, grafana_url, http_post_headers):
     return int(r.status_code)
 
 
-def delete_dashboard(board_uri, grafana_url, http_post_headers):
-    r = requests.delete('{0}/api/dashboards/uid/{1}'.format(grafana_url, board_uri), headers=http_post_headers)
+def delete_dashboard_by_uid(uid, grafana_url, http_post_headers):
+    r = requests.delete('{0}/api/dashboards/uid/{1}'.format(grafana_url, uid), headers=http_post_headers)
+    return int(r.status_code)
+
+
+def delete_dashboard_by_slug(slug, grafana_url, http_post_headers):
+    r = requests.delete('{0}/api/dashboards/db/{1}'.format(grafana_url, slug), headers=http_post_headers)
     return int(r.status_code)
 
 
@@ -168,8 +173,15 @@ def create_datasource(payload, grafana_url, http_post_headers, verify_ssl, clien
                              client_cert, debug)
 
 
-def delete_datasource(uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
-    r = requests.delete('{0}/api/datasources/uid/{1}'.format(grafana_url, uid), headers=http_post_headers)
+def delete_datasource_by_uid(uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/datasources/uid/{1}'.format(grafana_url, uid)
+    r = requests.delete(url, headers=http_post_headers)
+    return int(r.status_code)
+
+
+def delete_datasource_by_id(id_, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/datasources/{1}'.format(grafana_url, id_)
+    r = requests.delete(url, headers=http_post_headers)
     return int(r.status_code)
 
 
