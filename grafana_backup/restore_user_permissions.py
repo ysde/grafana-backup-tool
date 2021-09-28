@@ -1,12 +1,12 @@
 import sys
 import json
 from grafana_backup.api_checks import main as api_checks
-from grafana_backup.dashboardApi import unpause_alert
+from grafana_backup.dashboardApi import set_user_role
 
 
 def main(args, settings):
-    alerts_file = args.get('<alerts_filename>', None)
-    print(f"got alerts_file {alerts_file}")
+    users_file = args.get('<users_filename>', None)
+    print(f"got users_file {users_file}")
 
     (status, json_resp, uid_support, paging_support) = api_checks(settings)
 
@@ -20,17 +20,16 @@ def main(args, settings):
     grafana_url = settings.get('GRAFANA_URL')
     http_post_headers = settings.get('HTTP_POST_HEADERS')
 
-    with open(alerts_file, 'r') as f:
+    with open(users_file, 'r') as f:
         data = f.read()
 
-    alerts = json.loads(data)
-    print(alerts)
+    users = json.loads(data)
+    print(users)
 
-    for alert in alerts:
-        if alert['state'] != 'paused':
-            result = unpause_alert(alert['id'], grafana_url, http_post_headers, verify_ssl, client_cert, debug)
-            if result[0] != 200:
-                print(f"failed to unpause alert: {alert['id']} - {alert['name']} with {result[0]}")
-            print(f"unpausing alert {alert['id']} - {alert['name']} with previous state: {alert['state']}")
-        else:
-            print(f"keeping alert {alert['id']} - {alert['name']} paused")
+    for user in users:
+        if user['role'] == 'Editor':
+            (status, content) = set_user_role(user['userId'], 'Editor', grafana_url, http_post_headers, verify_ssl, client_cert, debug)
+            print("changed user {0} to Editor".format(user['login']))
+
+            if status != 200:
+                print("changing role of user {0} failed with {1}".format(user['login'], status))

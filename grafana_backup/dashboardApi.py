@@ -281,7 +281,7 @@ def get_users(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
 
 
 def set_user_role(user_id, role, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
-    json_payload = '{ "role": "{0}" }'.format(role)
+    json_payload = json.dumps({'role': role})
     url = '{0}/api/org/users/{1}'.format(grafana_url, user_id)
     r = requests.patch(url, headers=http_post_headers, data=json_payload, verify=verify_ssl, cert=client_cert)
     return (r.status_code, r.json())

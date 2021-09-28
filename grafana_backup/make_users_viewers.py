@@ -35,7 +35,8 @@ def main(args, settings):
 
     for user in users:
         if user['role'] != 'Admin':
-            (status, content) = set_user_role(user['id'], 'Viewer', grafana_url, http_post_headers, verify_ssl, client_cert, debug)
+            (status, content) = set_user_role(user['userId'], 'Viewer', grafana_url, http_post_headers, verify_ssl, client_cert, debug)
+            print("changed user {0} to Viewer".format(user['login']))
 
             if status != 200:
                 print("changing role of user {0} failed with {1}".format(user['login'], status))
