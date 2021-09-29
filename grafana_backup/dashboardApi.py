@@ -85,6 +85,9 @@ def get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_c
 
 
 def search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl, client_cert, debug):
+    # there is two types of annotations
+    # annotation: are user created, custom ones and can be managed via the api
+    # alert: are created by Grafana itself, can NOT be managed by the api
     url = '{0}/api/annotations?type=annotation&limit=5000&from={1}&to={2}'.format(grafana_url, ts_from, ts_to)
     print("query annotation uri: {0}".format(url))
     (status_code, content) = send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
