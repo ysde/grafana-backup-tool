@@ -6,7 +6,7 @@ from grafana_backup.dashboardApi import set_user_role
 
 def main(args, settings):
     users_file = args.get('<users_filename>', None)
-    print(f"got users_file {users_file}")
+    print("got users_file {0}".format(users_file))
 
     (status, json_resp, uid_support, paging_support) = api_checks(settings)
 
