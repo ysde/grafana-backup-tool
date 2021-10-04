@@ -17,12 +17,11 @@ def main(args, settings):
 
 def get_all_annotations_and_delete(grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print):
     now = int(round(time.time() * 1000))
-    one_day_in_ms = 24 * 60 * 60 * 1000
+    one_month_in_ms = 31 * 24 * 60 * 60 * 1000
 
     ts_to = now
-    ts_from = now - one_day_in_ms
-    thirteen_months_retention = (now - (60 * one_day_in_ms))
-    # thirteen_months_retention = (now - (13 * 31 * one_day_in_ms))
+    ts_from = now - one_month_in_ms
+    thirteen_months_retention = (now - (13 * one_month_in_ms))
 
     while ts_from > thirteen_months_retention:
         status_code_and_content = search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl, client_cert, debug)
@@ -40,4 +39,4 @@ def get_all_annotations_and_delete(grafana_url, http_get_headers, verify_ssl, cl
                                                                           status_code_and_content[1]))
 
         ts_to = ts_from
-        ts_from = ts_from - one_day_in_ms
+        ts_from = ts_from - one_month_in_ms
