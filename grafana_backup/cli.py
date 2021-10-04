@@ -4,6 +4,8 @@ from grafana_backup.restore import main as restore
 from grafana_backup.delete import main as delete
 from grafana_backup.make_users_viewers import main as make_users_viewers
 from grafana_backup.restore_user_permissions import main as restore_user_permissions
+from grafana_backup.pausealerts import main as pause
+from grafana_backup.unpausealerts import main as unpause
 from grafana_backup.grafanaSettings import main as conf
 from docopt import docopt
 import os
@@ -18,6 +20,8 @@ Usage:
     grafana-backup delete [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,snapshots,annotations>]
     grafana-backup makeusersviewers [--config=<filename>]
     grafana-backup restoreusers <users_filename> [--config=<filename>]
+    grafana-backup pausealerts [--config=<filename>]
+    grafana-backup unpausealerts <alerts_filename> [--config=<filename>]
     grafana-backup [--config=<filename>]
     grafana-backup -h | --help
     grafana-backup --version
@@ -60,6 +64,12 @@ def main():
         sys.exit()
     elif args.get('restoreusers', None):
         restore_user_permissions(args, settings)
+        sys.exit()
+    elif args.get('pausealerts', None):
+        pause(args, settings)
+        sys.exit()
+    elif args.get('unpausealerts', None):
+        unpause(args, settings)
         sys.exit()
     else:
         print(docstring)
