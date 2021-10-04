@@ -30,7 +30,7 @@ def main(args, settings):
         if alert['state'] != 'paused':
             result = unpause_alert(alert['id'], grafana_url, http_post_headers, verify_ssl, client_cert, debug)
             if result[0] != 200:
-                print(f"failed to unpause alert: {alert['id']} - {alert['name']} with {result[0]}")
-            print(f"unpausing alert {alert['id']} - {alert['name']} with previous state: {alert['state']}")
+                print("failed to unpause alert: {0} - {1} with {2}".format(alert['id'], alert['name'], result[0]))
+            print("unpausing alert: {0} - {1} with previous state: {2}".format(alert['id'], alert['name'], result[0]))
         else:
-            print(f"keeping alert {alert['id']} - {alert['name']} paused")
+            print("keeping alert {0} - {1} paused".format(alert['id'], alert['name']))

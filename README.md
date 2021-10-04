@@ -22,6 +22,7 @@ The aim of this tool is to:
 	* Grafana's api doesn't provide user's password when backing up, so the `default_password (which is in the grafanaSetting.json)` will be used when restoring.
 * Snapshots
 * Dashboard Versions (only backup, no restore)
+* Annotations
 
 
 ## Requirements
