@@ -1,6 +1,6 @@
 import os
 import json
-from grafana_backup.dashboardApi import search_folders, get_folder
+from grafana_backup.dashboardApi import search_folders, get_folder, get_folder_permissions
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
 
