@@ -6,7 +6,7 @@ from grafana_backup.dashboardApi import unpause_alert
 
 def main(args, settings):
     alerts_file = args.get('<alerts_filename>', None)
-    print(f"got alerts_file {alerts_file}")
+    print("got alerts_file {0}".format(alerts_file))
 
     (status, json_resp, uid_support, paging_support) = api_checks(settings)
 
