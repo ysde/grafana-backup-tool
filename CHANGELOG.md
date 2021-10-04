@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [1.111] - 2021-10-04
 - Option to pause and unpause alerts
+- Option to basically make Grafana read-only by turning all editors into viewers (and back)
 
 # [1.110] - 2021-09-02
 
