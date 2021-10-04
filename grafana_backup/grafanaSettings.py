@@ -2,9 +2,7 @@ import base64
 import json
 import os
 from datetime import datetime
-
-from grafana_backup.commons import (load_config,
-                                    to_python2_and_3_compatible_string)
+from grafana_backup.commons import load_config
 
 
 def main(config_path):

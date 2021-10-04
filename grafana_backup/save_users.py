@@ -1,6 +1,5 @@
 import os
-import json
-from grafana_backup.dashboardApi import get_dashboard, search_users, get_user_org, get_user
+from grafana_backup.dashboardApi import search_users, get_user_org, get_user
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
 
@@ -26,6 +25,7 @@ def main(args, settings):
     else:
         print('[ERROR] Backing up users needs to set ENV GRAFANA_ADMIN_ACCOUNT and GRAFANA_ADMIN_PASSWORD first. \n')
         print_horizontal_line()
+
 
 def get_all_users(page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     (status, content) = search_users(page,

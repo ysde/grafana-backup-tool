@@ -1,16 +1,23 @@
 from grafana_backup.constants import (PKG_NAME, PKG_VERSION, JSON_CONFIG_PATH)
 from grafana_backup.save import main as save
 from grafana_backup.restore import main as restore
+from grafana_backup.delete import main as delete
+from grafana_backup.pausealerts import main as pause
+from grafana_backup.unpausealerts import main as unpause
 from grafana_backup.grafanaSettings import main as conf
 from docopt import docopt
-import os, sys
+import os
+import sys
 
 docstring = """
 {0} {1}
 
 Usage:
-    grafana-backup save [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,organizations,users>] [--no-archive]
-    grafana-backup restore <archive_file> [--config=<filename>] [--components=<folders,folders_permissions,dashboards,datasources,alert-channels,organizations,users>]
+    grafana-backup save [--config=<filename>] [--components=<folders,folders_permissions,dashboards,datasources,alert-channels,organizations,users,snapshots,versions,annotations>] [--no-archive]
+    grafana-backup restore <archive_file> [--config=<filename>] [--components=<folders,folders_permissions,dashboards,datasources,alert-channels,organizations,users,snapshots,annotations>]
+    grafana-backup delete [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,snapshots,annotations>]
+    grafana-backup pausealerts [--config=<filename>]
+    grafana-backup unpausealerts <alerts_filename> [--config=<filename>]
     grafana-backup [--config=<filename>]
     grafana-backup -h | --help
     grafana-backup --version
@@ -19,8 +26,8 @@ Options:
     -h --help                                                       Show this help message and exit
     --version                                                       Get version information and exit
     --config=<filename>                                             Override default configuration path
-    --components=<folders,folders_permissions,dashboards,datasources,alert-channels,organizations,users>    Comma separated list of individual components to backup
-                                                                    rather than backing up all components by default
+    --components=<folders,folders_permissions,dashboards,datasources,alert-channels,organizations,users,snapshots,versions,annotations>    Comma separated list of individual components to backup
+                                                                    rather than backing up all components by default. Versions can only be saved not restored.
     --no-archive                                                    Skip archive creation and do not delete unarchived files
                                                                     (used for troubleshooting purposes)
 """.format(PKG_NAME, PKG_VERSION)
@@ -44,6 +51,15 @@ def main():
         sys.exit()
     elif args.get('restore', None):
         restore(args, settings)
+        sys.exit()
+    elif args.get('delete', None):
+        delete(args, settings)
+        sys.exit()
+    elif args.get('pausealerts', None):
+        pause(args, settings)
+        sys.exit()
+    elif args.get('unpausealerts', None):
+        unpause(args, settings)
         sys.exit()
     else:
         print(docstring)

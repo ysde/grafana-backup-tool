@@ -16,7 +16,7 @@ def main(args, settings):
     try:
         gcs_data = io.BytesIO(blob.download_as_bytes())
         print("Download from GCS: '{0}' was successful".format(bucket_name))
-    except FileNotFoundError:
+    except FileNotFoundError:  # noqa: F821
         print("The file: {0} was not found".format(arg_archive_file))
         return False
     except api_core.exceptions.Forbidden as e:

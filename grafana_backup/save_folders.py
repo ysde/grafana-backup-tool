@@ -1,6 +1,6 @@
 import os
 import json
-from grafana_backup.dashboardApi import search_folders, get_folder, get_folder_permissions
+from grafana_backup.dashboardApi import search_folders, get_folder
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
 
@@ -63,7 +63,7 @@ def get_individual_folder_setting_and_save(folders, folder_path, log_file, grafa
 
             if status_folder_settings == 200 and status_folder_permissions == 200:
                 save_folder_setting(
-                    to_python2_and_3_compatible_string(folder['title']), 
+                    to_python2_and_3_compatible_string(folder['title']),
                     folder_uri,
                     content_folder_settings,
                     content_folder_permissions,

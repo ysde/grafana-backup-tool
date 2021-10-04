@@ -32,7 +32,7 @@ def main(args, settings):
     try:
         s3_object.put(Body=open(archive_file, 'rb'))
         print("Upload to S3 was successful")
-    except FileNotFoundError:
+    except FileNotFoundError:  # noqa: F821
         print("The file was not found")
         return False
     except NoCredentialsError:

@@ -1,4 +1,4 @@
-from azure.storage.blob import BlobServiceClient, BlobClient
+from azure.storage.blob import BlobServiceClient
 import io
 
 

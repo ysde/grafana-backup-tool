@@ -1,5 +1,4 @@
 import os
-import json
 from grafana_backup.dashboardApi import search_orgs, get_org
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
@@ -7,7 +6,6 @@ from grafana_backup.commons import to_python2_and_3_compatible_string, print_hor
 def main(args, settings):
     backup_dir = settings.get('BACKUP_DIR')
     timestamp = settings.get('TIMESTAMP')
-    limit = settings.get('SEARCH_API_LIMIT')
     grafana_url = settings.get('GRAFANA_URL')
     http_get_headers_basic_auth = settings.get('HTTP_GET_HEADERS_BASIC_AUTH')
     verify_ssl = settings.get('VERIFY_SSL')
