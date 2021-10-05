@@ -1,6 +1,7 @@
 from grafana_backup.create_org import main as create_org
 from grafana_backup.api_checks import main as api_checks
 from grafana_backup.create_folder import main as create_folder
+from grafana_backup.update_folder_permissions import main as update_folder_permissions
 from grafana_backup.create_datasource import main as create_datasource
 from grafana_backup.create_dashboard import main as create_dashboard
 from grafana_backup.create_alert_channel import main as create_alert_channel
@@ -120,3 +121,30 @@ def restore_components(args, settings, restore_functions, tmpdir):
                         file_path = os.path.join(root, filename)
                         print('restoring {0}: {1}'.format(ext, file_path))
                         restore_functions[ext](args, settings, file_path)
+
+
+def restore_from_dir(args, arg_components, settings, restore_dir):
+
+    restore_functions = { 'folder': create_folder,
+                            'folder_permissions': update_folder_permissions,
+                            'datasource': create_datasource,
+                            'dashboard': create_dashboard,
+                            'alert_channel': create_alert_channel,
+                            'organization': create_org,
+                            'user': create_user}
+
+    if arg_components:
+        arg_components_list = arg_components.split(',')
+
+        # Restore only the components that provided via an argument
+        # but must also exist in extracted archive
+        for ext in arg_components_list:
+            for file_path in glob('{0}/**/*.{1}'.format(restore_dir, ext[:-1]), recursive=True):
+                print('restoring {0}: {1}'.format(ext, file_path))
+                restore_functions[ext[:-1]](args, settings, file_path)
+    else:
+        # Restore every component included in extracted archive
+        for ext in restore_functions.keys():
+            for file_path in glob('{0}/**/*.{1}'.format(restore_dir, ext), recursive=True):
+                print('restoring {0}: {1}'.format(ext, file_path))
+                restore_functions[ext](args, settings, file_path)

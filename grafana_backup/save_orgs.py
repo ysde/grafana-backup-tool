@@ -14,7 +14,7 @@ def main(args, settings):
     pretty_print = settings.get('PRETTY_PRINT')
 
     folder_path = '{0}/organizations/{1}'.format(backup_dir, timestamp)
-    log_file = 'organaizations_{0}.txt'.format(timestamp)
+    log_file = 'organizations_{0}.txt'.format(timestamp)
 
     if http_get_headers_basic_auth:
         if not os.path.exists(folder_path):
