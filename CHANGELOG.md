@@ -5,13 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # [1.2.2] - 2021-11-30
 =======
 # [1.111] - 2021-10-04
+=======
+# [1.1.11] - 2021-10-04
+>>>>>>> update versions
 - Option to pause and unpause alerts
 - Option to basically make Grafana read-only by turning all editors into viewers (and back)
 >>>>>>> restore file that got lost
 
+<<<<<<< HEAD
 ### Added
 
 ### Changed
@@ -20,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 # [1.2.1] - 2021-10-15
+=======
+# [1.1.10] - 2021-09-02
+>>>>>>> update versions
 
 ### Added
 
