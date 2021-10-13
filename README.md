@@ -24,6 +24,7 @@ The aim of this tool is to:
 * Dashboard Versions (only backup, no restore)
 * Annotations
 
+**NOTE** The only supported `orgId` right now is `1`, the default organization will be backed up only!
 
 ## Requirements
 * Bash
