@@ -12,7 +12,13 @@ from grafana_backup.s3_download import main as s3_download
 from grafana_backup.azure_storage_download import main as azure_storage_download
 from grafana_backup.gcs_download import main as gcs_download
 from glob import glob
-import sys, tarfile, tempfile, os, shutil, fnmatch, collections
+import sys
+import tarfile
+import tempfile
+import os
+import shutil
+import fnmatch
+import collections
 
 
 def main(args, settings):
@@ -64,18 +70,18 @@ def main(args, settings):
             sys.exit(1)
 
     # TODO:
-    ## Shell game magic warning: restore_function keys require the 's'
-    ## to be removed in order to match file extension names...
+    # Shell game magic warning: restore_function keys require the 's'
+    # to be removed in order to match file extension names...
     restore_functions = collections.OrderedDict()
-    restore_functions['folder']             = create_folder
-    restore_functions['datasource']         = create_datasource
-    restore_functions['dashboard']          = create_dashboard
-    restore_functions['alert_channel']      = create_alert_channel
-    restore_functions['organization']       = create_org
-    restore_functions['user']               = create_user
-    restore_functions['snapshot']           = create_snapshot
-    restore_functions['annotation']         = create_annotation
-    restore_functions['folder_permission']  = update_folder_permissions
+    restore_functions['folder'] = create_folder
+    restore_functions['datasource'] = create_datasource
+    restore_functions['dashboard'] = create_dashboard
+    restore_functions['alert_channel'] = create_alert_channel
+    restore_functions['organization'] = create_org
+    restore_functions['user'] = create_user
+    restore_functions['snapshot'] = create_snapshot
+    restore_functions['annotation'] = create_annotation
+    restore_functions['folder_permission'] = update_folder_permissions
 
     if sys.version_info >= (3,):
         with tempfile.TemporaryDirectory() as tmpdir:
