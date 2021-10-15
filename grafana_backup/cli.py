@@ -15,9 +15,9 @@ Usage:
     grafana-backup save [--config=<filename>] [--components=<>] [--no-archive]
     grafana-backup restore [--config=<filename>] [--components=<>] <archive_file>
     grafana-backup delete [--config=<filename>] [--components=<>]
-    grafana-backup tools [no_args_display_help] [--config=<filename>] [<optional-command>] [<optional-argument>]
+    grafana-backup tools [-h | --help] [--config=<filename>] [<optional-command>] [<optional-argument>]
     grafana-backup [--config=<filename>]
-    grafana-backup -h | --help
+    grafana-backup [-h | --help]
     grafana-backup --version
 
 Options:
@@ -31,8 +31,8 @@ Options:
                                             (used for troubleshooting purposes)
 """.format(PKG_NAME, PKG_VERSION)
 
-args = docopt(docstring, version='{0} {1}'.format(PKG_NAME, PKG_VERSION))
 
+args = docopt(docstring, help=False, version='{0} {1}'.format(PKG_NAME, PKG_VERSION))
 
 def main():
     arg_config = args.get('--config', False)
@@ -56,6 +56,9 @@ def main():
         sys.exit()
     elif args.get('tools', None):
         tools(args, settings)
+        sys.exit()
+    elif args.get('--help', None):
+        print(docstring)
         sys.exit()
     else:
         print(docstring)
