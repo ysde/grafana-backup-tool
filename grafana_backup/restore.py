@@ -63,15 +63,19 @@ def main(args, settings):
             print(str(e))
             sys.exit(1)
 
+    # TODO:
+    ## Shell game magic warning: restore_function keys require the 's'
+    ## to be removed in order to match file extension names...
     restore_functions = collections.OrderedDict()
-    restore_functions['folder']        = create_folder
-    restore_functions['datasource']    = create_datasource
-    restore_functions['dashboard']     = create_dashboard
-    restore_functions['alert_channel'] = create_alert_channel
-    restore_functions['organization']  = create_org
-    restore_functions['user']          = create_user
-    restore_functions['snapshot']      = create_snapshot
-    restore_functions['annotation']    = create_annotation
+    restore_functions['folder']             = create_folder
+    restore_functions['datasource']         = create_datasource
+    restore_functions['dashboard']          = create_dashboard
+    restore_functions['alert_channel']      = create_alert_channel
+    restore_functions['organization']       = create_org
+    restore_functions['user']               = create_user
+    restore_functions['snapshot']           = create_snapshot
+    restore_functions['annotation']         = create_annotation
+    restore_functions['folder_permission']  = update_folder_permissions
 
     if sys.version_info >= (3,):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -97,6 +101,7 @@ def restore_components(args, settings, restore_functions, tmpdir):
 
         # Restore only the components that provided via an argument
         # but must also exist in extracted archive
+        # NOTICE: ext[:-1] cuts the 's' off in order to match the file extension name to be restored...
         for ext in arg_components_list:
             if sys.version_info >= (3,):
                 for file_path in glob('{0}/**/*.{1}'.format(tmpdir, ext[:-1]), recursive=True):

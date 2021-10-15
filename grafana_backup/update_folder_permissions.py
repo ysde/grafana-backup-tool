@@ -15,4 +15,4 @@ def main(args, settings, file_path):
     folder_permissions = json.loads(data)
     if folder_permissions:
         result = update_folder_permissions(folder_permissions, grafana_url, http_post_headers, verify_ssl, client_cert, debug)
-        print("update folder permissions {0}, status: {1}, msg: {2}".format(folder_permissions[0].get('title', ''), result[0], result[1]))
+        print("update folder permissions {0}, status: {1}, msg: {2}\n".format(folder_permissions[0].get('title', ''), result[0], result[1]))

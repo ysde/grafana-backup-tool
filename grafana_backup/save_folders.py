@@ -45,7 +45,8 @@ def get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, client
 def save_folder_setting(folder_name, file_name, folder_settings, folder_permissions, folder_path, pretty_print):
     file_path = save_json(file_name, folder_settings, folder_path, 'folder', pretty_print)
     print("folder:{0} are saved to {1}".format(folder_name, file_path))
-    file_path = save_json(file_name,  folder_permissions, folder_path, 'folder_permissions', pretty_print)
+    # NOTICE: The 'folder_permission' file extension had the 's' removed to work with the magical dict logic in restore.py...
+    file_path = save_json(file_name,  folder_permissions, folder_path, 'folder_permission', pretty_print)
     print("folder permissions:{0} are saved to {1}".format(folder_name, file_path))
 
 
