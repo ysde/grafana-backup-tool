@@ -32,11 +32,14 @@ Options:
 """.format(PKG_NAME, PKG_VERSION)
 
 
-args = docopt(docstring, help=False, version='{0} {1}'.format(PKG_NAME, PKG_VERSION))
+args = docopt(docstring, help=False,
+              version='{0} {1}'.format(PKG_NAME, PKG_VERSION))
+
 
 def main():
     arg_config = args.get('--config', False)
-    default_config = '{0}/conf/grafanaSettings.json'.format(os.path.dirname(__file__))
+    default_config = '{0}/conf/grafanaSettings.json'.format(
+        os.path.dirname(__file__))
 
     if arg_config:
         settings = conf(arg_config)
