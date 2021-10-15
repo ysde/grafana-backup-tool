@@ -4,19 +4,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.2.1] - 2021-10-15
+
+### Added
+
+### Changed
+- 42755ef moved pause and unpause alerts to tools subcommand
+- af51467 fixes #140 and ensures folder_permissions are restored
+
+### Removed
+- 30a937f removed unused restore_from_dir function
+
 # [1.2.0] - 2021-10-11
 - Publish to PyPi
 
-# [1.111] - 2021-10-04
-- Option to pause and unpause alerts
+### Added
 
-# [1.110] - 2021-09-02
+### Changed
+- cli changes are coming in 1.2.x which will introduce breaking arg parsing changes
+
+### Removed
+
+# [1.1.10] - 2021-10-04
 
 ### Added
-- Option to save and restore snapshots
-- Option to save dashboard versions (restore isn't really possible with the API)
-- Option to save and restore annotations
+- #150 Option to pause and unpause alerts
+- #140 Add folder permissions backup
+- #148 Option to save and restore snapshots
+- #148 Option to save dashboard versions (restore isn't really possible with the API)
+- #148 Option to save and restore annotations
 
+### Changed
+
+### Removed
 
 # [1.1.9] - 2021-06-27
 
