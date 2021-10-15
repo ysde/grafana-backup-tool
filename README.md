@@ -11,6 +11,7 @@ The aim of this tool is to:
 
 ## Supported components
 * Folder
+* Folder Permissions
 * Dashboard (contains Alert)
 * Datasource
 * Alert Channel
