@@ -12,14 +12,14 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     pretty_print = settings.get('PRETTY_PRINT')
+    uid_support = settings.get('UID_SUPPORT')
 
     folder_path = '{0}/datasources/{1}'.format(backup_dir, timestamp)
-    'datasources_{0}.txt'.format(timestamp)
 
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
-    get_all_datasources_and_save(folder_path, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print)
+    get_all_datasources_and_save(folder_path, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support)
     print_horizontal_line()
 
 
@@ -28,14 +28,18 @@ def save_datasource(file_name, datasource_setting, folder_path, pretty_print):
     print("datasource:{0} is saved to {1}".format(file_name, file_path))
 
 
-def get_all_datasources_and_save(folder_path, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print):
+def get_all_datasources_and_save(folder_path, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support):
     status_code_and_content = search_datasource(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     if status_code_and_content[0] == 200:
         datasources = status_code_and_content[1]
         print("There are {0} datasources:".format(len(datasources)))
         for datasource in datasources:
             print(datasource)
-            save_datasource(datasource['name'], datasource, folder_path, pretty_print)
+            if uid_support:
+                datasource_name = datasource['uid']
+            else:
+                datasource_name = datasource['name']
+            save_datasource(datasource_name, datasource, folder_path, pretty_print)
     else:
         print("query datasource failed, status: {0}, msg: {1}".format(status_code_and_content[0],
                                                                       status_code_and_content[1]))
