@@ -22,7 +22,7 @@ def main(args, settings):
     backup_functions = {'dashboards': save_dashboards,
                         'datasources': save_datasources,
                         'folders': save_folders,
-                        'alert-channels': save_alert_channels,
+                        'alert_channels': save_alert_channels,
                         'organizations': save_orgs,
                         'users': save_users,
                         'snapshots': save_snapshots,

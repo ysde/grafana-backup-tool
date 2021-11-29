@@ -15,8 +15,8 @@ docstring = """
 {0} {1}
 
 Usage:
-    grafana-backup save [--config=<filename>] [--components=<folders,folders_permissions,dashboards,datasources,alert-channels,organizations,users,snapshots,versions,annotations>] [--no-archive]
-    grafana-backup restore <archive_file> [--config=<filename>] [--components=<folders,folders_permissions,dashboards,datasources,alert-channels,organizations,users,snapshots,annotations>]
+    grafana-backup save [--config=<filename>] [--components=<folders,folders_permissions,dashboards,datasources,alert_channels,organizations,users,snapshots,versions,annotations>] [--no-archive]
+    grafana-backup restore <archive_file> [--config=<filename>] [--components=<folders,folders_permissions,dashboards,datasources,alert_channels,organizations,users,snapshots,annotations>]
     grafana-backup delete [--config=<filename>] [--components=<folders,dashboards,datasources,alert-channels,snapshots,annotations>]
     grafana-backup makeusersviewers [--config=<filename>]
     grafana-backup restoreusers <users_filename> [--config=<filename>]
