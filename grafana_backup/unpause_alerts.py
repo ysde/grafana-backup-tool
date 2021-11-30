@@ -8,7 +8,7 @@ def main(args, settings):
     alerts_file = args.get('<alerts_filename>', None)
     print("got alerts_file {0}".format(alerts_file))
 
-    (status, json_resp, uid_support, paging_support) = api_checks(settings)
+    (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
 
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:

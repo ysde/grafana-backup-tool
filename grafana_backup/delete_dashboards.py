@@ -10,7 +10,7 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     pretty_print = settings.get('PRETTY_PRINT')
-    uid_support = settings.get('UID_SUPPORT')
+    uid_support = settings.get('DASHBOARD_UID_SUPPORT')
     paging_support = settings.get('PAGING_SUPPORT')
 
     if paging_support:

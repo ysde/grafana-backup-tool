@@ -17,9 +17,11 @@ def main(settings):
     if not status == 200:
         return (status, json_resp, None, None)
 
-    uid_support = uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-    if isinstance(uid_support, str):
-        raise Exception(uid_support)
+    dashboard_uid_support, datasource_uid_support = uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if isinstance(dashboard_uid_support, str):
+        raise Exception(dashboard_uid_support)
+    if isinstance(datasource_uid_support, str):
+        raise Exception(datasource_uid_support)
 
     paging_support = paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     if isinstance(paging_support, str):
@@ -32,4 +34,4 @@ def main(settings):
         print("[Pre-Check] Server status is NOT OK !!: {0}".format(json_resp))
     print_horizontal_line()
 
-    return (status, json_resp, uid_support, paging_support)
+    return (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support)

@@ -9,7 +9,7 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     pretty_print = settings.get('PRETTY_PRINT')
-    uid_support = settings.get('UID_SUPPORT')
+    uid_support = settings.get('DASHBOARD_UID_SUPPORT')
 
     folders = get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     print_horizontal_line()

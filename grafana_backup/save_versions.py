@@ -13,7 +13,7 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     pretty_print = settings.get('PRETTY_PRINT')
-    uid_support = settings.get('UID_SUPPORT')
+    uid_support = settings.get('DASHBOARD_UID_SUPPORT')
 
     folder_path = '{0}/dashboard_versions/{1}'.format(backup_dir, timestamp)
     log_file = 'dashboard_versions_{0}.txt'.format(timestamp)

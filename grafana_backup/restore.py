@@ -35,7 +35,7 @@ def main(args, settings):
     azure_storage_container_name = settings.get('AZURE_STORAGE_CONTAINER_NAME')
     gcs_bucket_name = settings.get('GCS_BUCKET_NAME')
 
-    (status, json_resp, uid_support, paging_support) = api_checks(settings)
+    (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
 
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:

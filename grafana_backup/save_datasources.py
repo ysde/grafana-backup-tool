@@ -12,7 +12,7 @@ def main(args, settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     pretty_print = settings.get('PRETTY_PRINT')
-    uid_support = settings.get('UID_SUPPORT')
+    uid_support = settings.get('DATASOURCE_UID_SUPPORT')
 
     folder_path = '{0}/datasources/{1}'.format(backup_dir, timestamp)
 
