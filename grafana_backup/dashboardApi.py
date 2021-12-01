@@ -22,16 +22,31 @@ def uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, de
     (status, content) = search_dashboard(1, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     if status == 200 and len(content):
         if 'uid' in content[0]:
-            uid_support = True
+            dashboard_uid_support = True
         else:
-            uid_support = False
-        return uid_support
+            dashboard_uid_support = False
     else:
         if len(content):
-            return "get dashboards failed, status: {0}, msg: {1}".format(status, content)
+            dashboard_uid_support = "get dashboards failed, status: {0}, msg: {1}".format(status, content)
         else:
             # No dashboards exist, disable uid feature
-            return False
+            dashboard_uid_support = False
+    # Get first datasource
+    print("\n[Pre-Check] grafana uid feature check: calling 'search_datasource'")
+    (status, content) = search_datasource(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if status == 200 and len(content):
+        if 'uid' in content[0]:
+            datasource_uid_support = True
+        else:
+            datasource_uid_support = False
+    else:
+        if len(content):
+            datasource_uid_support = "get datasources failed, status: {0}, msg: {1}".format(status, content)
+        else:
+            # No datasources exist, disable uid feature
+            datasource_uid_support = False
+
+    return dashboard_uid_support, datasource_uid_support
 
 
 def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):

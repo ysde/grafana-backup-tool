@@ -29,14 +29,15 @@ def main(args, settings):
                         'versions': save_versions,
                         'annotations': save_annotations}
 
-    (status, json_resp, uid_support, paging_support) = api_checks(settings)
+    (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
 
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:
         print("server status is not ok: {0}".format(json_resp))
         sys.exit(1)
 
-    settings.update({'UID_SUPPORT': uid_support})
+    settings.update({'DASHBOARD_UID_SUPPORT': dashboard_uid_support})
+    settings.update({'DATASOURCE_UID_SUPPORT': datasource_uid_support})
     settings.update({'PAGING_SUPPORT': paging_support})
 
     if arg_components:

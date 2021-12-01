@@ -7,7 +7,7 @@ def main(args, settings):
     verify_ssl = settings.get('VERIFY_SSL')
     grafana_url = settings.get('GRAFANA_URL')
     client_cert = settings.get('CLIENT_CERT')
-    uid_support = settings.get('UID_SUPPORT')
+    uid_support = settings.get('DATASOURCE_UID_SUPPORT')
     pretty_print = settings.get('PRETTY_PRINT')
     http_get_headers = settings.get('HTTP_POST_HEADERS')
 
