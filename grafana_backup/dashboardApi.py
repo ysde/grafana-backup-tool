@@ -55,6 +55,7 @@ def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert,
     def get_first_dashboard_by_page(page):
         (status, content) = search_dashboard(page, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         if status == 200 and len(content):
+            content[0] = {k: unicode(v).encode("utf-8") for k,v in content[0].iteritems()}
             dashboard_values = sorted(content[0].items(), key=lambda kv: str(kv[1]))
             return True, dashboard_values
         else:
