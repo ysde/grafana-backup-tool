@@ -85,11 +85,11 @@ def main(config_path):
         h.split(':') for h in os.getenv('GRAFANA_HEADERS', '').split(',') if 'GRAFANA_HEADERS' in os.environ)
 
     if TOKEN:
-        HTTP_GET_HEADERS = {'Authorization': 'Bearer ' + TOKEN, 'charset': 'utf-8'}
-        HTTP_POST_HEADERS = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json', 'charset': 'utf-8'}
+        HTTP_GET_HEADERS = {'Authorization': 'Bearer ' + TOKEN}
+        HTTP_POST_HEADERS = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
     else:
-        HTTP_GET_HEADERS = {'charset': 'utf-8'}
-        HTTP_POST_HEADERS = {'Content-Type': 'application/json', 'charset': 'utf-8'}
+        HTTP_GET_HEADERS = {}
+        HTTP_POST_HEADERS = {'Content-Type': 'application/json'}
 
     for k, v in EXTRA_HEADERS.items():
         HTTP_GET_HEADERS.update({k: v})
