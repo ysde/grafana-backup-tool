@@ -13,7 +13,7 @@ def log_response(resp):
     try:
         print("[DEBUG] resp body: {0}".format(resp.json()))
     except ValueError:
-        print("[DEBUG] resp body: {0}".format(resp.text))
+        print("[DEBUG] resp body: {0}".format(to_python2_and_3_compatible_string(resp.text)))
     return resp
 
 

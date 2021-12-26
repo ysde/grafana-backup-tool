@@ -1,7 +1,8 @@
 import re
 import json
 import requests
-from grafana_backup.commons import log_response
+import sys
+from grafana_backup.commons import log_response, to_python2_and_3_compatible_string
 
 
 def health_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
@@ -55,7 +56,12 @@ def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert,
     def get_first_dashboard_by_page(page):
         (status, content) = search_dashboard(page, 1, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         if status == 200 and len(content):
-            dashboard_values = sorted(content[0].items(), key=lambda kv: str(kv[1]))
+            if sys.version_info[0] > 2:
+                content[0] = {k: to_python2_and_3_compatible_string(v) for k,v in content[0].items()}
+                dashboard_values = sorted(content[0].items(), key=lambda kv: str(kv[1]))
+            else:
+                content[0] = {k: to_python2_and_3_compatible_string(unicode(v)) for k,v in content[0].iteritems()}
+                dashboard_values = sorted(content[0].iteritems(), key=lambda kv: str(kv[1]))
             return True, dashboard_values
         else:
             if len(content):
