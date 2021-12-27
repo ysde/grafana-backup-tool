@@ -1,6 +1,8 @@
 from grafana_backup.constants import (PKG_NAME, PKG_VERSION)
 from grafana_backup.pause_alerts import main as pause_alerts
 from grafana_backup.unpause_alerts import main as unpause_alerts
+from grafana_backup.make_users_viewers import main as make_users_viewers
+from grafana_backup.restore_user_permissions import main as restore_user_permissions
 from docopt import docopt
 import sys
 
@@ -13,6 +15,8 @@ def main(precommand_args, settings):
 Usage:
     grafana-backup tools pause-alerts [--config=<filename>]
     grafana-backup tools unpause-alerts [--config=<filename>] <alerts_filename>
+    grafana-backup makeusersviewers [--config=<filename>]
+    grafana-backup restoreusers <users_filename> [--config=<filename>]
     grafana-backup tools [-h | --help]
 
 Options:
@@ -32,6 +36,12 @@ Options:
         sys.exit()
     elif args.get('unpause-alerts', None):
         unpause_alerts(combined_args, settings)
+        sys.exit()
+    elif args.get('makeusersviewers', None):
+        make_users_viewers(args, settings)
+        sys.exit()
+    elif args.get('restoreusers', None):
+        restore_user_permissions(args, settings)
         sys.exit()
     elif args.get('--help', None):
         print(docstring)
