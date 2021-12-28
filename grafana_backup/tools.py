@@ -14,9 +14,9 @@ def main(precommand_args, settings):
 
 Usage:
     grafana-backup tools pause-alerts [--config=<filename>]
-    grafana-backup tools unpause-alerts [--config=<filename>] <alerts_filename>
-    grafana-backup makeusersviewers [--config=<filename>]
-    grafana-backup restoreusers <users_filename> [--config=<filename>]
+    grafana-backup tools unpause-alerts <alerts_filename> [--config=<filename>]
+    grafana-backup tools make-users-viewers [--config=<filename>]
+    grafana-backup tools restore-users <users_filename> [--config=<filename>]
     grafana-backup tools [-h | --help]
 
 Options:
@@ -37,10 +37,10 @@ Options:
     elif args.get('unpause-alerts', None):
         unpause_alerts(combined_args, settings)
         sys.exit()
-    elif args.get('makeusersviewers', None):
+    elif args.get('make-users-viewers', None):
         make_users_viewers(args, settings)
         sys.exit()
-    elif args.get('restoreusers', None):
+    elif args.get('restore-users', None):
         restore_user_permissions(args, settings)
         sys.exit()
     elif args.get('--help', None):

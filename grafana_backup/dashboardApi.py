@@ -257,7 +257,7 @@ def update_folder_permissions(payload, grafana_url, http_post_headers, verify_ss
 def get_folder_id_from_old_folder_url(folder_url, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     if folder_url != "":
         # Get folder uid
-        matches = re.search('dashboards\/[-A-Za-z0-9]{1}\/(.*)\/.*', folder_url)
+        matches = re.search('dashboards\/[A-Za-z0-9]{1}\/(.*)\/.*', folder_url)
         uid = matches.group(1)
 
         response = get_folder(uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug)
