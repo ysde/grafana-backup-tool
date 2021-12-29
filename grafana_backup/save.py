@@ -22,7 +22,7 @@ def main(args, settings):
     backup_functions = {'dashboards': save_dashboards,
                         'datasources': save_datasources,
                         'folders': save_folders,
-                        'alert_channels': save_alert_channels,
+                        'alert-channels': save_alert_channels,
                         'organizations': save_orgs,
                         'users': save_users,
                         'snapshots': save_snapshots,
@@ -41,7 +41,7 @@ def main(args, settings):
     settings.update({'PAGING_SUPPORT': paging_support})
 
     if arg_components:
-        arg_components_list = arg_components.split(',')
+        arg_components_list = arg_components.replace("_", "-").split(',')
 
         # Backup only the components that provided via an argument
         for backup_function in arg_components_list:
