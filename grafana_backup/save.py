@@ -41,7 +41,7 @@ def main(args, settings):
     settings.update({'PAGING_SUPPORT': paging_support})
 
     if arg_components:
-        arg_components_list = arg_components.split(',')
+        arg_components_list = arg_components.replace("_", "-").split(',')
 
         # Backup only the components that provided via an argument
         for backup_function in arg_components_list:

@@ -250,7 +250,7 @@ def get_folder_permissions(uid, grafana_url, http_get_headers, verify_ssl, clien
 
 def update_folder_permissions(payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     items = json.dumps({'items': payload})
-    return send_grafana_post('{0}/api/folders/{1}/permissions'.format(grafana_url,payload[0]['uid']), items, http_post_headers, verify_ssl, client_cert,
+    return send_grafana_post('{0}/api/folders/{1}/permissions'.format(grafana_url, payload[0]['uid']), items, http_post_headers, verify_ssl, client_cert,
                              debug)
 
 
