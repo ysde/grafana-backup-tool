@@ -103,7 +103,7 @@ def restore_components(args, settings, restore_functions, tmpdir):
     arg_components = args.get('--components', False)
 
     if arg_components:
-        arg_components_list = arg_components.split(',')
+        arg_components_list = arg_components.replace("-", "_").split(',')
 
         # Restore only the components that provided via an argument
         # but must also exist in extracted archive
