@@ -255,16 +255,16 @@ def update_folder_permissions(payload, grafana_url, http_post_headers, verify_ss
 
 
 def get_folder_id(dashboard, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
-    folderUid = ""
+    folder_uid = ""
     try:
-        folderUid = dashboard['meta']['folderUid']
+        folder_uid = dashboard['meta']['folderUid']
     except (KeyError):
         matches = re.search('dashboards\/f\/(.*)\/.*', dashboard['meta']['folderUrl'])
-        folderUid = matches.group(1)
+        folder_uid = matches.group(1)
 
-    if (folderUid != ""):
-        print("debug: quering with uid {}".format(folderUid))
-        response = get_folder(folderUid, grafana_url, http_post_headers, verify_ssl, client_cert, debug)
+    if (folder_uid != ""):
+        print("debug: quering with uid {}".format(folder_uid))
+        response = get_folder(folder_uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug)
         if isinstance(response[1], dict):
             folder_data = response[1]
         else:
