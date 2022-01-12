@@ -1,6 +1,6 @@
 import json
-from grafana_backup.dashboardApi import get_folder_id_from_old_folder_url, create_dashboard
 from grafana_backup.commons import to_python2_and_3_compatible_string
+from grafana_backup.dashboardApi import get_folder_id, create_dashboard
 
 
 def main(args, settings, file_path):
@@ -18,7 +18,7 @@ def main(args, settings, file_path):
 
     payload = {
         'dashboard': content['dashboard'],
-        'folderId': get_folder_id_from_old_folder_url(content['meta']['folderUrl'], grafana_url, http_post_headers, verify_ssl, client_cert, debug),
+        'folderId': get_folder_id(content, grafana_url, http_post_headers, verify_ssl, client_cert, debug),
         'overwrite': True
     }
 
