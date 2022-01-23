@@ -4,7 +4,7 @@ A Python-based application to backup Grafana settings using the [Grafana API](ht
 
 The aim of this tool is to:
 1. Easily backup and restore Grafana.
-2. Have versioned backups`(date and time in file name)` for restoring and saving to cloud storage providers. Currently support 
+2. Have versioned backups`(date and time in file name)` for restoring and saving to cloud storage providers. Currently support
    1. `Amazon S3`
    2. `Azure Storage`
    3. `GCP Cloud Storage` (Use service-account's credential file, [see here](https://cloud.google.com/storage/docs/reference/libraries#linux-or-macos))
@@ -53,10 +53,10 @@ export GRAFANA_URL=http://some.host.org:3000
 export GRAFANA_TOKEN=eyJrIjoidUhaU2ZQQndrWFN3RRVkUnVfrT56a1JoaG9KWFFObEgiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
 
 # GRAFANA_HEADERS is optional
-export GRAFANA_HEADERS=Host:some.host.org 
+export GRAFANA_HEADERS=Host:some.host.org
 ```
 
-To create and obtain a `Token` for your Grafana server, please refer to the [official documentation](https://grafana.com/docs/grafana/latest/http_api/auth/). 
+To create and obtain a `Token` for your Grafana server, please refer to the [official documentation](https://grafana.com/docs/grafana/latest/http_api/auth/).
 
 **NOTE** that you need to generate a `Token` with an `Admin` role for the backup to succeed, otherwise you will have potential permission issues.
 
@@ -129,7 +129,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_ADMIN_PASSWORD={YOUR_GRAFANA_ADMIN_PASSWORD} \
            -e VERIFY_SSL={True/False} \
            -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana-backup-tool/_OUTPUT_  \
-           alpinebased:grafana-backup
+           ysde:grafana-backup
 ```
 
 ***Example:***
@@ -142,7 +142,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_ADMIN_PASSWORD=adminpassword \
            -e VERIFY_SSL=False \
            -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_ \
-           alpinebased:grafana-backup
+           ysde:grafana-backup
 ```
 
 ***S3 Example:*** Set S3 configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
@@ -157,13 +157,13 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
 ***Azure Example:*** Set Azure configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
 ```
 		   -e AZURE_STORAGE_CONTAINER_NAME="azure-storage-container-name" \
-		   -e AZURE_STORAGE_CONNECTION_STRING="azure-storage-connection-string" 
+		   -e AZURE_STORAGE_CONNECTION_STRING="azure-storage-connection-string"
 ```
 
 ***GCS Example:*** Set GCS configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
 ```
 		   -e GCS_BUCKET_NAME="bucket-name" \
-		   -e GOOGLE_APPLICATION_CREDENTIALS="credential-file-path" 
+		   -e GOOGLE_APPLICATION_CREDENTIALS="credential-file-path"
 ```
 
 
@@ -179,7 +179,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e RESTORE="true" \
            -e ARCHIVE_FILE={THE_ARCHIVED_FILE_NAME} \
            -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana-backup-tool/_OUTPUT_  \
-           alpinebased:grafana-backup
+           ysde:grafana-backup
 ```
 
 ***Example:***
@@ -194,8 +194,8 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e RESTORE="true" \
            -e ARCHIVE_FILE="202006280247.tar.gz" \
            -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_ \
-           alpinebased:grafana-backup
+           ysde:grafana-backup
 ```
 
 ### Building
-You can build the docker image simply by executing `make` in the root of this repo. The image will get tagged as `alpinebased:grafana-backup`
+You can build the docker image simply by executing `make` in the root of this repo. The image will get tagged as `ysde:grafana-backup`
