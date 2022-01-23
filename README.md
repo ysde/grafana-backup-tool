@@ -129,7 +129,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_ADMIN_PASSWORD={YOUR_GRAFANA_ADMIN_PASSWORD} \
            -e VERIFY_SSL={True/False} \
            -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana-backup-tool/_OUTPUT_  \
-           alpinebased:grafana-backup
+           ysde:grafana-backup
 ```
 
 ***Example:***
@@ -142,7 +142,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e GRAFANA_ADMIN_PASSWORD=adminpassword \
            -e VERIFY_SSL=False \
            -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_ \
-           alpinebased:grafana-backup
+           ysde:grafana-backup
 ```
 
 ***S3 Example:*** Set S3 configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
@@ -179,7 +179,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e RESTORE="true" \
            -e ARCHIVE_FILE={THE_ARCHIVED_FILE_NAME} \
            -v {YOUR_BACKUP_FOLDER_ON_THE_HOST}:/opt/grafana-backup-tool/_OUTPUT_  \
-           alpinebased:grafana-backup
+           ysde:grafana-backup
 ```
 
 ***Example:***
@@ -194,8 +194,8 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            -e RESTORE="true" \
            -e ARCHIVE_FILE="202006280247.tar.gz" \
            -v /tmp/backup/:/opt/grafana-backup-tool/_OUTPUT_ \
-           alpinebased:grafana-backup
+           ysde:grafana-backup
 ```
 
 ### Building
-You can build the docker image simply by executing `make` in the root of this repo. The image will get tagged as `alpinebased:grafana-backup`
+You can build the docker image simply by executing `make` in the root of this repo. The image will get tagged as `ysde:grafana-backup`
