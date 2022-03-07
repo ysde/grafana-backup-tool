@@ -257,7 +257,7 @@ def update_folder_permissions(payload, grafana_url, http_post_headers, verify_ss
 def get_folder_id(dashboard, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     folder_uid = ""
     try:
-        folder_uid = dashboard['meta']['folderUid']
+        folder_uid = dashboard['meta']['folderId']
     except (KeyError):
         matches = re.search('dashboards\/f\/(.*)\/.*', dashboard['meta']['folderUrl'])
         folder_uid = matches.group(1)
