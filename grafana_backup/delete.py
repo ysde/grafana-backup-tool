@@ -6,6 +6,7 @@ from grafana_backup.delete_folders import main as delete_folders
 from grafana_backup.delete_alert_channels import main as delete_alert_channels
 from grafana_backup.delete_snapshots import main as delete_snapshots
 from grafana_backup.delete_annotations import main as delete_annotations
+from grafana_backup.delete_team import main as delete_team
 import sys
 
 
@@ -18,7 +19,8 @@ def main(args, settings):
                         'alert-channels': delete_alert_channels,
                         'snapshots': delete_snapshots,
                         'annotations': delete_annotations,
-                        'library-elements': delete_library_elements}
+                        'library-elements': delete_library_elements,
+                        'teams': delete_team}
 
     (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
 

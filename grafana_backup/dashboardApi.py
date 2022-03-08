@@ -121,6 +121,23 @@ def delete_library_element(id_, grafana_url, http_get_headers, verify_ssl, clien
                         verify=verify_ssl, cert=client_cert)
     return int(r.status_code)
 
+
+def search_teams(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/teams/search?perPage=5000'.format(grafana_url)
+    print("search library-elements in grafana: {0}".format(url))
+    return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def create_team(team, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/teams'.format(grafana_url)
+    return send_grafana_post(url, team, http_post_headers, verify_ssl, client_cert, debug)
+
+
+def delete_team(id_, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    r = requests.delete('{0}/api/teams/{1}'.format(grafana_url, id_), headers=http_get_headers,
+                        verify=verify_ssl, cert=client_cert)
+    return int(r.status_code)
+
 def search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl, client_cert, debug):
     # there are two types of annotations
     # annotation: are user created, custom ones and can be managed via the api
