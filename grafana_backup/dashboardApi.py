@@ -105,8 +105,24 @@ def get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_c
     return (status_code, content)
 
 
+def search_library_elements(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/library-elements?perPage=5000'.format(grafana_url)
+    print("search library-elements in grafana: {0}".format(url))
+    return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def create_library_element(library_element, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/library-elements'.format(grafana_url)
+    return send_grafana_post(url, library_element, http_post_headers, verify_ssl, client_cert, debug)
+
+
+def delete_library_element(id_, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    r = requests.delete('{0}/api/library-elements/{1}'.format(grafana_url, id_), headers=http_get_headers,
+                        verify=verify_ssl, cert=client_cert)
+    return int(r.status_code)
+
 def search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl, client_cert, debug):
-    # there is two types of annotations
+    # there are two types of annotations
     # annotation: are user created, custom ones and can be managed via the api
     # alert: are created by Grafana itself, can NOT be managed by the api
     url = '{0}/api/annotations?type=annotation&limit=5000&from={1}&to={2}'.format(grafana_url, ts_from, ts_to)

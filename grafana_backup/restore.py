@@ -8,6 +8,7 @@ from grafana_backup.create_alert_channel import main as create_alert_channel
 from grafana_backup.create_user import main as create_user
 from grafana_backup.create_snapshot import main as create_snapshot
 from grafana_backup.create_annotation import main as create_annotation
+from grafana_backup.create_library_element import main as create_library_element
 from grafana_backup.s3_download import main as s3_download
 from grafana_backup.azure_storage_download import main as azure_storage_download
 from grafana_backup.gcs_download import main as gcs_download
@@ -81,6 +82,7 @@ def main(args, settings):
     restore_functions['user'] = create_user
     restore_functions['snapshot'] = create_snapshot
     restore_functions['annotation'] = create_annotation
+    restore_functions['library_element'] = create_library_element
     restore_functions['folder_permission'] = update_folder_permissions
 
     if sys.version_info >= (3,):
