@@ -12,6 +12,7 @@ from grafana_backup.save_orgs import main as save_orgs
 from grafana_backup.save_users import main as save_users
 from grafana_backup.save_library_elements import main as save_library_elements
 from grafana_backup.save_teams import main as save_teams
+from grafana_backup.save_team_members import main as save_team_members
 from grafana_backup.azure_storage_upload import main as azure_storage_upload
 from grafana_backup.gcs_upload import main as gcs_upload
 import sys
@@ -31,7 +32,8 @@ def main(args, settings):
                         'versions': save_versions,
                         'annotations': save_annotations,
                         'library-elements': save_library_elements,
-                        'teams': save_teams}
+                        'teams': save_teams,
+                        'team-members': save_team_members}
 
     (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
 

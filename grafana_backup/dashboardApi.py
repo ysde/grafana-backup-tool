@@ -138,6 +138,24 @@ def delete_team(id_, grafana_url, http_get_headers, verify_ssl, client_cert, deb
                         verify=verify_ssl, cert=client_cert)
     return int(r.status_code)
 
+
+def search_team_members(team_id, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/teams/{1}/members'.format(grafana_url, team_id)
+    print("search team members in grafana: {0}".format(url))
+    return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def create_team_member(user, team_id, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/teams/{1}/members'.format(grafana_url, team_id)
+    return send_grafana_post(url, user, http_post_headers, verify_ssl, client_cert, debug)
+
+
+def delete_team_member(user_id, team_id, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    r = requests.delete('{0}/api/teams/{1}/members/{2}'.format(grafana_url, team_id, user_id), headers=http_get_headers,
+                        verify=verify_ssl, cert=client_cert)
+    return int(r.status_code)
+
+
 def search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl, client_cert, debug):
     # there are two types of annotations
     # annotation: are user created, custom ones and can be managed via the api
