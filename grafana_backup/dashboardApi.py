@@ -385,6 +385,11 @@ def get_user(id, grafana_url, http_get_headers, verify_ssl=False, client_cert=No
                             http_get_headers, verify_ssl, client_cert, debug)
 
 
+def get_user_by_email_or_username(email, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    return send_grafana_get('{0}/api/users/lookup?loginOrEmail={1}'.format(grafana_url, email), http_get_headers,
+                            verify_ssl, client_cert, debug)
+
+
 def get_user_org(id, grafana_url, http_get_headers, verify_ssl=False, client_cert=None, debug=True):
     return send_grafana_get('{0}/api/users/{1}/orgs'.format(grafana_url, id),
                             http_get_headers, verify_ssl, client_cert, debug)

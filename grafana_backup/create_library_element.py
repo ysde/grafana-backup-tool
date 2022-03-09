@@ -13,7 +13,7 @@ def main(args, settings, file_path):
         data = f.read()
 
     # Library Elements can only be created referencing a folder id. However, this folder id is not unique across Grafana
-    # instances. Therefore, we need to first find to folder id by the given folder uid.
+    # instances. Therefore, we need to first find the folder id by the given folder uid.
     library_element = json.loads(data)
     folder_uid = library_element['meta']['folderUid']
     folder_id = get_folder(folder_uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug)[1]['id']
