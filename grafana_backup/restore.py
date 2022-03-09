@@ -78,13 +78,13 @@ def main(args, settings):
     restore_functions = collections.OrderedDict()
     restore_functions['folder'] = create_folder
     restore_functions['datasource'] = create_datasource
+    restore_functions['library_element'] = create_library_element
     restore_functions['dashboard'] = create_dashboard
     restore_functions['alert_channel'] = create_alert_channel
     restore_functions['organization'] = create_org
     restore_functions['user'] = create_user
     restore_functions['snapshot'] = create_snapshot
     restore_functions['annotation'] = create_annotation
-    restore_functions['library_element'] = create_library_element
     restore_functions['team'] = create_team
     restore_functions['team_member'] = create_team_member
     restore_functions['folder_permission'] = update_folder_permissions
