@@ -21,7 +21,7 @@ def get_all_snapshots_and_delete(grafana_url, http_get_headers, verify_ssl, clie
         print("There are {0} snapshots:".format(len(snapshots)))
         for snapshot in snapshots:
             print(snapshot)
-            status = delete_snapshot(snapshot['key'], grafana_url, http_get_headers)
+            status = delete_snapshot(snapshot['key'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
 
             if status == 200:
                 print("deleted snapshot {0}".format(snapshot['name']))

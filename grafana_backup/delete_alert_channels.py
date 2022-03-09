@@ -13,7 +13,8 @@ def main(args, settings):
     pretty_print = settings.get('PRETTY_PRINT')
 
     alert_channels = get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-    get_individual_alert_channel_and_delete(alert_channels, pretty_print, grafana_url, http_get_headers)
+    get_individual_alert_channel_and_delete(alert_channels, pretty_print, grafana_url, http_get_headers, verify_ssl,
+                                            client_cert, debug)
     print_horizontal_line()
 
 
@@ -30,15 +31,18 @@ def get_all_alert_channels_in_grafana(grafana_url, http_get_headers, verify_ssl,
         return []
 
 
-def get_individual_alert_channel_and_delete(channels, pretty_print, grafana_url, http_get_headers):
+def get_individual_alert_channel_and_delete(channels, pretty_print, grafana_url, http_get_headers, verify_ssl,
+                                            client_cert, debug):
     if channels:
         for channel in channels:
             status = 0
 
             if 'uid' in channel:
-                status = delete_alert_channel_by_uid(channel['uid'], grafana_url, http_get_headers)
+                status = delete_alert_channel_by_uid(channel['uid'], grafana_url, http_get_headers, verify_ssl,
+                                                     client_cert, debug)
             else:
-                status = delete_alert_channel_by_id(channel['id'], grafana_url, http_get_headers)
+                status = delete_alert_channel_by_id(channel['id'], grafana_url, http_get_headers, verify_ssl,
+                                                    client_cert, debug)
 
             channel_name = to_python2_and_3_compatible_string(channel['name'])
             if status == 200:
