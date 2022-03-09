@@ -1,5 +1,5 @@
 import json
-from grafana_backup.dashboardApi import create_library_element
+from grafana_backup.dashboardApi import create_library_element, get_folder
 
 
 def main(args, settings, file_path):
@@ -12,7 +12,12 @@ def main(args, settings, file_path):
     with open(file_path, 'r') as f:
         data = f.read()
 
+    # Library Elements can only be created referencing a folder id. However, this folder id is not unique across Grafana
+    # instances. Therefore, we need to first find to folder id by the given folder uid.
     library_element = json.loads(data)
+    folder_uid = library_element['meta']['folderUid']
+    folder_id = get_folder(folder_uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug)[1]['id']
+    library_element['folderId'] = folder_id
     result = create_library_element(json.dumps(library_element), grafana_url, http_post_headers, verify_ssl,
                                     client_cert, debug)
     print("create library_elements: {0}, status: {1}, msg: {2}".format(library_element['name'], result[0], result[1]))
