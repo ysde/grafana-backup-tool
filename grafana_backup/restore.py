@@ -76,9 +76,9 @@ def main(args, settings):
     # Shell game magic warning: restore_function keys require the 's'
     # to be removed in order to match file extension names...
     restore_functions = collections.OrderedDict()
-    restore_functions['folder'] = create_folder
+    restore_functions['folder'] = create_folder # Folders must be restored before Library-Elements
     restore_functions['datasource'] = create_datasource
-    restore_functions['library_element'] = create_library_element
+    restore_functions['library_element'] = create_library_element  # Library-Elements must be restored before dashboards
     restore_functions['dashboard'] = create_dashboard
     restore_functions['alert_channel'] = create_alert_channel
     restore_functions['organization'] = create_org

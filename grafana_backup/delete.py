@@ -6,7 +6,6 @@ from grafana_backup.delete_folders import main as delete_folders
 from grafana_backup.delete_alert_channels import main as delete_alert_channels
 from grafana_backup.delete_snapshots import main as delete_snapshots
 from grafana_backup.delete_annotations import main as delete_annotations
-from grafana_backup.delete_teams import main as delete_teams
 from grafana_backup.delete_team_members import main as delete_team_members
 import sys
 
@@ -14,6 +13,8 @@ import sys
 def main(args, settings):
     arg_components = args.get('--components', False)
 
+    # By default, teams should not be deleted. Sinces teams don't have unique ids across instances, they would be
+    # recreated with different ids, therefore loosing references to folder permissions and team members.
     delete_functions = {'dashboards': delete_dashboards,
                         'datasources': delete_datasources,
                         'folders': delete_folders,

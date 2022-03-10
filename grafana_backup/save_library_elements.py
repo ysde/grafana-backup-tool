@@ -48,17 +48,17 @@ def get_individual_library_elements_and_save(library_elements, folder_path, log_
         with open(u"{0}".format(file_path), 'w') as f:
             for library_element in library_elements:
                 if 'uid' in library_element:
-                    channel_identifier = library_element['uid']
+                    library_element_identifier = library_element['uid']
                 else:
-                    channel_identifier = library_element['id']
+                    library_element_identifier = library_element['id']
 
                 save_library_element(
                     to_python2_and_3_compatible_string(library_element['name']),
-                    to_python2_and_3_compatible_string(str(channel_identifier)),
+                    to_python2_and_3_compatible_string(str(library_element_identifier)),
                     library_element,
                     folder_path,
                     pretty_print
                 )
-                f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(channel_identifier)),
+                f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(library_element_identifier)),
                                             to_python2_and_3_compatible_string(library_element['name'])))
 

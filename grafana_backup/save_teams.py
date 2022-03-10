@@ -48,17 +48,17 @@ def get_individual_teams_and_save(teams, folder_path, log_file, pretty_print):
         with open(u"{0}".format(file_path), 'w') as f:
             for team in teams:
                 if 'uid' in team:
-                    channel_identifier = team['uid']
+                    team_identifier = team['uid']
                 else:
-                    channel_identifier = team['id']
+                    team_identifier = team['id']
 
                 save_team(
                     to_python2_and_3_compatible_string(team['name']),
-                    to_python2_and_3_compatible_string(str(channel_identifier)),
+                    to_python2_and_3_compatible_string(str(team_identifier)),
                     team,
                     folder_path,
                     pretty_print
                 )
-                f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(channel_identifier)),
+                f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(team_identifier)),
                                             to_python2_and_3_compatible_string(team['name'])))
 
