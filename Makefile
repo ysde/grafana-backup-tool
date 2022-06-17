@@ -1,6 +1,6 @@
 
-DOCKER_REPO ?= ysde
-DOCKER_NAME := grafana-backup
+DOCKER_REPO ?= azman0101
+DOCKER_NAME := docker-grafana-backup-tool
 DOCKER_TAG ?= latest
 PLATFORMS ?= linux/amd64,linux/arm/v7
 
