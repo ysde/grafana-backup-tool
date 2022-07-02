@@ -13,7 +13,7 @@ def main(args, settings):
     archive_file = '{0}/{1}'.format(backup_dir, gcs_file_name)
 
     try:
-        bucket = storage_client.get_bucket(bucket_name)
+        bucket = storage_client.bucket(bucket_name)
 
         blob = bucket.blob(gcs_file_name)
         blob.upload_from_filename(archive_file)
