@@ -2,6 +2,7 @@
   "general": {
     "debug": true,
     "verify_ssl": true,
+    "api_health_check": true,
     "backup_dir": "_OUTPUT_",
     "backup_file_format": "%Y%m%d%H%M",
     "pretty_print": false

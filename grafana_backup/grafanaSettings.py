@@ -19,6 +19,7 @@ def main(config_path):
     grafana_search_api_limit = config.get('grafana', {}).get('search_api_limit', 5000)
 
     debug = config.get('general', {}).get('debug', True)
+    api_health_check = config.get('general', {}).get('api_health_check', True)
     verify_ssl = config.get('general', {}).get('verify_ssl', False)
     client_cert = config.get('general', {}).get('client_cert', None)
     backup_dir = config.get('general', {}).get('backup_dir', '_OUTPUT_')
@@ -73,6 +74,10 @@ def main(config_path):
     if isinstance(VERIFY_SSL, str):
         VERIFY_SSL = json.loads(VERIFY_SSL.lower())  # convert environment variable string to bool
 
+    API_HEALTH_CHECK = os.getenv('API_HEALTH_CHECK', api_health_check)
+    if isinstance(API_HEALTH_CHECK, str):
+        API_HEALTH_CHECK = json.loads(API_HEALTH_CHECK.lower())  # convert environment variable string to bool
+
     CLIENT_CERT = os.getenv('CLIENT_CERT', client_cert)
 
     BACKUP_DIR = os.getenv('BACKUP_DIR', backup_dir)
@@ -118,6 +123,7 @@ def main(config_path):
     config_dict['TOKEN'] = TOKEN
     config_dict['SEARCH_API_LIMIT'] = SEARCH_API_LIMIT
     config_dict['DEBUG'] = DEBUG
+    config_dict['API_HEALTH_CHECK'] = API_HEALTH_CHECK
     config_dict['VERIFY_SSL'] = VERIFY_SSL
     config_dict['CLIENT_CERT'] = CLIENT_CERT
     config_dict['BACKUP_DIR'] = BACKUP_DIR
