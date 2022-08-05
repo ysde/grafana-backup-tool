@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+# [1.2.4] - 2022-08-04
+
+### Added
+- #190 InfluxDB Support
+- #184 (feat): enable/disable api health check not supported by amazon managed grafana
+
+### Changed
+- #176 fix `folder_uid` when dashboard has no folder #175
+- #183 Change the docker image in README.md examples
+- #186 Require only necessary permissions when saving backup to GCS bucket
+
+### Removed
+
 # [1.2.3] - 2022-01-30
 
 ### Added
