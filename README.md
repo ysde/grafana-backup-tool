@@ -113,6 +113,10 @@ Replace variables below to use the Docker version of this tool
 * `{YOUR_GRAFANA_URL}`: Your Grafana site `URL`.
 * `{YOUR_BACKUP_FOLDER_ON_THE_HOST}`: The `backup folder` on the Grafana host machine.
 
+## Kubernetes
+Check out the CronJob in [examples](examples) for a simple example of how grafana-backup-tool
+can be ran within a Kubernetes environment
+
 ### Backup
 
 If you decide to use a volume (-v) then you'll need to create the volume first with 1337 uid/gid ownership first, example:
