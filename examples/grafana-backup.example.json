@@ -26,5 +26,13 @@
   "gcp": {
     "gcs_bucket_name": "bucket_name",
     "google_application_credentials": "google_credential_file_path"
+  },
+  "influxdb": {
+    "measurement": "grafana_backup",
+    "host": "localhost",
+    "port": 8086,
+    "username": "root",
+    "password": "root",
+    "database": "db"
   }
 }

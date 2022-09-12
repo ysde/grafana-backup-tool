@@ -41,6 +41,13 @@ def main(config_path):
     gcs_bucket_name = gcp_config.get('gcs_bucket_name', '')
     google_application_credentials = gcp_config.get('google_application_credentials', '')
 
+    influxdb_measurement = config.get('influxdb', {}).get('measurement', 'grafana_backup')
+    influxdb_host = config.get('influxdb', {}).get('host', '')
+    influxdb_port = config.get('influxdb', {}).get('port', 8086)
+    influxdb_username = config.get('influxdb', {}).get('username', '')
+    influxdb_password = config.get('influxdb', {}).get('password', '')
+    influxdb_database = config.get('influxdb', {}).get('database', '')
+
     admin_account = config.get('grafana', {}).get('admin_account', '')
     admin_password = config.get('grafana', {}).get('admin_password', '')
 
@@ -61,6 +68,13 @@ def main(config_path):
     GCS_BUCKET_NAME = os.getenv('GCS_BUCKET_NAME', gcs_bucket_name)
     if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS') and google_application_credentials:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_application_credentials
+
+    INFLUXDB_MEASUREMENT = os.getenv('INFLUXDB_MEASUREMENT', influxdb_measurement)
+    INFLUXDB_HOST = os.getenv('INFLUXDB_HOST', influxdb_host)
+    INFLUXDB_PORT = int(os.getenv('INFLUXDB_PORT', influxdb_port))
+    INFLUXDB_USERNAME = os.getenv('INFLUXDB_USERNAME', influxdb_username)
+    INFLUXDB_PASSWORD = os.getenv('INFLUXDB_PASSWORD', influxdb_password)
+    INFLUXDB_DATABASE = os.getenv('INFLUXDB_DATABASE', influxdb_database)
 
     ADMIN_ACCOUNT = os.getenv('GRAFANA_ADMIN_ACCOUNT', admin_account)
     ADMIN_PASSWORD = os.getenv('GRAFANA_ADMIN_PASSWORD', admin_password)
@@ -143,5 +157,11 @@ def main(config_path):
     config_dict['AZURE_STORAGE_CONTAINER_NAME'] = AZURE_STORAGE_CONTAINER_NAME
     config_dict['AZURE_STORAGE_CONNECTION_STRING'] = AZURE_STORAGE_CONNECTION_STRING
     config_dict['GCS_BUCKET_NAME'] = GCS_BUCKET_NAME
+    config_dict['INFLUXDB_MEASUREMENT'] = INFLUXDB_MEASUREMENT
+    config_dict['INFLUXDB_HOST'] = INFLUXDB_HOST
+    config_dict['INFLUXDB_PORT'] = INFLUXDB_PORT
+    config_dict['INFLUXDB_USERNAME'] = INFLUXDB_USERNAME
+    config_dict['INFLUXDB_PASSWORD'] = INFLUXDB_PASSWORD
+    config_dict['INFLUXDB_DATABASE'] = INFLUXDB_DATABASE
 
     return config_dict
