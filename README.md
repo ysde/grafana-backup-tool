@@ -203,3 +203,11 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
 
 ### Building
 You can build the docker image simply by executing `make` in the root of this repo. The image will get tagged as `ysde:grafana-backup`
+
+### Monitoring
+InfluxDB support has been added and Prometheus push gateway support will be added in the future.
+
+In order to monitor successful backups with InfluxDB simply configure `grafana-backup` InfluxDB settings using this [example](examples) configuration.
+Or if you prefer to use environment variables you can instead set `INFLUXDB_HOST`, `INFLUXDB_PORT`, `INFLUXDB_MEASUREMENT`, `INFLUXDB_USERNAME` and `INFLUXDB_PASSWORD`.
+
+Once configured `grafana-backup` will automatically enter a `1` in your defined timeseries measurement upon each successful backup.
