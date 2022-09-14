@@ -42,7 +42,7 @@ spec:
           restartPolicy: "Never"
           containers:
             - name: grafana-backup-tool
-              image: "ysde/docker-grafana-backup-tool:1.2.3"
+              image: "ysde/docker-grafana-backup-tool:1.2.4"
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:
