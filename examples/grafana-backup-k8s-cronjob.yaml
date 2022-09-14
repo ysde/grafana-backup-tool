@@ -1,0 +1,49 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: grafana-backup-tool
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-backup-tool
+  namespace: grafana-backup-tool
+data:
+  GRAFANA_URL: "http://grafana.grafana.svc.cluster.local:80"
+  GRAFANA_TOKEN: "{YOUR_GRAFANA_TOKEN}"
+  GRAFANA_ADMIN_ACCOUNT: "backup"
+  GRAFANA_ADMIN_PASSWORD: "{YOUR_GRAFANA_ADMIN_PASSWORD}"
+  AWS_ENDPOINT_URL: "http://gitlab-minio-svc.gitlab.svc.cluster.local:9000"
+  AWS_S3_BUCKET_NAME: "grafana-backup"
+  AWS_S3_BUCKET_KEY: "daily"
+  AWS_DEFAULT_REGION: "us-east-1"
+  AWS_ACCESS_KEY_ID: "{YOUR_AWS_ACCESS_KEY_ID}"
+  AWS_SECRET_ACCESS_KEY: "{YOUR_AWS_SECRET_ACCESS_KEY}"
+---
+# Run grafana-backup-tool daily and store backups in an S3
+# compatible object storage such as minio
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: grafana-backup-tool
+  namespace: grafana-backup-tool
+  labels:
+    app: grafana-backup-tool
+spec:
+  schedule: "0 4 * * *"
+  jobTemplate:
+    metadata:
+      labels:
+        app: grafana-backup-tool
+    spec:
+      template:
+        spec:
+          restartPolicy: "Never"
+          containers:
+            - name: grafana-backup-tool
+              image: "ysde/docker-grafana-backup-tool:1.2.3"
+              imagePullPolicy: Always
+              envFrom:
+                - configMapRef:
+                    name: grafana-backup-tool
