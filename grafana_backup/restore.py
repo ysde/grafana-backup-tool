@@ -8,6 +8,9 @@ from grafana_backup.create_alert_channel import main as create_alert_channel
 from grafana_backup.create_user import main as create_user
 from grafana_backup.create_snapshot import main as create_snapshot
 from grafana_backup.create_annotation import main as create_annotation
+from grafana_backup.create_team import main as create_team
+from grafana_backup.create_team_member import main as create_team_member
+from grafana_backup.create_library_element import main as create_library_element
 from grafana_backup.s3_download import main as s3_download
 from grafana_backup.azure_storage_download import main as azure_storage_download
 from grafana_backup.gcs_download import main as gcs_download
@@ -73,14 +76,17 @@ def main(args, settings):
     # Shell game magic warning: restore_function keys require the 's'
     # to be removed in order to match file extension names...
     restore_functions = collections.OrderedDict()
-    restore_functions['folder'] = create_folder
+    restore_functions['folder'] = create_folder # Folders must be restored before Library-Elements
     restore_functions['datasource'] = create_datasource
+    restore_functions['library_element'] = create_library_element  # Library-Elements must be restored before dashboards
     restore_functions['dashboard'] = create_dashboard
     restore_functions['alert_channel'] = create_alert_channel
     restore_functions['organization'] = create_org
     restore_functions['user'] = create_user
     restore_functions['snapshot'] = create_snapshot
     restore_functions['annotation'] = create_annotation
+    restore_functions['team'] = create_team
+    restore_functions['team_member'] = create_team_member
     restore_functions['folder_permission'] = update_folder_permissions
 
     if sys.version_info >= (3,):
