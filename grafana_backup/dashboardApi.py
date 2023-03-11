@@ -105,8 +105,56 @@ def get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_c
     return (status_code, content)
 
 
+def search_library_elements(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/library-elements?perPage=5000'.format(grafana_url)
+    print("search library-elements in grafana: {0}".format(url))
+    return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def create_library_element(library_element, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/library-elements'.format(grafana_url)
+    return send_grafana_post(url, library_element, http_post_headers, verify_ssl, client_cert, debug)
+
+
+def delete_library_element(id_, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    return send_grafana_delete('{0}/api/library-elements/{1}'.format(grafana_url, id_), http_get_headers,
+                        verify_ssl, client_cert)
+
+
+def search_teams(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/teams/search?perPage=5000'.format(grafana_url)
+    print("search teams in grafana: {0}".format(url))
+    return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def create_team(team, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/teams'.format(grafana_url)
+    return send_grafana_post(url, team, http_post_headers, verify_ssl, client_cert, debug)
+
+
+def delete_team(id_, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    return send_grafana_delete('{0}/api/teams/{1}'.format(grafana_url, id_), http_get_headers,
+                        verify_ssl, client_cert)
+
+
+def search_team_members(team_id, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/teams/{1}/members'.format(grafana_url, team_id)
+    print("search team members in grafana: {0}".format(url))
+    return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def create_team_member(user, team_id, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/teams/{1}/members'.format(grafana_url, team_id)
+    return send_grafana_post(url, user, http_post_headers, verify_ssl, client_cert, debug)
+
+
+def delete_team_member(user_id, team_id, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    return send_grafana_delete('{0}/api/teams/{1}/members/{2}'.format(grafana_url, team_id, user_id), http_get_headers,
+                        verify_ssl, client_cert)
+
+
 def search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl, client_cert, debug):
-    # there is two types of annotations
+    # there are two types of annotations
     # annotation: are user created, custom ones and can be managed via the api
     # alert: are created by Grafana itself, can NOT be managed by the api
     url = '{0}/api/annotations?type=annotation&limit=5000&from={1}&to={2}'.format(grafana_url, ts_from, ts_to)
@@ -120,8 +168,8 @@ def create_annotation(annotation, grafana_url, http_post_headers, verify_ssl, cl
 
 
 def delete_annotation(id_, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
-    r = requests.delete('{0}/api/annotations/{1}'.format(grafana_url, id_), headers=http_get_headers)
-    return int(r.status_code)
+    return send_grafana_delete('{0}/api/annotations/{1}'.format(grafana_url, id_), http_get_headers, verify_ssl,
+                               client_cert, debug)
 
 
 def search_alert_channels(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
@@ -135,14 +183,14 @@ def create_alert_channel(payload, grafana_url, http_post_headers, verify_ssl, cl
                              client_cert, debug)
 
 
-def delete_alert_channel_by_uid(uid, grafana_url, http_post_headers):
-    r = requests.delete('{0}/api/alert-notifications/uid/{1}'.format(grafana_url, uid), headers=http_post_headers)
-    return int(r.status_code)
+def delete_alert_channel_by_uid(uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_delete('{0}/api/alert-notifications/uid/{1}'.format(grafana_url, uid), http_post_headers,
+                               verify_ssl, client_cert, debug)
 
 
-def delete_alert_channel_by_id(id_, grafana_url, http_post_headers):
-    r = requests.delete('{0}/api/alert-notifications/{1}'.format(grafana_url, id_), headers=http_post_headers)
-    return int(r.status_code)
+def delete_alert_channel_by_id(id_, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_delete('{0}/api/alert-notifications/{1}'.format(grafana_url, id_), http_post_headers,
+                               verify_ssl, client_cert, debug)
 
 
 def search_alerts(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
@@ -165,24 +213,25 @@ def unpause_alert(id_, grafana_url, http_post_headers, verify_ssl, client_cert, 
     return (status_code, content)
 
 
-def delete_folder(uid, grafana_url, http_post_headers):
-    r = requests.delete('{0}/api/folders/{1}'.format(grafana_url, uid), headers=http_post_headers)
-    return int(r.status_code)
+
+def delete_folder(uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_delete('{0}/api/folders/{1}'.format(grafana_url, uid), http_post_headers, verify_ssl,
+                               client_cert, debug)
 
 
-def delete_snapshot(key, grafana_url, http_post_headers):
-    r = requests.delete('{0}/api/snapshots/{1}'.format(grafana_url, key), headers=http_post_headers)
-    return int(r.status_code)
+def delete_snapshot(key, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_delete('{0}/api/snapshots/{1}'.format(grafana_url, key), http_post_headers, verify_ssl,
+                               client_cert, debug)
 
 
-def delete_dashboard_by_uid(uid, grafana_url, http_post_headers):
-    r = requests.delete('{0}/api/dashboards/uid/{1}'.format(grafana_url, uid), headers=http_post_headers)
-    return int(r.status_code)
+def delete_dashboard_by_uid(uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_delete('{0}/api/dashboards/uid/{1}'.format(grafana_url, uid), http_post_headers, verify_ssl,
+                               client_cert, debug)
 
 
-def delete_dashboard_by_slug(slug, grafana_url, http_post_headers):
-    r = requests.delete('{0}/api/dashboards/db/{1}'.format(grafana_url, slug), headers=http_post_headers)
-    return int(r.status_code)
+def delete_dashboard_by_slug(slug, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_delete('{0}/api/dashboards/db/{1}'.format(grafana_url, slug), http_post_headers, verify_ssl,
+                               client_cert, debug)
 
 
 def create_dashboard(payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
@@ -217,15 +266,13 @@ def create_datasource(payload, grafana_url, http_post_headers, verify_ssl, clien
 
 
 def delete_datasource_by_uid(uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
-    url = '{0}/api/datasources/uid/{1}'.format(grafana_url, uid)
-    r = requests.delete(url, headers=http_post_headers)
-    return int(r.status_code)
+    return send_grafana_delete('{0}/api/datasources/uid/{1}'.format(grafana_url, uid), http_post_headers, verify_ssl,
+                               client_cert, debug)
 
 
 def delete_datasource_by_id(id_, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
-    url = '{0}/api/datasources/{1}'.format(grafana_url, id_)
-    r = requests.delete(url, headers=http_post_headers)
-    return int(r.status_code)
+    return send_grafana_delete('{0}/api/datasources/{1}'.format(grafana_url, id_), http_post_headers, verify_ssl,
+                               client_cert, debug)
 
 
 def search_folders(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
@@ -341,6 +388,11 @@ def get_user(id, grafana_url, http_get_headers, verify_ssl=False, client_cert=No
                             http_get_headers, verify_ssl, client_cert, debug)
 
 
+def get_user_by_email_or_username(email, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    return send_grafana_get('{0}/api/users/lookup?loginOrEmail={1}'.format(grafana_url, email), http_get_headers,
+                            verify_ssl, client_cert, debug)
+
+
 def get_user_org(id, grafana_url, http_get_headers, verify_ssl=False, client_cert=None, debug=True):
     return send_grafana_get('{0}/api/users/{1}/orgs'.format(grafana_url, id),
                             http_get_headers, verify_ssl, client_cert, debug)
@@ -378,3 +430,9 @@ def send_grafana_put(url, json_payload, http_post_headers, verify_ssl=False, cli
     if debug:
         log_response(r)
     return (r.status_code, r.json())
+
+
+def send_grafana_delete(url, http_get_headers, verify_ssl=False, client_cert=None, debug=True):
+    r = requests.delete(url, headers=http_get_headers,
+                        verify=verify_ssl, cert=client_cert)
+    return int(r.status_code)
