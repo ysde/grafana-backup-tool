@@ -172,6 +172,32 @@ def delete_annotation(id_, grafana_url, http_get_headers, verify_ssl, client_cer
                                client_cert, debug)
 
 
+def search_alert_rules(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/v1/provisioning/alert-rules'.format(grafana_url)
+    print("search alert rules in grafana: {0}".format(url))
+    return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def get_alert_rule(uid, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/v1/provisioning/alert-rules/{1}'.format(grafana_url, uid)
+    return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def create_alert_rule(alert, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/v1/provisioning/alert-rules'.format(grafana_url)
+    return send_grafana_post(url, alert, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def delete_alert_rule(uid, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/v1/provisioning/alert-rules/{1}'.format(grafana_url, uid)
+    return send_grafana_delete(url, http_get_headers, verify_ssl, client_cert, debug)
+
+
+def update_alert_rule(uid, alert, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    url = '{0}/api/v1/provisioning/alert-rules/{1}'.format(grafana_url, uid)
+    return send_grafana_put(url, alert, http_get_headers, verify_ssl, client_cert, debug)
+
+
 def search_alert_channels(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     url = '{0}/api/alert-notifications'.format(grafana_url)
     print("search alert channels in grafana: {0}".format(url))

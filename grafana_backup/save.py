@@ -1,4 +1,5 @@
 from grafana_backup.api_checks import main as api_checks
+from grafana_backup.save_alert_rules import main as save_alert_rules
 from grafana_backup.save_dashboards import main as save_dashboards
 from grafana_backup.save_datasources import main as save_datasources
 from grafana_backup.save_folders import main as save_folders
@@ -34,7 +35,8 @@ def main(args, settings):
                         'annotations': save_annotations,
                         'library-elements': save_library_elements,
                         'teams': save_teams,
-                        'team-members': save_team_members}
+                        'team-members': save_team_members,
+                        'save-alert-rules': save_alert_rules}
 
     (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
 

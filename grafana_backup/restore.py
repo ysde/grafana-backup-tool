@@ -5,6 +5,7 @@ from grafana_backup.update_folder_permissions import main as update_folder_permi
 from grafana_backup.create_datasource import main as create_datasource
 from grafana_backup.create_dashboard import main as create_dashboard
 from grafana_backup.create_alert_channel import main as create_alert_channel
+from grafana_backup.create_alert_rule import main as create_alert_rule
 from grafana_backup.create_user import main as create_user
 from grafana_backup.create_snapshot import main as create_snapshot
 from grafana_backup.create_annotation import main as create_annotation
@@ -88,6 +89,7 @@ def main(args, settings):
     restore_functions['team'] = create_team
     restore_functions['team_member'] = create_team_member
     restore_functions['folder_permission'] = update_folder_permissions
+    restore_functions['alert_rule'] = create_alert_rule
 
     if sys.version_info >= (3,):
         with tempfile.TemporaryDirectory() as tmpdir:
