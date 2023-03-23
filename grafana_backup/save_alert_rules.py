@@ -33,7 +33,7 @@ def get_all_alert_rules_in_grafana(grafana_url, http_get_headers, verify_ssl, cl
             print('name: {0}'.format(to_python2_and_3_compatible_string(alert_rule['title'])))
         return alert_rules
     else:
-        raise Exception("Faild to get alert rules, status: {0}, msg: {1}".format(status, content))
+        raise Exception("Failed to get alert rules, status: {0}, msg: {1}".format(status, content))
 
 
 def save_alert_rules(folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print):
