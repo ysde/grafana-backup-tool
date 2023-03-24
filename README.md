@@ -172,6 +172,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
 ***GCS Example:*** Set GCS configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
 ```
 		   -e GCS_BUCKET_NAME="bucket-name" \
+		   -e GCLOUD_PROJECT="gcp-project-name" \
 		   -e GOOGLE_APPLICATION_CREDENTIALS="credential-file-path"
 ```
 
