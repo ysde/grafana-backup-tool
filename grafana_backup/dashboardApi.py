@@ -3,6 +3,7 @@ import json
 import requests
 import sys
 from grafana_backup.commons import log_response, to_python2_and_3_compatible_string
+from packaging import version
 
 
 def health_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
@@ -433,6 +434,12 @@ def add_user_to_org(org_id, payload, grafana_url, http_post_headers, verify_ssl,
     return send_grafana_post('{0}/api/orgs/{1}/users'.format(grafana_url, org_id), payload, http_post_headers, verify_ssl, client_cert,
                              debug)
 
+def get_grafana_version(grafana_url):
+    r = requests.get('{0}/api/health'.format(grafana_url))
+    if r.status_code == 200:
+        return version.parse(r.json()['version'])
+    else:
+        raise Exception("Unable to get version, returned response: {0}".format(r.status_code))
 
 def send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug):
     r = requests.get(url, headers=http_get_headers, verify=verify_ssl, cert=client_cert)
