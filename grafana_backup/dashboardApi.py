@@ -434,8 +434,8 @@ def add_user_to_org(org_id, payload, grafana_url, http_post_headers, verify_ssl,
     return send_grafana_post('{0}/api/orgs/{1}/users'.format(grafana_url, org_id), payload, http_post_headers, verify_ssl, client_cert,
                              debug)
 
-def get_grafana_version(grafana_url):
-    r = requests.get('{0}/api/health'.format(grafana_url))
+def get_grafana_version(grafana_url, verify_ssl):
+    r = requests.get('{0}/api/health'.format(grafana_url), verify=verify_ssl)
     if r.status_code == 200:
         return version.parse(r.json()['version'])
     else:

@@ -16,7 +16,7 @@ def main(args, settings):
     folder_path = '{0}/alert_rules/{1}'.format(backup_dir, timestamp)
     log_file = 'alert_rules_{0}.txt'.format(timestamp)
 
-    grafana_version = get_grafana_version(grafana_url)
+    grafana_version = get_grafana_version(grafana_url, verify_ssl)
     minimum_version = version.parse('9.4.0')
 
     if minimum_version <= grafana_version:

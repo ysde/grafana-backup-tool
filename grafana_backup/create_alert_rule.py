@@ -13,7 +13,7 @@ def main(args, settings, file_path):
     with open(file_path, 'r') as f:
         data = f.read()
 
-    grafana_version = get_grafana_version(grafana_url)
+    grafana_version = get_grafana_version(grafana_url, verify_ssl)
     minimum_version = version.parse('9.4.0')
 
     if minimum_version <= grafana_version:
