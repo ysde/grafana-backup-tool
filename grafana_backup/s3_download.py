@@ -1,6 +1,9 @@
 import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
-import StringIO
+try:
+    import StringIO 
+except ImportError:
+    from io import StringIO 
 
 
 def main(args, settings):
