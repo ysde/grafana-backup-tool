@@ -36,7 +36,7 @@ def main(args, settings):
                         'library-elements': save_library_elements,
                         'teams': save_teams,
                         'team-members': save_team_members,
-                        'save-alert-rules': save_alert_rules}
+                        'alert-rules': save_alert_rules}
 
     (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
 
