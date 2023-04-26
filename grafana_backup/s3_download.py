@@ -1,9 +1,6 @@
 import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
-try:
-    import StringIO 
-except ImportError:
-    from io import StringIO 
+from io import BytesIO 
 
 
 def main(args, settings):
@@ -27,7 +24,7 @@ def main(args, settings):
     try:
         # .read() left off on purpose, tarfile.open() takes care of that part
         s3_data_raw = s3_object.get()["Body"]
-        s3_data = StringIO.StringIO(s3_data_raw.read())
+        s3_data = BytesIO(s3_data_raw.read())
         print("Download from S3 was successful")
     except ClientError as e:
         if e.response["Error"]["Code"] == "NoSuchKey":

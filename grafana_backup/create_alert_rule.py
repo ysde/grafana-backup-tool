@@ -6,6 +6,7 @@ from packaging import version
 def main(args, settings, file_path):
     grafana_url = settings.get('GRAFANA_URL')
     http_post_headers = settings.get('HTTP_POST_HEADERS')
+    http_post_headers['x-disable-provenance']='*'
     verify_ssl = settings.get('VERIFY_SSL')
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
