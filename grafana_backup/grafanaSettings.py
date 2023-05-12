@@ -17,6 +17,7 @@ def main(config_path):
     grafana_url = config.get('grafana', {}).get('url', '')
     grafana_token = config.get('grafana', {}).get('token', '')
     grafana_search_api_limit = config.get('grafana', {}).get('search_api_limit', 5000)
+    grafana_default_user_password = config.get('grafana', {}).get('default_user_password', '00000000')
 
     debug = config.get('general', {}).get('debug', True)
     api_health_check = config.get('general', {}).get('api_health_check', True)
@@ -54,6 +55,7 @@ def main(config_path):
     GRAFANA_URL = os.getenv('GRAFANA_URL', grafana_url)
     TOKEN = os.getenv('GRAFANA_TOKEN', grafana_token)
     SEARCH_API_LIMIT = os.getenv('SEARCH_API_LIMIT', grafana_search_api_limit)
+    DEFAULT_USER_PASSWORD = os.getenv('DEFAULT_USER_PASSWORD', grafana_default_user_password)
 
     AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME', aws_s3_bucket_name)
     AWS_S3_BUCKET_KEY = os.getenv('AWS_S3_BUCKET_KEY', aws_s3_bucket_key)
@@ -134,6 +136,7 @@ def main(config_path):
         HTTP_GET_HEADERS_BASIC_AUTH = None
         HTTP_POST_HEADERS_BASIC_AUTH = None
 
+    config_dict['DEFAULT_USER_PASSWORD'] = DEFAULT_USER_PASSWORD
     config_dict['TOKEN'] = TOKEN
     config_dict['SEARCH_API_LIMIT'] = SEARCH_API_LIMIT
     config_dict['DEBUG'] = DEBUG
