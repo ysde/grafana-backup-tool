@@ -95,6 +95,7 @@ def main(config_path):
     CLIENT_CERT = os.getenv('CLIENT_CERT', client_cert)
 
     BACKUP_DIR = os.getenv('BACKUP_DIR', backup_dir)
+    BACKUP_FILE_FORMAT = os.getenv('BACKUP_FILE_FORMAT', backup_file_format)
 
     PRETTY_PRINT = os.getenv('PRETTY_PRINT', pretty_print)
     if isinstance(PRETTY_PRINT, str):
@@ -114,7 +115,7 @@ def main(config_path):
         HTTP_GET_HEADERS.update({k: v})
         HTTP_POST_HEADERS.update({k: v})
 
-    TIMESTAMP = datetime.today().strftime(backup_file_format)
+    TIMESTAMP = datetime.today().strftime(BACKUP_FILE_FORMAT)
 
     config_dict['GRAFANA_URL'] = GRAFANA_URL
     config_dict['GRAFANA_ADMIN_ACCOUNT'] = ADMIN_ACCOUNT
@@ -141,6 +142,7 @@ def main(config_path):
     config_dict['VERIFY_SSL'] = VERIFY_SSL
     config_dict['CLIENT_CERT'] = CLIENT_CERT
     config_dict['BACKUP_DIR'] = BACKUP_DIR
+    config_dict['BACKUP_FILE_FORMAT'] = BACKUP_FILE_FORMAT
     config_dict['PRETTY_PRINT'] = PRETTY_PRINT
     config_dict['EXTRA_HEADERS'] = EXTRA_HEADERS
     config_dict['HTTP_GET_HEADERS'] = HTTP_GET_HEADERS
