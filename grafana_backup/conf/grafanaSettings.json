@@ -5,6 +5,7 @@
     "api_health_check": true,
     "backup_dir": "_OUTPUT_",
     "backup_file_format": "%Y%m%d%H%M",
+    "uid_dashboard_slug_suffix": false,
     "pretty_print": false
   },
   "grafana": {

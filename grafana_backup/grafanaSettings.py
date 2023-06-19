@@ -24,6 +24,7 @@ def main(config_path):
     client_cert = config.get('general', {}).get('client_cert', None)
     backup_dir = config.get('general', {}).get('backup_dir', '_OUTPUT_')
     backup_file_format = config.get('general', {}).get('backup_file_format', '%Y%m%d%H%M')
+    uid_dashboard_slug_suffix = config.get('general', {}).get('uid_dashboard_slug_suffix', False)
     pretty_print = config.get('general', {}).get('pretty_print', False)
 
     # Cloud storage settings - AWS
@@ -96,6 +97,10 @@ def main(config_path):
 
     BACKUP_DIR = os.getenv('BACKUP_DIR', backup_dir)
 
+    UID_DASHBOARD_SLUG_SUFFIX = os.getenv('UID_DASHBOARD_SLUG_SUFFIX', uid_dashboard_slug_suffix)
+    if isinstance(UID_DASHBOARD_SLUG_SUFFIX, str):
+        UID_DASHBOARD_SLUG_SUFFIX = json.loads(UID_DASHBOARD_SLUG_SUFFIX.lower())  # convert environment variable string to bool
+
     PRETTY_PRINT = os.getenv('PRETTY_PRINT', pretty_print)
     if isinstance(PRETTY_PRINT, str):
         PRETTY_PRINT = json.loads(PRETTY_PRINT.lower())  # convert environment variable string to bool
@@ -142,6 +147,7 @@ def main(config_path):
     config_dict['CLIENT_CERT'] = CLIENT_CERT
     config_dict['BACKUP_DIR'] = BACKUP_DIR
     config_dict['PRETTY_PRINT'] = PRETTY_PRINT
+    config_dict['UID_DASHBOARD_SLUG_SUFFIX'] = UID_DASHBOARD_SLUG_SUFFIX
     config_dict['EXTRA_HEADERS'] = EXTRA_HEADERS
     config_dict['HTTP_GET_HEADERS'] = HTTP_GET_HEADERS
     config_dict['HTTP_POST_HEADERS'] = HTTP_POST_HEADERS
