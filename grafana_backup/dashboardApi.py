@@ -437,7 +437,10 @@ def add_user_to_org(org_id, payload, grafana_url, http_post_headers, verify_ssl,
 def get_grafana_version(grafana_url, verify_ssl):
     r = requests.get('{0}/api/health'.format(grafana_url), verify=verify_ssl)
     if r.status_code == 200:
-        return version.parse(r.json()['version'])
+        if 'version' in r.json().keys():
+            return version.parse(r.json()['version'])
+        else:
+            raise KeyError("Unable to get version, returned respone: {0}".format(r.json))
     else:
         raise Exception("Unable to get version, returned response: {0}".format(r.status_code))
 
