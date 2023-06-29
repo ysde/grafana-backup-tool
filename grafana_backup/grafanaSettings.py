@@ -17,6 +17,7 @@ def main(config_path):
     grafana_url = config.get('grafana', {}).get('url', '')
     grafana_token = config.get('grafana', {}).get('token', '')
     grafana_search_api_limit = config.get('grafana', {}).get('search_api_limit', 5000)
+    grafana_version = config.get('grafana', {}).get('version', None)
 
     debug = config.get('general', {}).get('debug', True)
     api_health_check = config.get('general', {}).get('api_health_check', True)
@@ -54,6 +55,7 @@ def main(config_path):
     GRAFANA_URL = os.getenv('GRAFANA_URL', grafana_url)
     TOKEN = os.getenv('GRAFANA_TOKEN', grafana_token)
     SEARCH_API_LIMIT = os.getenv('SEARCH_API_LIMIT', grafana_search_api_limit)
+    GRAFANA_VERSION = os.getenv('GRAFANA_VERSION', grafana_version)
 
     AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME', aws_s3_bucket_name)
     AWS_S3_BUCKET_KEY = os.getenv('AWS_S3_BUCKET_KEY', aws_s3_bucket_key)
@@ -117,6 +119,7 @@ def main(config_path):
     TIMESTAMP = datetime.today().strftime(backup_file_format)
 
     config_dict['GRAFANA_URL'] = GRAFANA_URL
+    config_dict['GRAFANA_VERSION'] = GRAFANA_VERSION
     config_dict['GRAFANA_ADMIN_ACCOUNT'] = ADMIN_ACCOUNT
     config_dict['GRAFANA_ADMIN_PASSWORD'] = ADMIN_PASSWORD
 
