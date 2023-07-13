@@ -23,7 +23,7 @@ def main(args, settings):
         grafana_version = get_grafana_version(grafana_url, verify_ssl)
     except KeyError as error:
         if not grafana_version:
-            raise Exception("Grafana version is not set via the config-file or provided as environment variable. Nor is it available via the api.") from error
+            raise Exception("Grafana version is not set.") from error
 
     minimum_version = version.parse('9.4.0')
 
