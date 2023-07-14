@@ -12,7 +12,7 @@ def main(args, settings, file_path):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
 
-    default_password = settings.get('default_password', '00000000')
+    default_password = settings.get('DEFAULT_USER_PASSWORD')
     if http_post_headers_basic_auth:
         with open(file_path, 'r') as f:
             data = f.read()
