@@ -438,7 +438,17 @@ def get_grafana_version(grafana_url, verify_ssl):
     r = requests.get('{0}/api/health'.format(grafana_url), verify=verify_ssl)
     if r.status_code == 200:
         if 'version' in r.json().keys():
-            return version.parse(r.json()['version'])
+            version_str = r.json()['version']
+            pattern = r'\b(\d+\.\d+\.\d+)'
+            # Extract major, minor, and patch version components only
+            match = re.search(pattern, version_str)
+
+            if match:
+                version_number = match.group(1)
+            else:
+                version_number = version_str
+
+            return version.parse(version_number)
         else:
             raise KeyError("Unable to get version, returned respone: {0}".format(r.json))
     else:
