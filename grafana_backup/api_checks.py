@@ -9,15 +9,17 @@ def main(settings):
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
     api_health_check = settings.get('API_HEALTH_CHECK')
+    api_auth_check = settings.get('API_AUTH_CHECK')
 
     if api_health_check:
         (status, json_resp) = health_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         if not status == 200:
             return (status, json_resp, None, None, None)
 
-    (status, json_resp) = auth_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-    if not status == 200:
-        return (status, json_resp, None, None, None)
+    if api_auth_check:
+        (status, json_resp) = auth_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+        if not status == 200:
+            return (status, json_resp, None, None, None)
 
     dashboard_uid_support, datasource_uid_support = uid_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     if isinstance(dashboard_uid_support, str):
