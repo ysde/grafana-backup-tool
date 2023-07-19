@@ -4,6 +4,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.3.2] - 2023-07-19
+
+### Added
+
+### Changed
+- fix versions/dashboard_versions hiccup by @chriz-active in #229
+- hide_version-config: add version as config/env var by @chriz-active in #228
+- Expose BACKUP_FILE_FORMAT to env by @vindex10 in #223
+- add slug suffix for uid dashboards by @vindex10 in #222
+- allow disabling auth check by @vindex10 in #221
+
+### Removed
+- [cicd] github-actions Python 2.7 support is no longer available #230
+
+# [1.3.1] - 2023-05-31
+
+### Added
+
+### Changed
+- import StringIO and pass data through StringIO read by @Keimille in #173
+- Pass verify_ssl to get_grafana_version method by @yg265 in #207
+- Update alert-rules key to match convention set in cli.py by @relaytheurgency in #208
+- add the x-disable-provenance header for create_alert_rule by @yg265 in #211
+- Perform upsert of alert rules by @mt3593 in #217
+
+### Removed
+
+# [1.3.0] - 2023-04-12
+
+### Added
+
+### Changed
+- Only support alert rules if grafana is above version 9.4.0 by @mt3593 in #205
+
+### Removed
+
+# [1.2.6] - 2023-04-12
+
+### Added
+
+### Changed
+- Add alert rules to backup by @mt3593 in #201
+- Fix restoring library elements that have more than one folder by @antifuchs in #199
+- Fixed GCP bucket upload example in readme by @IldarGalikov in #200
+- Create a more compact docker image (remove dev packages from image) by @lavirott in #196
+
+### Removed
+
+# [1.2.5] - 2023-02-21
+
+### Added
+
+### Changed
+- Backup, restore, and delete teams, team-members, and library-elements by @nileger in #181
+
+### Removed
 
 # [1.2.4] - 2022-08-04
 
