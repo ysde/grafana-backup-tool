@@ -5,7 +5,7 @@ from grafana_backup.save_datasources import main as save_datasources
 from grafana_backup.save_folders import main as save_folders
 from grafana_backup.save_alert_channels import main as save_alert_channels
 from grafana_backup.save_snapshots import main as save_snapshots
-from grafana_backup.save_versions import main as save_versions
+from grafana_backup.save_dashboard_versions import main as save_dashboard_versions
 from grafana_backup.save_annotations import main as save_annotations
 from grafana_backup.archive import main as archive
 from grafana_backup.s3_upload import main as s3_upload
@@ -31,7 +31,8 @@ def main(args, settings):
                         'organizations': save_orgs,
                         'users': save_users,
                         'snapshots': save_snapshots,
-                        'versions': save_versions,
+                        'versions': save_dashboard_versions, # left for backwards compatibility
+                        'dashboard-versions': save_dashboard_versions,
                         'annotations': save_annotations,
                         'library-elements': save_library_elements,
                         'teams': save_teams,
