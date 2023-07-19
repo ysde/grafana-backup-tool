@@ -31,6 +31,7 @@ def main(args, settings):
                         'organizations': save_orgs,
                         'users': save_users,
                         'snapshots': save_snapshots,
+                        'versions': save_dashboard_versions, # left for backwards compatibility
                         'dashboard-versions': save_dashboard_versions,
                         'annotations': save_annotations,
                         'library-elements': save_library_elements,
