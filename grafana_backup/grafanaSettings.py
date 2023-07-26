@@ -92,7 +92,14 @@ def main(config_path):
 
     VERIFY_SSL = os.getenv('VERIFY_SSL', verify_ssl)
     if isinstance(VERIFY_SSL, str):
-        VERIFY_SSL = json.loads(VERIFY_SSL.lower())  # convert environment variable string to bool
+        # Check if string is "true" (case-insensitive) to convert to bool
+        if VERIFY_SSL.lower() == "true":
+            VERIFY_SSL = True
+        else:
+            # If not "true" treat as path to CA bundle
+            pass
+    else:
+        pass
 
     API_HEALTH_CHECK = os.getenv('API_HEALTH_CHECK', api_health_check)
     if isinstance(API_HEALTH_CHECK, str):
