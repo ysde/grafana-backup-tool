@@ -446,7 +446,7 @@ def get_grafana_version(grafana_url, verify_ssl):
             if match:
                 version_number = match.group(1)
             else:
-                version_number = version_str
+                raise Exception("version key found but string value could not be parsed, returned respone: {0}".format(r.json))
 
             return version.parse(version_number)
         else:
