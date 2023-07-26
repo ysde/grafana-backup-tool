@@ -91,7 +91,7 @@ def main(config_path):
         DEBUG = json.loads(DEBUG.lower())  # convert environment variable string to bool
 
     VERIFY_SSL = os.getenv('VERIFY_SSL', verify_ssl)
-    if isinstance(VERIFY_SSL, str):
+    if isinstance(VERIFY_SSL, str) and VERIFY_SSL.lower() in ['true', 'false']:
         VERIFY_SSL = json.loads(VERIFY_SSL.lower())  # convert environment variable string to bool
 
     API_HEALTH_CHECK = os.getenv('API_HEALTH_CHECK', api_health_check)
