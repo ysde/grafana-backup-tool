@@ -12,15 +12,21 @@ The aim of this tool is to:
 ## Supported components
 * Folder
 * Folder Permissions
+* Library Elements (doesn't work with Grafana 8.0.0 but 8.4.3)
 * Dashboard (contains Alert)
 * Datasource
 * Alert Channel
+* Alert Rules (Supported in version 9.4.0 of grafana and up.)
+* Teams
+* Team Members (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
+    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+    * Or Sets this ENV of the Grafana server `GF_USERS_ALLOW_ORG_CREATE=true`. see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#create-organization)
 * Organization (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
-	* You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
-	* Or Sets this ENV of the Grafana server `GF_USERS_ALLOW_ORG_CREATE=true`. see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#create-organization)
+    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+    * Or Sets this ENV of the Grafana server `GF_USERS_ALLOW_ORG_CREATE=true`. see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#create-organization)
 * User (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
-	* You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
-	* Grafana's api doesn't provide user's password when backing up, so the `default_password (which is in the grafanaSetting.json)` will be used when restoring.
+    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+    * Grafana's api doesn't provide user's password when backing up, so the `default_user_password` in `grafanaSettings.json`, or in ENV `DEFAULT_USER_PASSWORD`, E.g `export DEFAULT_USER_PASSWORD=supersecret` will be used when restoring. 
 * Snapshots
 * Dashboard Versions (only backup, no restore)
 * Annotations
@@ -113,6 +119,10 @@ Replace variables below to use the Docker version of this tool
 * `{YOUR_GRAFANA_URL}`: Your Grafana site `URL`.
 * `{YOUR_BACKUP_FOLDER_ON_THE_HOST}`: The `backup folder` on the Grafana host machine.
 
+## Kubernetes
+Check out the CronJob in [examples](examples) for a simple example of how grafana-backup-tool
+can be ran within a Kubernetes environment
+
 ### Backup
 
 If you decide to use a volume (-v) then you'll need to create the volume first with 1337 uid/gid ownership first, example:
@@ -163,6 +173,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
 ***GCS Example:*** Set GCS configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
 ```
 		   -e GCS_BUCKET_NAME="bucket-name" \
+		   -e GCLOUD_PROJECT="gcp-project-name" \
 		   -e GOOGLE_APPLICATION_CREDENTIALS="credential-file-path"
 ```
 
@@ -199,3 +210,11 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
 
 ### Building
 You can build the docker image simply by executing `make` in the root of this repo. The image will get tagged as `ysde:grafana-backup`
+
+### Monitoring
+InfluxDB support has been added and Prometheus push gateway support will be added in the future.
+
+In order to monitor successful backups with InfluxDB simply configure `grafana-backup` InfluxDB settings using this [example](examples) configuration.
+Or if you prefer to use environment variables you can instead set `INFLUXDB_HOST`, `INFLUXDB_PORT`, `INFLUXDB_MEASUREMENT`, `INFLUXDB_USERNAME` and `INFLUXDB_PASSWORD`.
+
+Once configured `grafana-backup` will automatically enter a `1` in your defined timeseries measurement upon each successful backup.

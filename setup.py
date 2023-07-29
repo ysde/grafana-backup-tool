@@ -9,7 +9,9 @@ requires = [
     'docopt',
     'boto3',
     'azure-storage-blob',
-    'google-cloud-storage'
+    'google-cloud-storage',
+    'influxdb',
+    'packaging'
 ]
 
 setup(
