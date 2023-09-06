@@ -34,6 +34,7 @@ def main(args, settings):
     settings.update({'DASHBOARD_UID_SUPPORT': dashboard_uid_support})
     settings.update({'DATASOURCE_UID_SUPPORT': datasource_uid_support})
     settings.update({'PAGING_SUPPORT': paging_support})
+    
 
     if arg_components:
         arg_components_list = arg_components.split(',')

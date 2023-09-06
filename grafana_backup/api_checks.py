@@ -1,5 +1,5 @@
 from grafana_backup.commons import print_horizontal_line
-from grafana_backup.dashboardApi import health_check, auth_check, uid_feature_check, paging_feature_check
+from grafana_backup.dashboardApi import health_check, auth_check, uid_feature_check, paging_feature_check, contact_point_check
 
 
 def main(settings):
@@ -30,6 +30,8 @@ def main(settings):
     paging_support = paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
     if isinstance(paging_support, str):
         raise Exception(paging_support)
+    
+    is_contact_point_available = contact_point_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
 
     print_horizontal_line()
     if status == 200:
@@ -38,4 +40,4 @@ def main(settings):
         print("[Pre-Check] Server status is NOT OK !!: {0}".format(json_resp))
     print_horizontal_line()
 
-    return (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support)
+    return (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support, is_contact_point_available)

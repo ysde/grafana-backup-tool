@@ -47,7 +47,8 @@ There are three ways to setup the configuration:
 3. Use `~/.grafana-backup.json` to define variables in json format.
 
 ### Example Config
-* Check out the [examples](examples) folder for more configuration details
+* Copy [grafanaSettings.example.json](examples/grafanaSettings.example.json) and modify it for you to use, remove `azure`, `aws`, `gcp`, `influxdb` blocks (but keep the ones you used).
+* Check out the [examples](examples) folder for more configuration details.
 
 **NOTE** If you use `environment variables`, you need to add the following to your `.bashrc` or execute once before using the tool (please change variables according to your setup):
 

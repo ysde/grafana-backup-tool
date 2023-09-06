@@ -71,6 +71,14 @@ def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert,
                 # No dashboards exist, disable paging feature
                 return False, False
 
+def contact_point_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    print("\n[Pre-Check] grafana contact_point api check")
+    (status, content) = search_contact_points(grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if status == 200:
+        return True
+    else:
+        return False
+
     # Get first dashboard on first page
     (status, content) = get_first_dashboard_by_page(1)
     if status is False and content is False:
@@ -91,7 +99,6 @@ def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert,
 
     # Compare both pages
     return dashboard_one_values != dashboard_two_values
-
 
 def search_dashboard(page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     url = '{0}/api/search/?type=dash-db&limit={1}&page={2}'.format(grafana_url, limit, page)
@@ -433,6 +440,18 @@ def create_user(payload, grafana_url, http_post_headers, verify_ssl, client_cert
 def add_user_to_org(org_id, payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_post('{0}/api/orgs/{1}/users'.format(grafana_url, org_id), payload, http_post_headers, verify_ssl, client_cert,
                              debug)
+
+def search_contact_points(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    return send_grafana_get('{0}/api/v1/provisioning/contact-points'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
+
+def create_contact_point(json_palyload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_post('{0}/api/v1/provisioning/contact-points'.format(grafana_url), json_palyload, http_post_headers, verify_ssl, client_cert, debug)
+
+def search_notification_policies(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    return send_grafana_get('{0}/api/v1/provisioning/policies'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
+
+def update_notification_policy(json_palyload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_put('{0}/api/v1/provisioning/policies'.format(grafana_url), json_palyload, http_post_headers, verify_ssl, client_cert, debug)
 
 def get_grafana_version(grafana_url, verify_ssl, http_get_headers):
     r = requests.get('{0}/api/health'.format(grafana_url), verify=verify_ssl, headers=http_get_headers)
