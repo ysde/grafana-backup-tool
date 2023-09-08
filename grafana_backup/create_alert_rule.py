@@ -18,7 +18,7 @@ def main(args, settings, file_path):
         data = f.read()
 
     try:
-        grafana_version = get_grafana_version(grafana_url, verify_ssl)
+        grafana_version = get_grafana_version(grafana_url, verify_ssl, http_get_headers)
     except KeyError as error:
         if not grafana_version:
             raise Exception("Grafana version is not set.") from error
