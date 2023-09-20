@@ -80,16 +80,6 @@ def paging_feature_check(grafana_url, http_get_headers, verify_ssl, client_cert,
                 # No dashboards exist, disable paging feature
                 return False, False
 
-
-def contact_point_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
-    print("\n[Pre-Check] grafana contact_point api check")
-    (status, content) = search_contact_points(
-        grafana_url, http_get_headers, verify_ssl, client_cert, debug)
-    if status == 200:
-        return True
-    else:
-        return False
-
     # Get first dashboard on first page
     (status, content) = get_first_dashboard_by_page(1)
     if status is False and content is False:
@@ -110,6 +100,16 @@ def contact_point_check(grafana_url, http_get_headers, verify_ssl, client_cert, 
 
     # Compare both pages
     return dashboard_one_values != dashboard_two_values
+
+
+def contact_point_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    print("\n[Pre-Check] grafana contact_point api check")
+    (status, content) = search_contact_points(
+        grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if status == 200:
+        return True
+    else:
+        return False
 
 
 def search_dashboard(page, limit, grafana_url, http_get_headers, verify_ssl, client_cert, debug):
