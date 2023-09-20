@@ -21,6 +21,7 @@ ENV PACKAGES="\
     py3-cffi \
     py3-cryptography \
     py3-six \
+    py3-packaging \
 "
 WORKDIR /opt/grafana-backup-tool
 ADD . /opt/grafana-backup-tool
