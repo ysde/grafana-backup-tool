@@ -7,6 +7,8 @@ from grafana_backup.save_alert_channels import main as save_alert_channels
 from grafana_backup.save_snapshots import main as save_snapshots
 from grafana_backup.save_dashboard_versions import main as save_dashboard_versions
 from grafana_backup.save_annotations import main as save_annotations
+from grafana_backup.save_contact_points import main as save_contact_points
+from grafana_backup.save_notification_policies import main as save_notification_policies
 from grafana_backup.archive import main as archive
 from grafana_backup.s3_upload import main as s3_upload
 from grafana_backup.influx import main as influx
@@ -17,6 +19,7 @@ from grafana_backup.save_teams import main as save_teams
 from grafana_backup.save_team_members import main as save_team_members
 from grafana_backup.azure_storage_upload import main as azure_storage_upload
 from grafana_backup.gcs_upload import main as gcs_upload
+from grafana_backup.commons import print_horizontal_line
 import sys
 
 
@@ -31,24 +34,33 @@ def main(args, settings):
                         'organizations': save_orgs,
                         'users': save_users,
                         'snapshots': save_snapshots,
-                        'versions': save_dashboard_versions, # left for backwards compatibility
+                        'versions': save_dashboard_versions,  # left for backwards compatibility
                         'dashboard-versions': save_dashboard_versions,
                         'annotations': save_annotations,
                         'library-elements': save_library_elements,
                         'teams': save_teams,
                         'team-members': save_team_members,
-                        'alert-rules': save_alert_rules}
+                        'alert-rules': save_alert_rules,
+                        'contact-points': save_contact_points,
+                        'notification-policy': save_notification_policies,
+                        }
 
-    (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
-
-    # Do not continue if API is unavailable or token is not valid
-    if not status == 200:
-        print("server status is not ok: {0}".format(json_resp))
-        sys.exit(1)
+    (status,
+     json_resp,
+     dashboard_uid_support,
+     datasource_uid_support,
+     paging_support,
+     contact_point_support) = api_checks(settings)
 
     settings.update({'DASHBOARD_UID_SUPPORT': dashboard_uid_support})
     settings.update({'DATASOURCE_UID_SUPPORT': datasource_uid_support})
     settings.update({'PAGING_SUPPORT': paging_support})
+    settings.update({'CONTACT_POINT_SUPPORT': contact_point_support})
+
+    # Do not continue if API is unavailable or token is not valid
+    if not status == 200:
+        print("grafana server status is not ok: {0}".format(json_resp))
+        sys.exit(1)
 
     if arg_components:
         arg_components_list = arg_components.replace("_", "-").split(',')

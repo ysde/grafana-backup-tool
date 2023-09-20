@@ -1,5 +1,7 @@
 from glob import glob
-import os, tarfile, shutil
+import os
+import tarfile
+import shutil
 
 
 def main(args, settings):
@@ -10,7 +12,7 @@ def main(args, settings):
     backup_files = list()
 
     for folder_name in ['folders', 'datasources', 'dashboards', 'alert_channels', 'organizations', 'users', 'snapshots',
-                        'dashboard_versions', 'annotations', 'library-elements', 'teams', 'team_members', 'alert_rules']:
+                        'dashboard_versions', 'annotations', 'library-elements', 'teams', 'team_members', 'alert_rules', 'contact_points', 'notification_policies']:
         backup_path = '{0}/{1}/{2}'.format(backup_dir, folder_name, timestamp)
 
         for file_path in glob(backup_path):
