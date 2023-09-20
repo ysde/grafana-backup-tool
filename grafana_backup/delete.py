@@ -24,7 +24,8 @@ def main(args, settings):
                         'library-elements': delete_library_elements,
                         'team-members': delete_team_members}
 
-    (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
+    (status, json_resp, dashboard_uid_support,
+     datasource_uid_support, paging_support) = api_checks(settings)
 
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:
@@ -34,7 +35,6 @@ def main(args, settings):
     settings.update({'DASHBOARD_UID_SUPPORT': dashboard_uid_support})
     settings.update({'DATASOURCE_UID_SUPPORT': datasource_uid_support})
     settings.update({'PAGING_SUPPORT': paging_support})
-    
 
     if arg_components:
         arg_components_list = arg_components.split(',')

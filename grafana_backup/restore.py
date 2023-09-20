@@ -41,7 +41,8 @@ def main(args, settings):
     azure_storage_container_name = settings.get('AZURE_STORAGE_CONTAINER_NAME')
     gcs_bucket_name = settings.get('GCS_BUCKET_NAME')
 
-    (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support, contact_point_support) = api_checks(settings)
+    (status, json_resp, dashboard_uid_support, datasource_uid_support,
+     paging_support, contact_point_support) = api_checks(settings)
     settings.update({'CONTACT_POINT_SUPPORT': contact_point_support})
 
     # Do not continue if API is unavailable or token is not valid
@@ -80,9 +81,11 @@ def main(args, settings):
     # Shell game magic warning: restore_function keys require the 's'
     # to be removed in order to match file extension names...
     restore_functions = collections.OrderedDict()
-    restore_functions['folder'] = create_folder # Folders must be restored before Library-Elements
+    # Folders must be restored before Library-Elements
+    restore_functions['folder'] = create_folder
     restore_functions['datasource'] = create_datasource
-    restore_functions['library_element'] = create_library_element  # Library-Elements must be restored before dashboards
+    # Library-Elements must be restored before dashboards
+    restore_functions['library_element'] = create_library_element
     restore_functions['dashboard'] = create_dashboard
     restore_functions['alert_channel'] = create_alert_channel
     restore_functions['organization'] = create_org
@@ -95,7 +98,7 @@ def main(args, settings):
     restore_functions['alert_rule'] = create_alert_rule
     restore_functions['contact_point'] = create_contact_point
     # There are some issues of notification policy restore api, it will lock the notification policy page and cannot be edited.
-    # restore_functions['notification_policys'] = update_notification_policy 
+    # restore_functions['notification_policys'] = update_notification_policy
 
     if sys.version_info >= (3,):
         with tempfile.TemporaryDirectory() as tmpdir:

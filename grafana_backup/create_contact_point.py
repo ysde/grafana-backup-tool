@@ -2,6 +2,7 @@ import json
 from grafana_backup.dashboardApi import create_contact_point, get_grafana_version
 from packaging import version
 
+
 def main(args, settings, file_path):
     grafana_url = settings.get('GRAFANA_URL')
     http_post_headers = settings.get('HTTP_POST_HEADERS')
@@ -23,11 +24,10 @@ def main(args, settings, file_path):
 
         contact_points = json.loads(data)
         for cp in contact_points:
-            result = create_contact_point(json.dumps(cp), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
-            print("create contact_point: {0}, status: {1}, msg: {2}".format(cp['name'], result[0], result[1]))
+            result = create_contact_point(json.dumps(
+                cp), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
+            print("create contact_point: {0}, status: {1}, msg: {2}".format(
+                cp['name'], result[0], result[1]))
     else:
-        print("Unable to create contact points, requires Grafana version {0} or above. Current version is {1}".format(minimum_version, grafana_version))
-
-    
-
-    
+        print("Unable to create contact points, requires Grafana version {0} or above. Current version is {1}".format(
+            minimum_version, grafana_version))

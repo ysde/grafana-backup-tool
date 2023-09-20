@@ -34,7 +34,7 @@ def main(args, settings):
                         'organizations': save_orgs,
                         'users': save_users,
                         'snapshots': save_snapshots,
-                        'versions': save_dashboard_versions, # left for backwards compatibility
+                        'versions': save_dashboard_versions,  # left for backwards compatibility
                         'dashboard-versions': save_dashboard_versions,
                         'annotations': save_annotations,
                         'library-elements': save_library_elements,
@@ -45,13 +45,13 @@ def main(args, settings):
                         'notification-policy': save_notification_policies,
                         }
 
-    (status, 
-     json_resp, 
-     dashboard_uid_support, 
-     datasource_uid_support, 
-     paging_support, 
+    (status,
+     json_resp,
+     dashboard_uid_support,
+     datasource_uid_support,
+     paging_support,
      contact_point_support) = api_checks(settings)
-    
+
     settings.update({'DASHBOARD_UID_SUPPORT': dashboard_uid_support})
     settings.update({'DATASOURCE_UID_SUPPORT': datasource_uid_support})
     settings.update({'PAGING_SUPPORT': paging_support})

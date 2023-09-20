@@ -2,6 +2,7 @@ import json
 from grafana_backup.dashboardApi import update_notification_policy, get_grafana_version
 from packaging import version
 
+
 def main(args, settings, file_path):
     grafana_url = settings.get('GRAFANA_URL')
     http_post_headers = settings.get('HTTP_POST_HEADERS')
@@ -22,11 +23,10 @@ def main(args, settings, file_path):
             data = f.read()
 
         notification_policies = json.loads(data)
-        result = update_notification_policy(json.dumps(notification_policies), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
-        print("update notification_policy, status: {0}, msg: {1}".format(result[0], result[1]))
+        result = update_notification_policy(json.dumps(
+            notification_policies), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
+        print("update notification_policy, status: {0}, msg: {1}".format(
+            result[0], result[1]))
     else:
-        print("Unable to update notification policy, requires Grafana version {0} or above. Current version is {1}".format(minimum_version, grafana_version))
-
-    
-
-    
+        print("Unable to update notification policy, requires Grafana version {0} or above. Current version is {1}".format(
+            minimum_version, grafana_version))
