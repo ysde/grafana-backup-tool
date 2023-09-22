@@ -6,12 +6,13 @@ from packaging import version
 def main(args, settings, file_path):
     grafana_url = settings.get('GRAFANA_URL')
     http_post_headers = settings.get('HTTP_POST_HEADERS')
+    http_get_headers = settings.get('HTTP_GET_HEADERS')
     verify_ssl = settings.get('VERIFY_SSL')
     client_cert = settings.get('CLIENT_CERT')
     debug = settings.get('DEBUG')
 
     try:
-        grafana_version = get_grafana_version(grafana_url, verify_ssl)
+        grafana_version = get_grafana_version(grafana_url, verify_ssl, http_get_headers)
     except KeyError as error:
         if not grafana_version:
             raise Exception("Grafana version is not set.") from error
