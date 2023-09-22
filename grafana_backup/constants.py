@@ -7,5 +7,5 @@ else:
     homedir = os.environ["HOME"]
 
 PKG_NAME = "grafana-backup"
-PKG_VERSION = "1.4.0"
+PKG_VERSION = "1.4.1"
 JSON_CONFIG_PATH = "{0}/.grafana-backup.json".format(homedir)
