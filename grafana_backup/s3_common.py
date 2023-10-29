@@ -6,12 +6,18 @@ def get_boto_session(settings) -> boto3.Session:
     aws_access_key_id = settings.get("AWS_ACCESS_KEY_ID")
     aws_secret_access_key = settings.get("AWS_SECRET_ACCESS_KEY")
 
-    session = boto3.Session(
+    # If no credentials are provided, boto3 will use the default credentials provider chain.
+    if aws_access_key_id is None or aws_secret_access_key is None:
+        return boto3.Session(
+            region_name=aws_default_region,
+        )
+
+    # Otherwise, use the provided credentials.
+    return boto3.Session(
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
         region_name=aws_default_region,
     )
-    return session
 
 def get_s3_resource(settings):
     session = get_boto_session(settings)
