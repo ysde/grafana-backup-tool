@@ -1,4 +1,4 @@
-from grafana_backup.constants import (PKG_NAME, PKG_VERSION, JSON_CONFIG_PATH)
+from grafana_backup.constants import PKG_NAME, PKG_VERSION, JSON_CONFIG_PATH
 from grafana_backup.save import main as save
 from grafana_backup.restore import main as restore
 from grafana_backup.delete import main as delete
@@ -29,17 +29,17 @@ Options:
 
     --no-archive                            Skip archive creation and do not delete unarchived files
                                             (used for troubleshooting purposes)
-""".format(PKG_NAME, PKG_VERSION)
+""".format(
+    PKG_NAME, PKG_VERSION
+)
 
 
-args = docopt(docstring, help=False,
-              version='{0} {1}'.format(PKG_NAME, PKG_VERSION))
+args = docopt(docstring, help=False, version="{0} {1}".format(PKG_NAME, PKG_VERSION))
 
 
 def main():
-    arg_config = args.get('--config', False)
-    default_config = '{0}/conf/grafanaSettings.json'.format(
-        os.path.dirname(__file__))
+    arg_config = args.get("--config", False)
+    default_config = "{0}/conf/grafanaSettings.json".format(os.path.dirname(__file__))
 
     if arg_config:
         settings = conf(arg_config)
@@ -48,19 +48,19 @@ def main():
     elif os.path.isfile(default_config):
         settings = conf(default_config)
 
-    if args.get('save', None):
+    if args.get("save", None):
         save(args, settings)
         sys.exit()
-    elif args.get('restore', None):
+    elif args.get("restore", None):
         restore(args, settings)
         sys.exit()
-    elif args.get('delete', None):
+    elif args.get("delete", None):
         delete(args, settings)
         sys.exit()
-    elif args.get('tools', None):
+    elif args.get("tools", None):
         tools(args, settings)
         sys.exit()
-    elif args.get('--help', None):
+    elif args.get("--help", None):
         print(docstring)
         sys.exit()
     else:
@@ -68,5 +68,5 @@ def main():
         sys.exit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
