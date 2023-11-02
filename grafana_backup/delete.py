@@ -11,33 +11,40 @@ import sys
 
 
 def main(args, settings):
-    arg_components = args.get('--components', False)
+    arg_components = args.get("--components", False)
 
     # By default, teams should not be deleted. Sinces teams don't have unique ids across instances, they would be
     # recreated with different ids, therefore loosing references to folder permissions and team members.
-    delete_functions = {'dashboards': delete_dashboards,
-                        'datasources': delete_datasources,
-                        'folders': delete_folders,
-                        'alert-channels': delete_alert_channels,
-                        'snapshots': delete_snapshots,
-                        'annotations': delete_annotations,
-                        'library-elements': delete_library_elements,
-                        'team-members': delete_team_members}
+    delete_functions = {
+        "dashboards": delete_dashboards,
+        "datasources": delete_datasources,
+        "folders": delete_folders,
+        "alert-channels": delete_alert_channels,
+        "snapshots": delete_snapshots,
+        "annotations": delete_annotations,
+        "library-elements": delete_library_elements,
+        "team-members": delete_team_members,
+    }
 
-    (status, json_resp, dashboard_uid_support,
-     datasource_uid_support, paging_support) = api_checks(settings)
+    (
+        status,
+        json_resp,
+        dashboard_uid_support,
+        datasource_uid_support,
+        paging_support,
+    ) = api_checks(settings)
 
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:
         print("server status is not ok: {0}".format(json_resp))
         sys.exit(1)
 
-    settings.update({'DASHBOARD_UID_SUPPORT': dashboard_uid_support})
-    settings.update({'DATASOURCE_UID_SUPPORT': datasource_uid_support})
-    settings.update({'PAGING_SUPPORT': paging_support})
+    settings.update({"DASHBOARD_UID_SUPPORT": dashboard_uid_support})
+    settings.update({"DATASOURCE_UID_SUPPORT": datasource_uid_support})
+    settings.update({"PAGING_SUPPORT": paging_support})
 
     if arg_components:
-        arg_components_list = arg_components.split(',')
+        arg_components_list = arg_components.split(",")
 
         # Delete only the components that provided via an argument
         for delete_function in arg_components_list:

@@ -3,13 +3,13 @@ from grafana_backup.dashboardApi import create_library_element, get_folder
 
 
 def main(args, settings, file_path):
-    grafana_url = settings.get('GRAFANA_URL')
-    http_post_headers = settings.get('HTTP_POST_HEADERS')
-    verify_ssl = settings.get('VERIFY_SSL')
-    client_cert = settings.get('CLIENT_CERT')
-    debug = settings.get('DEBUG')
+    grafana_url = settings.get("GRAFANA_URL")
+    http_post_headers = settings.get("HTTP_POST_HEADERS")
+    verify_ssl = settings.get("VERIFY_SSL")
+    client_cert = settings.get("CLIENT_CERT")
+    debug = settings.get("DEBUG")
 
-    with open(file_path, 'r') as f:
+    with open(file_path, "r") as f:
         data = f.read()
 
     # Library Elements can only be created referencing a folder id. However, this folder id is not unique across Grafana
@@ -20,9 +20,9 @@ def main(args, settings, file_path):
         folder_uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug
     )[1]
     if isinstance(folder_id_response, list):
-        library_element["folderUid"] = folder_id_response[0]['uid']
+        library_element["folderUid"] = folder_id_response[0]["uid"]
     else:
-        library_element["folderUid"] = folder_id_response['uid']
+        library_element["folderUid"] = folder_id_response["uid"]
     result = create_library_element(
         json.dumps(library_element),
         grafana_url,

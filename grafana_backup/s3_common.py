@@ -32,11 +32,12 @@ def get_s3_resource(settings):
 
 
 def get_s3_object(settings, s3_file_name):
-    aws_s3_bucket_name = settings.get('AWS_S3_BUCKET_NAME')
-    aws_s3_bucket_key = settings.get('AWS_S3_BUCKET_KEY')
+    aws_s3_bucket_name = settings.get("AWS_S3_BUCKET_NAME")
+    aws_s3_bucket_key = settings.get("AWS_S3_BUCKET_KEY")
 
     s3 = get_s3_resource(settings)
-    s3_object = s3.Object(aws_s3_bucket_name,
-                          '{0}/{1}'.format(aws_s3_bucket_key, s3_file_name))
+    s3_object = s3.Object(
+        aws_s3_bucket_name, "{0}/{1}".format(aws_s3_bucket_key, s3_file_name)
+    )
 
     return s3_object
