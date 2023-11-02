@@ -3,6 +3,7 @@ from botocore.exceptions import NoCredentialsError
 
 from grafana_backup.s3_common import get_s3_object
 
+
 def main(args, settings):
     backup_dir = settings.get('BACKUP_DIR')
     timestamp = settings.get('TIMESTAMP')

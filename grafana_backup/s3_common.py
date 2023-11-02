@@ -1,6 +1,7 @@
 import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
 
+
 def get_boto_session(settings) -> boto3.Session:
     aws_default_region = settings.get("AWS_DEFAULT_REGION")
     aws_access_key_id = settings.get("AWS_ACCESS_KEY_ID")
@@ -19,6 +20,7 @@ def get_boto_session(settings) -> boto3.Session:
         region_name=aws_default_region,
     )
 
+
 def get_s3_resource(settings):
     session = get_boto_session(settings)
     aws_endpoint_url = settings.get("AWS_ENDPOINT_URL")
@@ -34,6 +36,7 @@ def get_s3_object(settings, s3_file_name):
     aws_s3_bucket_key = settings.get('AWS_S3_BUCKET_KEY')
 
     s3 = get_s3_resource(settings)
-    s3_object = s3.Object(aws_s3_bucket_name, '{0}/{1}'.format(aws_s3_bucket_key, s3_file_name))
+    s3_object = s3.Object(aws_s3_bucket_name,
+                          '{0}/{1}'.format(aws_s3_bucket_key, s3_file_name))
 
     return s3_object
