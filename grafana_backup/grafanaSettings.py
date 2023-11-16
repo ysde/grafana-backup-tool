@@ -15,6 +15,7 @@ def main(config_path):
     config = load_config(config_path)
 
     grafana_url = config.get('grafana', {}).get('url', '')
+    grafana_url = grafana_url.rstrip('/')
     grafana_token = config.get('grafana', {}).get('token', '')
     grafana_search_api_limit = config.get('grafana', {}).get('search_api_limit', 5000)
     grafana_default_user_password = config.get('grafana', {}).get('default_user_password', '00000000')
