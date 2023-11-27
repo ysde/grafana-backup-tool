@@ -473,6 +473,9 @@ def search_contact_points(grafana_url, http_get_headers, verify_ssl, client_cert
 def create_contact_point(json_palyload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_post('{0}/api/v1/provisioning/contact-points'.format(grafana_url), json_palyload, http_post_headers, verify_ssl, client_cert, debug)
 
+def update_contact_point(uid, json_palyload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_put('{0}/api/v1/provisioning/contact-points/{1}'.format(grafana_url, uid), json_palyload, http_post_headers, verify_ssl, client_cert, debug)
+
 
 def search_notification_policies(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     return send_grafana_get('{0}/api/v1/provisioning/policies'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
