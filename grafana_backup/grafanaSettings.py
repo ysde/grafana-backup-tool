@@ -40,6 +40,7 @@ def main(config_path):
     # Cloud storage settings - Azure
     azure_storage_container_name = config.get('azure', {}).get('container_name', '')
     azure_storage_connection_string = config.get('azure', {}).get('connection_string', '')
+    azure_storage_account_url = config.get('azure', {}).get('account_url', '')
     # Cloud storage settings - GCP
     gcp_config = config.get('gcp', {})
     gcs_bucket_name = gcp_config.get('gcs_bucket_name', '')
@@ -70,6 +71,7 @@ def main(config_path):
 
     AZURE_STORAGE_CONTAINER_NAME = os.getenv('AZURE_STORAGE_CONTAINER_NAME', azure_storage_container_name)
     AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING', azure_storage_connection_string)
+    AZURE_STORAGE_ACCOUNT_URL = os.getenv('AZURE_STORAGE_ACCOUNT_URL', azure_storage_account_url)
 
     GCS_BUCKET_NAME = os.getenv('GCS_BUCKET_NAME', gcs_bucket_name)
     if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS') and google_application_credentials:
@@ -176,6 +178,7 @@ def main(config_path):
     config_dict['AWS_ENDPOINT_URL'] = AWS_ENDPOINT_URL
     config_dict['AZURE_STORAGE_CONTAINER_NAME'] = AZURE_STORAGE_CONTAINER_NAME
     config_dict['AZURE_STORAGE_CONNECTION_STRING'] = AZURE_STORAGE_CONNECTION_STRING
+    config_dict['AZURE_STORAGE_ACCOUNT_URL'] = AZURE_STORAGE_ACCOUNT_URL
     config_dict['GCS_BUCKET_NAME'] = GCS_BUCKET_NAME
     config_dict['INFLUXDB_MEASUREMENT'] = INFLUXDB_MEASUREMENT
     config_dict['INFLUXDB_HOST'] = INFLUXDB_HOST

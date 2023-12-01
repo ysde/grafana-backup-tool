@@ -11,7 +11,8 @@ requires = [
     'azure-storage-blob',
     'google-cloud-storage',
     'influxdb',
-    'packaging'
+    'packaging',
+    'azure-identity',
 ]
 
 setup(
