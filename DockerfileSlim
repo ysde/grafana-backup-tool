@@ -32,6 +32,8 @@ RUN chmod -R a+r /opt/grafana-backup-tool \
 RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
     && apk add --no-cache --virtual build-deps ${DEV_PACKAGES} \
     && apk add --no-cache ${PACKAGES} \
+    # https://stackoverflow.com/questions/75608323/how-do-i-solve-error-externally-managed-environment-every-time-i-use-pip-3
+    && rm /usr/lib/python3.11/EXTERNALLY-MANAGED \
     && pip3 --no-cache-dir install . \
     && chown -R ${UID}:${GID} /opt/grafana-backup-tool \
     && apk del build-deps
