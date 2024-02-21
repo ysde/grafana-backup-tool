@@ -15,9 +15,11 @@
   "aws": {
     "s3_bucket_name": "bucket_name",
     "s3_bucket_key": "grafana-backup",
+    "s3_sse": "(optional) AES256|aws:kms|aws:kms:dsse",
     "default_region": "us-east-1",
     "access_key_id": "aws_access_key_id",
-    "secret_access_key": "aws_secret_access_key"
+    "secret_access_key": "aws_secret_access_key",
+    "session_token": "(optional)"
   },
   "azure": {
     "container_name": "container_name",

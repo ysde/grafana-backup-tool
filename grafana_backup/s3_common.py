@@ -4,19 +4,12 @@ from botocore.exceptions import NoCredentialsError, ClientError
 
 def get_boto_session(settings) -> boto3.Session:
     aws_default_region = settings.get("AWS_DEFAULT_REGION")
-    aws_access_key_id = settings.get("AWS_ACCESS_KEY_ID")
-    aws_secret_access_key = settings.get("AWS_SECRET_ACCESS_KEY")
 
     # If no credentials are provided, boto3 will use the default credentials provider chain.
-    if aws_access_key_id is None or aws_secret_access_key is None:
-        return boto3.Session(
-            region_name=aws_default_region,
-        )
-
-    # Otherwise, use the provided credentials.
     return boto3.Session(
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key,
+        **({'aws_access_key_id': settings.get('AWS_ACCESS_KEY_ID')} if settings.get('AWS_ACCESS_KEY_ID') else {}),
+        **({'aws_secret_access_key': settings.get('AWS_SECRET_ACCESS_KEY')} if settings.get('AWS_SECRET_ACCESS_KEY') else {}),
+        **({'aws_session_token': settings.get('AWS_SESSION_TOKEN')} if settings.get('AWS_SESSION_TOKEN') else {}),
         region_name=aws_default_region,
     )
 
