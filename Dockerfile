@@ -14,7 +14,7 @@ ADD . /opt/grafana-backup-tool
 RUN chmod -R a+r /opt/grafana-backup-tool \
  && find /opt/grafana-backup-tool -type d -print0 | xargs -0 chmod a+rx
 
-RUN pip3 --no-cache-dir install .
+RUN pip3 --no-cache-dir install --break-system-packages .
 
 RUN chown -R 1337:1337 /opt/grafana-backup-tool
 USER 1337
