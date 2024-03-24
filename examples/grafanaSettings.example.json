@@ -25,6 +25,7 @@
   },
   "gcp": {
     "gcs_bucket_name": "bucket_name",
+    "gcs_bucket_path": "grafana-backup",
     "google_application_credentials": "google_credential_file_path"
   },
   "influxdb": {

@@ -43,6 +43,7 @@ def main(config_path):
     # Cloud storage settings - GCP
     gcp_config = config.get('gcp', {})
     gcs_bucket_name = gcp_config.get('gcs_bucket_name', '')
+    gcs_bucket_path = gcp_config.get('gcs_bucket_path', '')
     google_application_credentials = gcp_config.get('google_application_credentials', '')
 
     influxdb_measurement = config.get('influxdb', {}).get('measurement', 'grafana_backup')
@@ -72,6 +73,7 @@ def main(config_path):
     AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING', azure_storage_connection_string)
 
     GCS_BUCKET_NAME = os.getenv('GCS_BUCKET_NAME', gcs_bucket_name)
+    GCS_BUCKET_PATH = os.getenv('GCS_BUCKET_PATH', gcs_bucket_path)
     if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS') and google_application_credentials:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_application_credentials
 
@@ -177,6 +179,7 @@ def main(config_path):
     config_dict['AZURE_STORAGE_CONTAINER_NAME'] = AZURE_STORAGE_CONTAINER_NAME
     config_dict['AZURE_STORAGE_CONNECTION_STRING'] = AZURE_STORAGE_CONNECTION_STRING
     config_dict['GCS_BUCKET_NAME'] = GCS_BUCKET_NAME
+    config_dict['GCS_BUCKET_PATH'] = GCS_BUCKET_PATH
     config_dict['INFLUXDB_MEASUREMENT'] = INFLUXDB_MEASUREMENT
     config_dict['INFLUXDB_HOST'] = INFLUXDB_HOST
     config_dict['INFLUXDB_PORT'] = INFLUXDB_PORT
