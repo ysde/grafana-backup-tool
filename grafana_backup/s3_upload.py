@@ -14,7 +14,10 @@ def main(args, settings):
     s3_object = get_s3_object(settings, s3_file_name=s3_file_name)
 
     try:
-        s3_object.put(Body=open(archive_file, 'rb'))
+        s3_object.put(
+            Body=open(archive_file, 'rb'),
+            **({'ServerSideEncryption': settings.get('AWS_S3_SSE')} if settings.get('AWS_S3_SSE') else {})
+        )
         print("Upload to S3 was successful")
     except FileNotFoundError:  # noqa: F821
         print("The file was not found")

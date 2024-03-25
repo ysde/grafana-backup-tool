@@ -98,7 +98,7 @@ def main(args, settings):
     restore_functions['alert_rule'] = create_alert_rule
     restore_functions['contact_point'] = create_contact_point
     # There are some issues of notification policy restore api, it will lock the notification policy page and cannot be edited.
-    # restore_functions['notification_policys'] = update_notification_policy
+    # restore_functions['notification_policies'] = update_notification_policy
 
     if sys.version_info >= (3,):
         with tempfile.TemporaryDirectory() as tmpdir:

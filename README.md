@@ -156,13 +156,15 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
            ysde/docker-grafana-backup-tool
 ```
 
-***S3 Example:*** Set S3 configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
+***S3 Example:*** Set S3 configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json)). If no credentials are provided, grafana-backup-tool will use the default [credential provider chain](https://docs.aws.amazon.com/sdkref/latest/guide/standardized-credentials.html#credentialProviderChain).
 ```
            -e AWS_S3_BUCKET_NAME="my-backups-bucket" \
            -e AWS_S3_BUCKET_KEY="grafana-backup-folder" \
+           -e AWS_S3_SSE="(optional) AES256|aws:kms|aws:kms:dsse" \
            -e AWS_DEFAULT_REGION="us-east-1" \
            -e AWS_ACCESS_KEY_ID="secret" \
            -e AWS_SECRET_ACCESS_KEY="secret" \
+           -e AWS_SESSION_TOKEN="(optional)" \
 ```
 
 ***Azure Example:*** Set Azure configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))

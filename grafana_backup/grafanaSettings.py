@@ -36,7 +36,9 @@ def main(config_path):
     aws_default_region = config.get('aws', {}).get('default_region', '')
     aws_access_key_id = config.get('aws', {}).get('access_key_id', '')
     aws_secret_access_key = config.get('aws', {}).get('secret_access_key', '')
+    aws_session_token = config.get('aws', {}).get('session_token', '')
     aws_endpoint_url = config.get('aws', {}).get('endpoint_url', None)
+    aws_s3_sse = config.get('aws', {}).get('s3_sse', '')
     # Cloud storage settings - Azure
     azure_storage_container_name = config.get('azure', {}).get('container_name', '')
     azure_storage_connection_string = config.get('azure', {}).get('connection_string', '')
@@ -67,7 +69,9 @@ def main(config_path):
     AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION', aws_default_region)
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', aws_access_key_id)
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', aws_secret_access_key)
+    AWS_SESSION_TOKEN = os.getenv('AWS_SESSION_TOKEN', aws_session_token)
     AWS_ENDPOINT_URL = os.getenv('AWS_ENDPOINT_URL', aws_endpoint_url)
+    AWS_S3_SSE = os.getenv('AWS_S3_SSE', aws_s3_sse)
 
     AZURE_STORAGE_CONTAINER_NAME = os.getenv('AZURE_STORAGE_CONTAINER_NAME', azure_storage_container_name)
     AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING', azure_storage_connection_string)
@@ -172,9 +176,11 @@ def main(config_path):
     config_dict['TIMESTAMP'] = TIMESTAMP
     config_dict['AWS_S3_BUCKET_NAME'] = AWS_S3_BUCKET_NAME
     config_dict['AWS_S3_BUCKET_KEY'] = AWS_S3_BUCKET_KEY
+    config_dict['AWS_S3_SSE'] = AWS_S3_SSE
     config_dict['AWS_DEFAULT_REGION'] = AWS_DEFAULT_REGION
     config_dict['AWS_ACCESS_KEY_ID'] = AWS_ACCESS_KEY_ID
     config_dict['AWS_SECRET_ACCESS_KEY'] = AWS_SECRET_ACCESS_KEY
+    config_dict['AWS_SESSION_TOKEN'] = AWS_SESSION_TOKEN
     config_dict['AWS_ENDPOINT_URL'] = AWS_ENDPOINT_URL
     config_dict['AZURE_STORAGE_CONTAINER_NAME'] = AZURE_STORAGE_CONTAINER_NAME
     config_dict['AZURE_STORAGE_CONNECTION_STRING'] = AZURE_STORAGE_CONNECTION_STRING

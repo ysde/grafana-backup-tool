@@ -14,7 +14,12 @@ ADD . /opt/grafana-backup-tool
 RUN chmod -R a+r /opt/grafana-backup-tool \
  && find /opt/grafana-backup-tool -type d -print0 | xargs -0 chmod a+rx
 
-RUN pip3 --no-cache-dir install .
+# Create and activate Python virtual environment
+RUN python3 -m venv venv
+ENV PATH="/opt/grafana-backup-tool/venv/bin:$PATH"
+
+# Install Python dependencies inside the virtual environment
+RUN /opt/grafana-backup-tool/venv/bin/pip3 install --no-cache-dir .
 
 RUN chown -R 1337:1337 /opt/grafana-backup-tool
 USER 1337

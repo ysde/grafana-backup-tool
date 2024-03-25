@@ -34,7 +34,7 @@ def main(args, settings):
         notification_policies = get_all_notification_policies_in_grafana(
             grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         save_notification_policies(
-            'notificatioin_policies', notification_policies, folder_path, pretty_print)
+            'notification_policies', notification_policies, folder_path, pretty_print)
     else:
         print("Unable to save notification policies, requires Grafana version {0} or above. Current version is {1}".format(
             minimum_version, grafana_version))
@@ -58,7 +58,7 @@ def get_all_notification_policies_in_grafana(grafana_url, http_get_headers, veri
 
 def save_notification_policies(file_name, notification_policies, folder_path, pretty_print):
     file_path = save_json(file_name, notification_policies,
-                          folder_path, 'notification_policys', pretty_print)
+                          folder_path, 'notification_policies', pretty_print)
     print_horizontal_line()
     print("notification policies are saved to {0}".format(file_path))
     print_horizontal_line()
