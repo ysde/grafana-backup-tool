@@ -170,6 +170,11 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
 		   -e AZURE_STORAGE_CONTAINER_NAME="azure-storage-container-name" \
 		   -e AZURE_STORAGE_CONNECTION_STRING="azure-storage-connection-string"
 ```
+Or, using credentials configured through DefaultAzureCredential, see [here](https://learn.microsoft.com/en-us/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python)
+```
+           -e AZURE_STORAGE_CONTAINER_NAME="azure-storage-container-name" \
+           -e AZURE_STORAGE_ACCOUNT_URL="https://my-storage-account.blob.core.windows.net/" \
+```
 
 ***GCS Example:*** Set GCS configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
 ```
