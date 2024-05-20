@@ -41,9 +41,11 @@ def get_individual_dashboard_and_delete(dashboards, grafana_url, http_get_header
     if dashboards:
         for board in dashboards:
             if uid_support:
-                status = delete_dashboard_by_uid(board['uid'], grafana_url, http_get_headers)
+                status = delete_dashboard_by_uid(board['uid'], grafana_url, http_get_headers, verify_ssl, client_cert,
+                                                 debug)
             else:
-                status = delete_dashboard_by_slug(board['slug'], grafana_url, http_get_headers)
+                status = delete_dashboard_by_slug(board['slug'], grafana_url, http_get_headers, verify_ssl, client_cert,
+                                                  debug)
 
             if status == 200:
                 print("deleted dashboard {0}".format(board['title']))

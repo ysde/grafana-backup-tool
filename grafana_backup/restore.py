@@ -5,9 +5,15 @@ from grafana_backup.update_folder_permissions import main as update_folder_permi
 from grafana_backup.create_datasource import main as create_datasource
 from grafana_backup.create_dashboard import main as create_dashboard
 from grafana_backup.create_alert_channel import main as create_alert_channel
+from grafana_backup.create_alert_rule import main as create_alert_rule
 from grafana_backup.create_user import main as create_user
 from grafana_backup.create_snapshot import main as create_snapshot
 from grafana_backup.create_annotation import main as create_annotation
+from grafana_backup.create_team import main as create_team
+from grafana_backup.create_team_member import main as create_team_member
+from grafana_backup.create_library_element import main as create_library_element
+from grafana_backup.create_contact_point import main as create_contact_point
+from grafana_backup.update_notification_policy import main as update_notification_policy
 from grafana_backup.s3_download import main as s3_download
 from grafana_backup.azure_storage_download import main as azure_storage_download
 from grafana_backup.gcs_download import main as gcs_download
@@ -35,7 +41,9 @@ def main(args, settings):
     azure_storage_container_name = settings.get('AZURE_STORAGE_CONTAINER_NAME')
     gcs_bucket_name = settings.get('GCS_BUCKET_NAME')
 
-    (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
+    (status, json_resp, dashboard_uid_support, datasource_uid_support,
+     paging_support, contact_point_support) = api_checks(settings)
+    settings.update({'CONTACT_POINT_SUPPORT': contact_point_support})
 
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:
@@ -73,15 +81,24 @@ def main(args, settings):
     # Shell game magic warning: restore_function keys require the 's'
     # to be removed in order to match file extension names...
     restore_functions = collections.OrderedDict()
+    # Folders must be restored before Library-Elements
     restore_functions['folder'] = create_folder
     restore_functions['datasource'] = create_datasource
+    # Library-Elements must be restored before dashboards
+    restore_functions['library_element'] = create_library_element
     restore_functions['dashboard'] = create_dashboard
     restore_functions['alert_channel'] = create_alert_channel
     restore_functions['organization'] = create_org
     restore_functions['user'] = create_user
     restore_functions['snapshot'] = create_snapshot
     restore_functions['annotation'] = create_annotation
+    restore_functions['team'] = create_team
+    restore_functions['team_member'] = create_team_member
     restore_functions['folder_permission'] = update_folder_permissions
+    restore_functions['alert_rule'] = create_alert_rule
+    restore_functions['contact_point'] = create_contact_point
+    # There are some issues of notification policy restore api, it will lock the notification policy page and cannot be edited.
+    # restore_functions['notification_policys'] = update_notification_policy
 
     if sys.version_info >= (3,):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -100,7 +117,7 @@ def main(args, settings):
 
 
 def restore_components(args, settings, restore_functions, tmpdir):
-    arg_components = args.get('--components', False)
+    arg_components = args.get('--components', [])
 
     if arg_components:
         arg_components_list = arg_components.replace("-", "_").split(',')

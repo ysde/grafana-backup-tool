@@ -34,7 +34,7 @@ def get_all_folders_in_grafana(grafana_url, http_get_headers, verify_ssl, client
 
 def get_individual_folder_setting_and_save(folders, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support):
     for folder in folders:
-        status = delete_folder(folder['uid'], grafana_url, http_get_headers)
+        status = delete_folder(folder['uid'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
 
         if status == 200:
             print("deleted folder {0}".format(folder))

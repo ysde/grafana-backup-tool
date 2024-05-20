@@ -12,15 +12,21 @@ The aim of this tool is to:
 ## Supported components
 * Folder
 * Folder Permissions
+* Library Elements (doesn't work with Grafana 8.0.0 but 8.4.3)
 * Dashboard (contains Alert)
 * Datasource
 * Alert Channel
+* Alert Rules (Supported in version 9.4.0 of grafana and up.)
+* Teams
+* Team Members (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
+    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+    * Or Sets this ENV of the Grafana server `GF_USERS_ALLOW_ORG_CREATE=true`. see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#create-organization)
 * Organization (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
-	* You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
-	* Or Sets this ENV of the Grafana server `GF_USERS_ALLOW_ORG_CREATE=true`. see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#create-organization)
+    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+    * Or Sets this ENV of the Grafana server `GF_USERS_ALLOW_ORG_CREATE=true`. see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#create-organization)
 * User (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
-	* You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
-	* Grafana's api doesn't provide user's password when backing up, so the `default_password (which is in the grafanaSetting.json)` will be used when restoring.
+    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+    * Grafana's api doesn't provide user's password when backing up, so the `default_user_password` in `grafanaSettings.json`, or in ENV `DEFAULT_USER_PASSWORD`, E.g `export DEFAULT_USER_PASSWORD=supersecret` will be used when restoring. 
 * Snapshots
 * Dashboard Versions (only backup, no restore)
 * Annotations
@@ -41,7 +47,8 @@ There are three ways to setup the configuration:
 3. Use `~/.grafana-backup.json` to define variables in json format.
 
 ### Example Config
-* Check out the [examples](examples) folder for more configuration details
+* Copy [grafanaSettings.example.json](examples/grafanaSettings.example.json) and modify it for you to use, remove `azure`, `aws`, `gcp`, `influxdb` blocks (but keep the ones you used).
+* Check out the [examples](examples) folder for more configuration details.
 
 **NOTE** If you use `environment variables`, you need to add the following to your `.bashrc` or execute once before using the tool (please change variables according to your setup):
 
@@ -166,7 +173,9 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
 
 ***GCS Example:*** Set GCS configurations in `-e` or `grafanaSettings.json`([example](https://github.com/ysde/grafana-backup-tool/blob/master/examples/grafana-backup.example.json))
 ```
-		   -e GCS_BUCKET_NAME="bucket-name" \
+		   -e GCS_BUCKET_NAME="backups-bucket-name" \
+		   -e GCS_BUCKET_PATH="grafana-backup-folder" \
+		   -e GCLOUD_PROJECT="gcp-project-name" \
 		   -e GOOGLE_APPLICATION_CREDENTIALS="credential-file-path"
 ```
 

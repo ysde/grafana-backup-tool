@@ -10,7 +10,8 @@ requires = [
     'boto3',
     'azure-storage-blob',
     'google-cloud-storage',
-    'influxdb'
+    'influxdb',
+    'packaging'
 ]
 
 setup(
