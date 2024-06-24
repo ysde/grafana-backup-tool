@@ -19,13 +19,13 @@ The aim of this tool is to:
 * Alert Rules (Supported in version 9.4.0 of grafana and up.)
 * Teams
 * Team Members (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
-    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=[Generated-Base64-Auth-Token]`
     * Or Sets this ENV of the Grafana server `GF_USERS_ALLOW_ORG_CREATE=true`. see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#create-organization)
 * Organization (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
-    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=[Generated-Base64-Auth-Token]`
     * Or Sets this ENV of the Grafana server `GF_USERS_ALLOW_ORG_CREATE=true`. see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#create-organization)
 * User (Needs Basic Authentication (username and password, see [grafana doc](https://grafana.com/docs/grafana/latest/http_api/org/#admin-organizations-api))
-    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=YWRtaW46YWRtaW4=`
+    * You need to set `Admin's account and password` in `grafanaSettings.json`, or set the base64 encoded `admin account and password` in ENV `GRAFANA_BASIC_AUTH`. E.g `export GRAFANA_BASIC_AUTH=[Generated-Base64-Auth-Token]`
     * Grafana's api doesn't provide user's password when backing up, so the `default_user_password` in `grafanaSettings.json`, or in ENV `DEFAULT_USER_PASSWORD`, E.g `export DEFAULT_USER_PASSWORD=supersecret` will be used when restoring. 
 * Snapshots
 * Dashboard Versions (only backup, no restore)
@@ -57,7 +57,7 @@ There are three ways to setup the configuration:
 ```bash
 ### Do not use a trailing slash on GRAFANA_URL
 export GRAFANA_URL=http://some.host.org:3000
-export GRAFANA_TOKEN=eyJrIjoidUhaU2ZQQndrWFN3RRVkUnVfrT56a1JoaG9KWFFObEgiLCJuIjoiYWRtaW4iLCJpZCI6MX0=
+export GRAFANA_TOKEN=[Grafana-Access-Token]
 
 # GRAFANA_HEADERS is optional
 export GRAFANA_HEADERS=Host:some.host.org
@@ -147,7 +147,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
 
 ```
 docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
-           -e GRAFANA_TOKEN="eyJrIjoiNGZqTDEyeXNaY0RsMXNhbkNTSnlKN2M3bE1VeHdqVTEiLCJuIjoiZ3JhZmFuYS1iYWNrdXAiLCJpZCI6MX0=" \
+           -e GRAFANA_TOKEN="[Grafana-Access-Token]" \
            -e GRAFANA_URL=http://192.168.0.79:3000 \
            -e GRAFANA_ADMIN_ACCOUNT=admin \
            -e GRAFANA_ADMIN_PASSWORD=adminpassword \
@@ -199,7 +199,7 @@ docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
 
 ```
 docker run --user $(id -u):$(id -g) --rm --name grafana-backup-tool \
-           -e GRAFANA_TOKEN="eyJrIjoiNGZqTDEyeXNaY0RsMXNhbkNTSnlKN2M3bE1VeHdqVTEiLCJuIjoiZ3JhZmFuYS1iYWNrdXAiLCJpZCI6MX0=" \
+           -e GRAFANA_TOKEN="[Grafana-Access-Token]" \
            -e GRAFANA_URL=http://192.168.0.79:3000 \
            -e GRAFANA_ADMIN_ACCOUNT=admin \
            -e GRAFANA_ADMIN_PASSWORD=adminpassword \
