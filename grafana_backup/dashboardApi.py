@@ -316,6 +316,9 @@ def create_snapshot(payload, grafana_url, http_post_headers, verify_ssl, client_
 def create_datasource(payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_post('{0}/api/datasources'.format(grafana_url), payload, http_post_headers, verify_ssl,
                              client_cert, debug)
+def update_datasource(uid, payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    return send_grafana_put('{0}/api/datasources/uid/{1}'.format(grafana_url,uid), payload, http_post_headers, verify_ssl,
+                             client_cert, debug)
 
 
 def delete_datasource_by_uid(uid, grafana_url, http_post_headers, verify_ssl, client_cert, debug):

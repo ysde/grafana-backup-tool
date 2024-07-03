@@ -25,7 +25,7 @@ def main(args, settings):
                         'team-members': delete_team_members}
 
     (status, json_resp, dashboard_uid_support,
-     datasource_uid_support, paging_support) = api_checks(settings)
+     datasource_uid_support, paging_support, is_contact_point_available) = api_checks(settings)
 
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:
