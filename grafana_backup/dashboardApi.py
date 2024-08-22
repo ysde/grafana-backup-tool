@@ -515,7 +515,12 @@ def send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug):
                      verify=verify_ssl, cert=client_cert)
     if debug:
         log_response(r)
-    return (r.status_code, r.json())
+    try:
+        json_data = r.json()
+    except json.decoder.JSONDecodeError as e:
+        print("Failed to parse JSON response: {e}")
+        json_data = r.text
+    return (r.status_code, json_data)
 
 
 def send_grafana_post(url, json_payload, http_post_headers, verify_ssl=False, client_cert=None, debug=True):
