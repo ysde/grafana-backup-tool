@@ -31,7 +31,7 @@ def main(args, settings, file_path):
         uid = alert_rule['uid']
         get_response= get_alert_rule(uid, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         status_code=get_response[0]
-        print("Got a code: {0}", status_code)
+        print("Got a code: {0}".format(status_code))
         if status_code == 404:
            http_post_headers['x-disable-provenance']='*'
            result = create_alert_rule(json.dumps(alert_rule), grafana_url, http_post_headers, verify_ssl, client_cert, debug)

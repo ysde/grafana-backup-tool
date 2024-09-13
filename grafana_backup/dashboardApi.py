@@ -515,7 +515,10 @@ def send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug):
                      verify=verify_ssl, cert=client_cert)
     if debug:
         log_response(r)
-    return (r.status_code, r.json())
+    if not r.ok:
+        return (r.status_code, '{}')
+    else:
+        return (r.status_code, r.json())
 
 
 def send_grafana_post(url, json_payload, http_post_headers, verify_ssl=False, client_cert=None, debug=True):
