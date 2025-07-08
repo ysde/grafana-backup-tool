@@ -13,7 +13,7 @@ def health_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
 
 
 def auth_check(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
-    url = '{0}/api/auth/keys'.format(grafana_url)
+    url = '{0}/api/serviceaccounts/search'.format(grafana_url)
     print("\n[Pre-Check] grafana auth check: {0}".format(url))
     return send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug)
 
