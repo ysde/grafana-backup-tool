@@ -55,6 +55,10 @@ def get_versions_and_save(dashboards, folder_path, log_file, grafana_url, http_g
 def get_individual_versions(versions, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print):
     file_path = folder_path + '/' + log_file
     if versions:
+        versions = versions['versions']
+    else:
+        raise RuntimeError("versions, while getting individual versions broke(not present)")
+    if versions:
         with open(u"{0}".format(file_path), 'w') as f:
             for version in versions:
                 (status, content) = get_version(version['dashboardId'], version['version'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
