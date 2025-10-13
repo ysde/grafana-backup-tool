@@ -1,0 +1,37 @@
+services:
+  grafana:
+    image: grafana/grafana:12.2
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    networks:
+      - backup-tool
+    volumes:
+      - grafana-data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=1
+    depends_on:
+      - minio
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9001"
+    networks:
+      - backup-tool
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
+    ports:
+      - "9000:9000" # API
+      - "9001:9001" # WebUI
+    volumes:
+      - minio-data:/data
+
+networks:
+  backup-tool:
+    external: true
+volumes:
+  grafana-data: {}
+  minio-data: {}
