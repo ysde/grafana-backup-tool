@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # .github/workflows/docker-release.yml
+=======
+>>>>>>> b643953 (add workflows)
 name: Docker Build and Release
 
 on:
@@ -6,6 +9,7 @@ on:
     tags:
       - 'v*.*.*'
 
+<<<<<<< HEAD
 permissions:
   contents: write
   packages: write
@@ -58,6 +62,14 @@ jobs:
     
     steps:
       - name: Checkout repository
+=======
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+>>>>>>> b643953 (add workflows)
         uses: actions/checkout@v4
 
       - name: Docker meta
@@ -67,9 +79,20 @@ jobs:
           images: |
             dealfa/grafana-backup-tool
           tags: |
+<<<<<<< HEAD
             type=semver,pattern={{version}},prefix=v
             latest
 
+=======
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            latest
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+>>>>>>> b643953 (add workflows)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -84,6 +107,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+<<<<<<< HEAD
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -211,5 +235,42 @@ jobs:
           draft: false
           prerelease: false
           generate_release_notes: false
+=======
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  release:
+    needs: docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate release notes
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo "## 🐳 Docker Image" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "✅ **Successfully published to Docker Hub!**" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "**Image:** \`dealfa/grafana-backup-tool\`" >> release_notes.md
+          echo "**Tag:** \`$TAG\`" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "### Pull Command" >> release_notes.md
+          echo "\`\`\`bash" >> release_notes.md
+          echo "docker pull dealfa/grafana-backup-tool:$TAG" >> release_notes.md
+          echo "\`\`\`" >> release_notes.md
+          echo "" >> release_notes.md
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+>>>>>>> b643953 (add workflows)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
