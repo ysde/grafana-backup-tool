@@ -1,4 +1,5 @@
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from grafana_backup.dashboardApi import search_dashboard, get_dashboard
 from grafana_backup.commons import to_python2_and_3_compatible_string, print_horizontal_line, save_json
 
@@ -52,27 +53,69 @@ def save_dashboard_setting(dashboard_name, file_name, dashboard_settings, folder
     print("dashboard: {0} -> saved to: {1}".format(dashboard_name, file_path))
 
 
+def fetch_single_dashboard(board, grafana_url, http_get_headers, verify_ssl, client_cert, debug, uid_support):
+    """Helper function to fetch a single dashboard - used for parallel execution"""
+    if uid_support:
+        board_uri = "uid/{0}".format(board['uid'])
+    else:
+        board_uri = board['uri']
+    
+    (status, content) = get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    return (status, content, board_uri, board)
+
+
 def get_individual_dashboard_setting_and_save(dashboards, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print, uid_support, slug_suffix):
     file_path = folder_path + '/' + log_file
-    if dashboards:
-        with open(u"{0}".format(file_path), 'w') as f:
-            for board in dashboards:
-                if uid_support:
-                    board_uri = "uid/{0}".format(board['uid'])
-                else:
-                    board_uri = board['uri']
-
-                (status, content) = get_dashboard(board_uri, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
+    if not dashboards:
+        return
+    
+    # Use ThreadPoolExecutor to fetch dashboards in parallel
+    # Default max_workers=None uses min(32, (os.cpu_count() or 1) + 4) threads
+    # This can be adjusted if needed to avoid overwhelming the API
+    max_workers = min(10, len(dashboards))  # Limit to 10 concurrent requests to avoid throttling
+    
+    dashboard_results = []
+    
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Submit all dashboard fetch tasks
+        future_to_board = {
+            executor.submit(
+                fetch_single_dashboard,
+                board,
+                grafana_url,
+                http_get_headers,
+                verify_ssl,
+                client_cert,
+                debug,
+                uid_support
+            ): board for board in dashboards
+        }
+        
+        # Collect results as they complete
+        for future in as_completed(future_to_board):
+            try:
+                status, content, board_uri, board = future.result()
                 if status == 200:
-                    file_name = build_filename(board_uri, content, uid_support, slug_suffix)
-                    save_dashboard_setting(
-                        to_python2_and_3_compatible_string(board['title']),
-                        file_name,
-                        content,
-                        folder_path,
-                        pretty_print
-                    )
-                    f.write('{0}\t{1}\n'.format(board_uri, to_python2_and_3_compatible_string(board['title'])))
+                    dashboard_results.append((board_uri, content, board))
+                else:
+                    print("Failed to fetch dashboard {0}, status: {1}".format(board_uri, status))
+            except Exception as exc:
+                board = future_to_board[future]
+                board_uri = "uid/{0}".format(board['uid']) if uid_support else board['uri']
+                print("Dashboard {0} generated an exception: {1}".format(board_uri, exc))
+    
+    # Write results to file and save dashboard settings
+    with open(u"{0}".format(file_path), 'w') as f:
+        for board_uri, content, board in dashboard_results:
+            file_name = build_filename(board_uri, content, uid_support, slug_suffix)
+            save_dashboard_setting(
+                to_python2_and_3_compatible_string(board['title']),
+                file_name,
+                content,
+                folder_path,
+                pretty_print
+            )
+            f.write('{0}\t{1}\n'.format(board_uri, to_python2_and_3_compatible_string(board['title'])))
 
 
 def build_filename(board_uri, content, uid_support, slug_suffix):
