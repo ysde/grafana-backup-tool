@@ -1,22 +1,22 @@
 from grafana_backup.api_checks import main as api_checks
-from grafana_backup.save_alert_rules import main as save_alert_rules
-from grafana_backup.save_dashboards import main as save_dashboards
-from grafana_backup.save_datasources import main as save_datasources
-from grafana_backup.save_folders import main as save_folders
-from grafana_backup.save_alert_channels import main as save_alert_channels
-from grafana_backup.save_snapshots import main as save_snapshots
-from grafana_backup.save_dashboard_versions import main as save_dashboard_versions
-from grafana_backup.save_annotations import main as save_annotations
-from grafana_backup.save_contact_points import main as save_contact_points
-from grafana_backup.save_notification_policies import main as save_notification_policies
+from grafana_backup.save.save_alert_rules import main as save_alert_rules
+from grafana_backup.save.save_dashboards import main as save_dashboards
+from grafana_backup.save.save_datasources import main as save_datasources
+from grafana_backup.save.save_folders import main as save_folders
+from grafana_backup.save.save_alert_channels import main as save_alert_channels
+from grafana_backup.save.save_snapshots import main as save_snapshots
+from grafana_backup.save.save_dashboard_versions import main as save_dashboard_versions
+from grafana_backup.save.save_annotations import main as save_annotations
+from grafana_backup.save.save_contact_points import main as save_contact_points
+from grafana_backup.save.save_notification_policies import main as save_notification_policies
 from grafana_backup.archive import main as archive
 from grafana_backup.s3_upload import main as s3_upload
 from grafana_backup.influx import main as influx
-from grafana_backup.save_orgs import main as save_orgs
-from grafana_backup.save_users import main as save_users
-from grafana_backup.save_library_elements import main as save_library_elements
-from grafana_backup.save_teams import main as save_teams
-from grafana_backup.save_team_members import main as save_team_members
+from grafana_backup.save.save_orgs import main as save_orgs
+from grafana_backup.save.save_users import main as save_users
+from grafana_backup.save.save_library_elements import main as save_library_elements
+from grafana_backup.save.save_teams import main as save_teams
+from grafana_backup.save.save_team_members import main as save_team_members
 from grafana_backup.azure_storage_upload import main as azure_storage_upload
 from grafana_backup.gcs_upload import main as gcs_upload
 from grafana_backup.commons import print_horizontal_line
@@ -82,7 +82,7 @@ def main(args, settings):
         archive(args, settings)
 
     if aws_s3_bucket_name:
-        print('Upload archives to S3:')
+        print(f'Upload archive to S3 bucket: {aws_s3_bucket_name} ')
         s3_upload(args, settings)
 
     if azure_storage_container_name:

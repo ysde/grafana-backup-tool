@@ -16,8 +16,8 @@
     "s3_bucket_name": "bucket_name",
     "s3_bucket_key": "grafana-backup",
     "default_region": "us-east-1",
-    "access_key_id": "aws_access_key_id",
-    "secret_access_key": "aws_secret_access_key"
+    "access_key_id": "object_storageaccess_key_id",
+    "secret_access_key": "object_storagesecret_access_key"
   },
   "azure": {
     "container_name": "container_name",

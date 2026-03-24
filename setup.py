@@ -12,7 +12,7 @@ requires = [
 ]
 setup(
     name="grafana-backup-tool",
-    version="1.4.5",
+    version="1.5.1",
     packages=find_packages(),
     install_requires=requires,
     entry_points={

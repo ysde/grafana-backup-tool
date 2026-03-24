@@ -1,21 +1,28 @@
 {
   "general": {
-    "debug": true,
-    "verify_ssl": true,
+    "debug": false,
+    "verify_ssl": false,
     "api_health_check": true,
     "api_auth_check": true,
     "backup_dir": "_OUTPUT_",
-    "backup_file_format": "%Y%m%d%H%M",
+    "backup_file_format": "%Y-%m-%d-%H:%M",
     "uid_dashboard_slug_suffix": false,
-    "pretty_print": false,
+    "pretty_print": true,
     "backup_workers": 3
   },
   "grafana": {
     "url": "http://localhost:3000",
-    "token": "GRAFANA_ADMIN_TOKEN",
+    "token": "glsa_B1pZjuj87lcnc7TSK6vBPSrhTFPLe70o_0d8785f9",
     "search_api_limit": 5000,
     "default_user_password": "00000000",
-    "admin_account": "GRAFANA_ADMIN_USER",
-    "admin_password": "GRAFANA_ADMIN_PASSWORD"
+    "admin_account": "admin",
+    "admin_password": "admin123"
+  },
+  "aws": {
+    "is_amazon": "false",
+    "s3_bucket_name": "backup-tool-bucket",
+    "access_key_id": "GK8fd0d61da5e7b1659a24a171",
+    "secret_access_key": "d084c2836e8e38bc0cf8ea9db915d15c0b8dad6ddd40219bdb733953f4b452da",
+    "endpoint_url": "http://localhost:3900"
   }
 }

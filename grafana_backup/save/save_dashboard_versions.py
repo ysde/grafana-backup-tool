@@ -1,6 +1,6 @@
 import os
 from grafana_backup.dashboardApi import get_dashboard_versions, get_version
-from grafana_backup.save_dashboards import get_all_dashboards_in_grafana
+from grafana_backup.save.save_dashboards import get_all_dashboards_in_grafana
 from grafana_backup.commons import print_horizontal_line, save_json, to_python2_and_3_compatible_string
 
 

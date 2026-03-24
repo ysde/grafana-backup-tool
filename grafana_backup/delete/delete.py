@@ -1,12 +1,12 @@
 from grafana_backup.api_checks import main as api_checks
-from grafana_backup.delete_dashboards import main as delete_dashboards
-from grafana_backup.delete_datasources import main as delete_datasources
-from grafana_backup.delete_library_elements import main as delete_library_elements
-from grafana_backup.delete_folders import main as delete_folders
-from grafana_backup.delete_alert_channels import main as delete_alert_channels
-from grafana_backup.delete_snapshots import main as delete_snapshots
-from grafana_backup.delete_annotations import main as delete_annotations
-from grafana_backup.delete_team_members import main as delete_team_members
+from grafana_backup.delete.delete_dashboards import main as delete_dashboards
+from grafana_backup.delete.delete_datasources import main as delete_datasources
+from grafana_backup.delete.delete_library_elements import main as delete_library_elements
+from grafana_backup.delete.delete_folders import main as delete_folders
+from grafana_backup.delete.delete_alert_channels import main as delete_alert_channels
+from grafana_backup.delete.delete_snapshots import main as delete_snapshots
+from grafana_backup.delete.delete_annotations import main as delete_annotations
+from grafana_backup.delete.delete_team_members import main as delete_team_members
 import sys
 
 

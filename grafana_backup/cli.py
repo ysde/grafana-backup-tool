@@ -1,7 +1,7 @@
 from grafana_backup.constants import (PKG_NAME, PKG_VERSION, JSON_CONFIG_PATH)
-from grafana_backup.save import main as save
+from grafana_backup.save.save import main as save
 from grafana_backup.restore import main as restore
-from grafana_backup.delete import main as delete
+from grafana_backup.delete.delete import main as delete
 from grafana_backup.tools import main as tools
 from grafana_backup.grafanaSettings import main as conf
 from docopt import docopt

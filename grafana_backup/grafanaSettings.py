@@ -4,191 +4,116 @@ import os
 from datetime import datetime
 from grafana_backup.commons import load_config
 
+def get_setting(config, section, key, env_name, default, transform=None):
+    """
+    Priority: Environment Variable > Config File > Default Value.
+    Automatic bool to int and int to bool
+    """
+    val = os.getenv(env_name, config.get(section, {}).get(key, default))
+    
+    if transform == bool or (isinstance(val, str) and val.lower() in ['true', 'false']):
+        return str(val).lower() == 'true'
+    if transform == int:
+        try:
+            return int(val)
+        except (ValueError, TypeError):
+            return default
+    return val
 
 def main(config_path):
-    # Load config from optional configuration file located at ~/.grafana-backup.json
-    # or load defaults from example config stored in grafanaSettings.json
-    # environment variables can override settings as well and are top of the hierarchy
-
+    config = load_config(config_path)
     config_dict = {}
 
-    config = load_config(config_path)
+    settings_map = [
+        # Grafana Core
+        ('grafana', 'url', 'GRAFANA_URL', '', None),
+        ('grafana', 'token', 'GRAFANA_TOKEN', '', None),
+        ('grafana', 'search_api_limit', 'SEARCH_API_LIMIT', 5000, int),
+        ('grafana', 'default_user_password', 'DEFAULT_USER_PASSWORD', '00000000', None),
+        ('grafana', 'version', 'GRAFANA_VERSION', None, None),
+        ('grafana', 'admin_account', 'GRAFANA_ADMIN_ACCOUNT', '', None),
+        ('grafana', 'admin_password', 'GRAFANA_ADMIN_PASSWORD', '', None),
 
-    grafana_url = config.get('grafana', {}).get('url', '')
-    grafana_token = config.get('grafana', {}).get('token', '')
-    grafana_search_api_limit = config.get('grafana', {}).get('search_api_limit', 5000)
-    grafana_default_user_password = config.get('grafana', {}).get('default_user_password', '00000000')
-    grafana_version = config.get('grafana', {}).get('version', None)
+        # General Settings
+        ('general', 'debug', 'DEBUG', True, bool),
+        ('general', 'api_health_check', 'API_HEALTH_CHECK', True, bool),
+        ('general', 'api_auth_check', 'API_AUTH_CHECK', True, bool),
+        ('general', 'verify_ssl', 'VERIFY_SSL', False, bool),
+        ('general', 'client_cert', 'CLIENT_CERT', None, None),
+        ('general', 'backup_dir', 'BACKUP_DIR', '_OUTPUT_', None),
+        ('general', 'backup_file_format', 'BACKUP_FILE_FORMAT', '%Y%m%d%H%M', None),
+        ('general', 'uid_dashboard_slug_suffix', 'UID_DASHBOARD_SLUG_SUFFIX', False, bool),
+        ('general', 'pretty_print', 'PRETTY_PRINT', False, bool),
+        ('general', 'backup_workers', 'BACKUP_WORKERS', 3, int),
 
-    debug = config.get('general', {}).get('debug', True)
-    api_health_check = config.get('general', {}).get('api_health_check', True)
-    api_auth_check = config.get('general', {}).get('api_auth_check', True)
-    verify_ssl = config.get('general', {}).get('verify_ssl', False)
-    client_cert = config.get('general', {}).get('client_cert', None)
-    backup_dir = config.get('general', {}).get('backup_dir', '_OUTPUT_')
-    backup_file_format = config.get('general', {}).get('backup_file_format', '%Y%m%d%H%M')
-    uid_dashboard_slug_suffix = config.get('general', {}).get('uid_dashboard_slug_suffix', False)
-    pretty_print = config.get('general', {}).get('pretty_print', False)
-    backup_workers = config.get('general', {}).get('backup_workers', 3)
+        # AWS S3
+        ('aws', 's3_bucket_name', 'AWS_S3_BUCKET_NAME', '', None),
+        ('aws', 's3_bucket_key', 'AWS_S3_BUCKET_KEY', '', None),
+        ('aws', 'default_region', 'AWS_DEFAULT_REGION', '', None),
+        ('aws', 'access_key_id', 'AWS_ACCESS_KEY_ID', '', None),
+        ('aws', 'secret_access_key', 'AWS_SECRET_ACCESS_KEY', '', None),
+        ('aws', 'endpoint_url', 'AWS_ENDPOINT_URL', None, None),
 
-    # Cloud storage settings - AWS
-    aws_s3_bucket_name = config.get('aws', {}).get('s3_bucket_name', '')
-    aws_s3_bucket_key = config.get('aws', {}).get('s3_bucket_key', '')
-    aws_default_region = config.get('aws', {}).get('default_region', '')
-    aws_access_key_id = config.get('aws', {}).get('access_key_id', '')
-    aws_secret_access_key = config.get('aws', {}).get('secret_access_key', '')
-    aws_endpoint_url = config.get('aws', {}).get('endpoint_url', None)
-    # Cloud storage settings - Azure
-    azure_storage_container_name = config.get('azure', {}).get('container_name', '')
-    azure_storage_connection_string = config.get('azure', {}).get('connection_string', '')
-    # Cloud storage settings - GCP
-    gcp_config = config.get('gcp', {})
-    gcs_bucket_name = gcp_config.get('gcs_bucket_name', '')
-    gcs_bucket_path = gcp_config.get('gcs_bucket_path', '')
-    google_application_credentials = gcp_config.get('google_application_credentials', '')
+        # Azure Storage
+        ('azure', 'container_name', 'AZURE_STORAGE_CONTAINER_NAME', '', None),
+        ('azure', 'connection_string', 'AZURE_STORAGE_CONNECTION_STRING', '', None),
 
-    influxdb_measurement = config.get('influxdb', {}).get('measurement', 'grafana_backup')
-    influxdb_host = config.get('influxdb', {}).get('host', '')
-    influxdb_port = config.get('influxdb', {}).get('port', 8086)
-    influxdb_username = config.get('influxdb', {}).get('username', '')
-    influxdb_password = config.get('influxdb', {}).get('password', '')
-    influxdb_database = config.get('influxdb', {}).get('database', '')
+        # GCP Storage
+        ('gcp', 'gcs_bucket_name', 'GCS_BUCKET_NAME', '', None),
+        ('gcp', 'gcs_bucket_path', 'GCS_BUCKET_PATH', '', None),
 
-    admin_account = config.get('grafana', {}).get('admin_account', '')
-    admin_password = config.get('grafana', {}).get('admin_password', '')
+        # InfluxDB
+        ('influxdb', 'measurement', 'INFLUXDB_MEASUREMENT', 'grafana_backup', None),
+        ('influxdb', 'host', 'INFLUXDB_HOST', '', None),
+        ('influxdb', 'port', 'INFLUXDB_PORT', 8086, int),
+        ('influxdb', 'username', 'INFLUXDB_USERNAME', '', None),
+        ('influxdb', 'password', 'INFLUXDB_PASSWORD', '', None),
+        ('influxdb', 'database', 'INFLUXDB_DATABASE', '', None),
+    ]
 
-    GRAFANA_URL = os.getenv('GRAFANA_URL', grafana_url)
-    TOKEN = os.getenv('GRAFANA_TOKEN', grafana_token)
-    SEARCH_API_LIMIT = os.getenv('SEARCH_API_LIMIT', grafana_search_api_limit)
-    DEFAULT_USER_PASSWORD = os.getenv('DEFAULT_USER_PASSWORD', grafana_default_user_password)
-    GRAFANA_VERSION = os.getenv('GRAFANA_VERSION', grafana_version)
+    for section, key, env, default, t_type in settings_map:
+        config_dict[env] = get_setting(config, section, key, env, default, t_type)
 
-    AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME', aws_s3_bucket_name)
-    AWS_S3_BUCKET_KEY = os.getenv('AWS_S3_BUCKET_KEY', aws_s3_bucket_key)
-    AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION', aws_default_region)
-    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', aws_access_key_id)
-    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', aws_secret_access_key)
-    AWS_ENDPOINT_URL = os.getenv('AWS_ENDPOINT_URL', aws_endpoint_url)
+    gcp_creds = os.getenv('GOOGLE_APPLICATION_CREDENTIALS', config.get('gcp', {}).get('google_application_credentials', ''))
+    if gcp_creds:
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = gcp_creds
 
-    AZURE_STORAGE_CONTAINER_NAME = os.getenv('AZURE_STORAGE_CONTAINER_NAME', azure_storage_container_name)
-    AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING', azure_storage_connection_string)
+    extra_headers_raw = os.getenv('GRAFANA_HEADERS', '')
+    extra_headers = {}
+    if extra_headers_raw:
+        extra_headers = dict(h.split(':') for h in extra_headers_raw.split(',') if ':' in h)
+    
+    token = config_dict.get('GRAFANA_TOKEN')
+    http_get = {'Authorization': f'Bearer {token}'} if token else {}
+    http_post = {'Content-Type': 'application/json'}
+    if token:
+        http_post['Authorization'] = f'Bearer {token}'
 
-    GCS_BUCKET_NAME = os.getenv('GCS_BUCKET_NAME', gcs_bucket_name)
-    GCS_BUCKET_PATH = os.getenv('GCS_BUCKET_PATH', gcs_bucket_path)
-    if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS') and google_application_credentials:
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_application_credentials
+    http_get.update(extra_headers)
+    http_post.update(extra_headers)
 
-    INFLUXDB_MEASUREMENT = os.getenv('INFLUXDB_MEASUREMENT', influxdb_measurement)
-    INFLUXDB_HOST = os.getenv('INFLUXDB_HOST', influxdb_host)
-    INFLUXDB_PORT = int(os.getenv('INFLUXDB_PORT', influxdb_port))
-    INFLUXDB_USERNAME = os.getenv('INFLUXDB_USERNAME', influxdb_username)
-    INFLUXDB_PASSWORD = os.getenv('INFLUXDB_PASSWORD', influxdb_password)
-    INFLUXDB_DATABASE = os.getenv('INFLUXDB_DATABASE', influxdb_database)
+    admin_user = config_dict['GRAFANA_ADMIN_ACCOUNT']
+    admin_pass = config_dict['GRAFANA_ADMIN_PASSWORD']
+    basic_auth = os.getenv('GRAFANA_BASIC_AUTH')
 
-    ADMIN_ACCOUNT = os.getenv('GRAFANA_ADMIN_ACCOUNT', admin_account)
-    ADMIN_PASSWORD = os.getenv('GRAFANA_ADMIN_PASSWORD', admin_password)
-    GRAFANA_BASIC_AUTH = os.getenv('GRAFANA_BASIC_AUTH', None)
+    if not basic_auth and admin_user and admin_pass:
+        auth_bytes = f"{admin_user}:{admin_pass}".encode('utf8')
+        basic_auth = base64.b64encode(auth_bytes).decode('utf8')
 
-    DEBUG = os.getenv('DEBUG', debug)
-    if isinstance(DEBUG, str):
-        DEBUG = json.loads(DEBUG.lower())  # convert environment variable string to bool
+    get_basic = None
+    post_basic = None
+    if basic_auth:
+        get_basic = {**http_get, 'Authorization': f'Basic {basic_auth}'}
+        post_basic = {**http_post, 'Authorization': f'Basic {basic_auth}'}
 
-    VERIFY_SSL = os.getenv('VERIFY_SSL', verify_ssl)
-    if isinstance(VERIFY_SSL, str) and VERIFY_SSL.lower() in ['true', 'false']:
-        VERIFY_SSL = json.loads(VERIFY_SSL.lower())  # convert environment variable string to bool
-
-    API_HEALTH_CHECK = os.getenv('API_HEALTH_CHECK', api_health_check)
-    if isinstance(API_HEALTH_CHECK, str):
-        API_HEALTH_CHECK = json.loads(API_HEALTH_CHECK.lower())  # convert environment variable string to bool
-
-    API_AUTH_CHECK = os.getenv('API_AUTH_CHECK', api_auth_check)
-    if isinstance(API_AUTH_CHECK, str):
-        API_AUTH_CHECK = json.loads(API_AUTH_CHECK.lower())  # convert environment variable string to bool
-
-    CLIENT_CERT = os.getenv('CLIENT_CERT', client_cert)
-
-    BACKUP_DIR = os.getenv('BACKUP_DIR', backup_dir)
-    BACKUP_FILE_FORMAT = os.getenv('BACKUP_FILE_FORMAT', backup_file_format)
-
-    UID_DASHBOARD_SLUG_SUFFIX = os.getenv('UID_DASHBOARD_SLUG_SUFFIX', uid_dashboard_slug_suffix)
-    if isinstance(UID_DASHBOARD_SLUG_SUFFIX, str):
-        UID_DASHBOARD_SLUG_SUFFIX = json.loads(UID_DASHBOARD_SLUG_SUFFIX.lower())  # convert environment variable string to bool
-
-    PRETTY_PRINT = os.getenv('PRETTY_PRINT', pretty_print)
-    if isinstance(PRETTY_PRINT, str):
-        PRETTY_PRINT = json.loads(PRETTY_PRINT.lower())  # convert environment variable string to bool
-
-    BACKUP_WORKERS = int(os.getenv('BACKUP_WORKERS', backup_workers))
-
-    EXTRA_HEADERS = dict(
-        h.split(':') for h in os.getenv('GRAFANA_HEADERS', '').split(',') if 'GRAFANA_HEADERS' in os.environ)
-
-    if TOKEN:
-        HTTP_GET_HEADERS = {'Authorization': 'Bearer ' + TOKEN}
-        HTTP_POST_HEADERS = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
-    else:
-        HTTP_GET_HEADERS = {}
-        HTTP_POST_HEADERS = {'Content-Type': 'application/json'}
-
-    for k, v in EXTRA_HEADERS.items():
-        HTTP_GET_HEADERS.update({k: v})
-        HTTP_POST_HEADERS.update({k: v})
-
-    TIMESTAMP = datetime.today().strftime(BACKUP_FILE_FORMAT)
-
-    config_dict['GRAFANA_URL'] = GRAFANA_URL
-    config_dict['GRAFANA_VERSION'] = GRAFANA_VERSION
-    config_dict['GRAFANA_ADMIN_ACCOUNT'] = ADMIN_ACCOUNT
-    config_dict['GRAFANA_ADMIN_PASSWORD'] = ADMIN_PASSWORD
-
-    if not GRAFANA_BASIC_AUTH and (ADMIN_ACCOUNT and ADMIN_PASSWORD):
-        GRAFANA_BASIC_AUTH = base64.b64encode(
-            "{0}:{1}".format(ADMIN_ACCOUNT, ADMIN_PASSWORD).encode('utf8')
-        ).decode('utf8')
-
-    if GRAFANA_BASIC_AUTH:
-        HTTP_GET_HEADERS_BASIC_AUTH = HTTP_GET_HEADERS.copy()
-        HTTP_GET_HEADERS_BASIC_AUTH.update({'Authorization': 'Basic {0}'.format(GRAFANA_BASIC_AUTH)})
-        HTTP_POST_HEADERS_BASIC_AUTH = HTTP_POST_HEADERS.copy()
-        HTTP_POST_HEADERS_BASIC_AUTH.update({'Authorization': 'Basic {0}'.format(GRAFANA_BASIC_AUTH)})
-    else:
-        HTTP_GET_HEADERS_BASIC_AUTH = None
-        HTTP_POST_HEADERS_BASIC_AUTH = None
-
-    config_dict['DEFAULT_USER_PASSWORD'] = DEFAULT_USER_PASSWORD
-    config_dict['TOKEN'] = TOKEN
-    config_dict['SEARCH_API_LIMIT'] = SEARCH_API_LIMIT
-    config_dict['DEBUG'] = DEBUG
-    config_dict['API_HEALTH_CHECK'] = API_HEALTH_CHECK
-    config_dict['API_AUTH_CHECK'] = API_AUTH_CHECK
-    config_dict['VERIFY_SSL'] = VERIFY_SSL
-    config_dict['CLIENT_CERT'] = CLIENT_CERT
-    config_dict['BACKUP_DIR'] = BACKUP_DIR
-    config_dict['BACKUP_FILE_FORMAT'] = BACKUP_FILE_FORMAT
-    config_dict['PRETTY_PRINT'] = PRETTY_PRINT
-    config_dict['BACKUP_WORKERS'] = BACKUP_WORKERS
-    config_dict['UID_DASHBOARD_SLUG_SUFFIX'] = UID_DASHBOARD_SLUG_SUFFIX
-    config_dict['EXTRA_HEADERS'] = EXTRA_HEADERS
-    config_dict['HTTP_GET_HEADERS'] = HTTP_GET_HEADERS
-    config_dict['HTTP_POST_HEADERS'] = HTTP_POST_HEADERS
-    config_dict['HTTP_GET_HEADERS_BASIC_AUTH'] = HTTP_GET_HEADERS_BASIC_AUTH
-    config_dict['HTTP_POST_HEADERS_BASIC_AUTH'] = HTTP_POST_HEADERS_BASIC_AUTH
-    config_dict['TIMESTAMP'] = TIMESTAMP
-    config_dict['AWS_S3_BUCKET_NAME'] = AWS_S3_BUCKET_NAME
-    config_dict['AWS_S3_BUCKET_KEY'] = AWS_S3_BUCKET_KEY
-    config_dict['AWS_DEFAULT_REGION'] = AWS_DEFAULT_REGION
-    config_dict['AWS_ACCESS_KEY_ID'] = AWS_ACCESS_KEY_ID
-    config_dict['AWS_SECRET_ACCESS_KEY'] = AWS_SECRET_ACCESS_KEY
-    config_dict['AWS_ENDPOINT_URL'] = AWS_ENDPOINT_URL
-    config_dict['AZURE_STORAGE_CONTAINER_NAME'] = AZURE_STORAGE_CONTAINER_NAME
-    config_dict['AZURE_STORAGE_CONNECTION_STRING'] = AZURE_STORAGE_CONNECTION_STRING
-    config_dict['GCS_BUCKET_NAME'] = GCS_BUCKET_NAME
-    config_dict['GCS_BUCKET_PATH'] = GCS_BUCKET_PATH
-    config_dict['INFLUXDB_MEASUREMENT'] = INFLUXDB_MEASUREMENT
-    config_dict['INFLUXDB_HOST'] = INFLUXDB_HOST
-    config_dict['INFLUXDB_PORT'] = INFLUXDB_PORT
-    config_dict['INFLUXDB_USERNAME'] = INFLUXDB_USERNAME
-    config_dict['INFLUXDB_PASSWORD'] = INFLUXDB_PASSWORD
-    config_dict['INFLUXDB_DATABASE'] = INFLUXDB_DATABASE
+    config_dict.update({
+        'GRAFANA_BASIC_AUTH': basic_auth,
+        'EXTRA_HEADERS': extra_headers,
+        'HTTP_GET_HEADERS': http_get,
+        'HTTP_POST_HEADERS': http_post,
+        'HTTP_GET_HEADERS_BASIC_AUTH': get_basic,
+        'HTTP_POST_HEADERS_BASIC_AUTH': post_basic,
+        'TIMESTAMP': datetime.today().strftime(config_dict['BACKUP_FILE_FORMAT'])
+    })
 
     return config_dict
