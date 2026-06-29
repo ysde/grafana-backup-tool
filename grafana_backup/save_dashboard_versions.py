@@ -48,8 +48,14 @@ def get_versions_and_save(dashboards, folder_path, log_file, grafana_url, http_g
 
             (status, content) = get_dashboard_versions(board['id'], grafana_url, http_get_headers, verify_ssl, client_cert, debug)
             if status == 200:
-                print("found {0} versions for dashboard {1}".format(len(content), to_python2_and_3_compatible_string(board['title'])))
-                get_individual_versions(content, board_folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print)
+                if isinstance(content, dict) and 'versions' in content:
+                    versions_list = content['versions']
+                elif isinstance(content, list):
+                    versions_list = content
+                else:
+                    versions_list = []
+                print("found {0} versions for dashboard {1}".format(len(versions_list), to_python2_and_3_compatible_string(board['title'])))
+                get_individual_versions(versions_list, board_folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print)
 
 
 def get_individual_versions(versions, folder_path, log_file, grafana_url, http_get_headers, verify_ssl, client_cert, debug, pretty_print):
